@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<record>
+		<LevelNum>0</LevelNum>
+		<LevelName>Tutorial</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>15</MaxVisibleBubbles>
+		<StartingPointValue>3</StartingPointValue>
+		<MaxLevelTime>60</MaxLevelTime>
+		<LevelPassScore>700</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>2</InitialVisibleBubbles>
+		<LevelDescription>Learn to play BubbleBreak</LevelDescription>
+		<SequenceLevel>1</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>1</LevelNum>
+		<LevelName>Linear 1</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>20</MaxVisibleBubbles>
+		<StartingPointValue>6</StartingPointValue>
+		<MaxLevelTime>60</MaxLevelTime>
+		<LevelPassScore>800</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>3</InitialVisibleBubbles>
+		<LevelDescription>Linear 1</LevelDescription>
+		<SequenceLevel>1</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>2</LevelNum>
+		<LevelName>Linear 2</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>22</MaxVisibleBubbles>
+		<StartingPointValue>6</StartingPointValue>
+		<MaxLevelTime>60</MaxLevelTime>
+		<LevelPassScore>900</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>3</InitialVisibleBubbles>
+		<LevelDescription>Linear 2</LevelDescription>
+		<SequenceLevel>1</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>3</LevelNum>
+		<LevelName>Linear 3</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>24</MaxVisibleBubbles>
+		<StartingPointValue>6</StartingPointValue>
+		<MaxLevelTime>60</MaxLevelTime>
+		<LevelPassScore>1000</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<LevelDescription>Linear 3</LevelDescription>
+		<SequenceLevel>1</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>4</LevelNum>
+		<LevelName>Double 1</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>26</MaxVisibleBubbles>
+		<StartingPointValue>8</StartingPointValue>
+		<MaxLevelTime>65</MaxLevelTime>
+		<LevelPassScore>1100</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<LevelDescription>Double 1</LevelDescription>
+		<SequenceLevel>2</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>5</LevelNum>
+		<LevelName>Double 2</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>27</MaxVisibleBubbles>
+		<StartingPointValue>8</StartingPointValue>
+		<MaxLevelTime>65</MaxLevelTime>
+		<LevelPassScore>1200</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<LevelDescription>Double 2</LevelDescription>
+		<SequenceLevel>2</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>6</LevelNum>
+		<LevelName>Double 3</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>28</MaxVisibleBubbles>
+		<StartingPointValue>8</StartingPointValue>
+		<MaxLevelTime>65</MaxLevelTime>
+		<LevelPassScore>1300</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<LevelDescription>Double 3</LevelDescription>
+		<SequenceLevel>2</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>7</LevelNum>
+		<LevelName>Triple 1</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>29</MaxVisibleBubbles>
+		<StartingPointValue>10</StartingPointValue>
+		<MaxLevelTime>70</MaxLevelTime>
+		<LevelPassScore>1400</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<LevelDescription>Triple 1</LevelDescription>
+		<SequenceLevel>3</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>8</LevelNum>
+		<LevelName>Triple 2</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>30</MaxVisibleBubbles>
+		<StartingPointValue>10</StartingPointValue>
+		<MaxLevelTime>70</MaxLevelTime>
+		<LevelPassScore>1500</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<LevelDescription>Triple 2</LevelDescription>
+		<SequenceLevel>3</SequenceLevel>
+	</record>
+	<record>
+		<LevelNum>9</LevelNum>
+		<LevelName>Triple 3</LevelName>
+		<MaxBubbles>40</MaxBubbles>
+		<MaxVisibleBubbles>30</MaxVisibleBubbles>
+		<StartingPointValue>10</StartingPointValue>
+		<MaxLevelTime>70</MaxLevelTime>
+		<LevelPassScore>1600</LevelPassScore>
+		<TapsToPopStandard>1</TapsToPopStandard>
+		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<LevelDescription>Triple 3</LevelDescription>
+		<SequenceLevel>3</SequenceLevel>
+	</record>
+</data-set>

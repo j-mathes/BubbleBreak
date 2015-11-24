@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{B7AD096A-5E3B-409D-A4DC-1729C7DBC8D8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BubbleBreak</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>BubbleBreak</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>i386</MtouchArch>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+    <CodesignKey>iPhone Developer: jaredmathes@shaw.ca (5GPK7FNACL)</CodesignKey>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchI18n>
+    </MtouchI18n>
+    <CodesignProvision>9f1ee849-5528-4089-9073-aa9edb044c49</CodesignProvision>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer: jaredmathes@shaw.ca (5GPK7FNACL)</CodesignKey>
+    <CodesignProvision>9f1ee849-5528-4089-9073-aa9edb044c49</CodesignProvision>
+    <MtouchExtraArgs>-v -v -v -v --time --time </MtouchExtraArgs>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchI18n>
+    </MtouchI18n>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchArch>i386</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchI18n>
+    </MtouchI18n>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchProfiling>true</MtouchProfiling>
+    <CodesignKey>iPhone Developer: jaredmathes@shaw.ca (5GPK7FNACL)</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchI18n>
+    </MtouchI18n>
+    <CodesignProvision>9f1ee849-5528-4089-9073-aa9edb044c49</CodesignProvision>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="box2d">
+      <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\box2d.dll</HintPath>
+    </Reference>
+    <Reference Include="CocosSharp">
+      <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\CocosSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework.Net">
+      <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\MonoGame.Framework.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-blue.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-green.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-iceblue.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-orange.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-pink.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-purple.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-red.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-white.png" />
+    <BundleResource Include="Content\images\ld\bubble-glow-yellow.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-blue.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-green.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-iceblue.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-orange.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-pink.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-purple.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-red.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-white.png" />
+    <BundleResource Include="Content\images\ld\bubble-pop-yellow.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-blue.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-green.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-iceblue.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-orange.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-pink.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-purple.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-red.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-white.png" />
+    <BundleResource Include="Content\images\ld\bubble-std-yellow.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-blue.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-green.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-iceblue.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-orange.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-pink.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-purple.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-red.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-white.png" />
+    <BundleResource Include="Content\images\hd\bubble-glow-yellow.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-blue.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-green.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-iceblue.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-orange.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-pink.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-purple.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-red.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-white.png" />
+    <BundleResource Include="Content\images\hd\bubble-pop-yellow.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-blue.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-green.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-iceblue.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-orange.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-pink.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-purple.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-red.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-white.png" />
+    <BundleResource Include="Content\images\hd\bubble-std-yellow.png" />
+    <BundleResource Include="Content\images\hd\bb_retrotek.png" />
+    <BundleResource Include="Content\images\hd\bb_startgame.png" />
+    <BundleResource Include="Content\images\hd\bb_title.png" />
+    <BundleResource Include="Content\images\ld\bb_retrotek.png" />
+    <BundleResource Include="Content\images\ld\bb_startgame.png" />
+    <BundleResource Include="Content\images\ld\bb_title.png" />
+    <BundleResource Include="Content\images\hd\lbl_score.png" />
+    <BundleResource Include="Content\images\hd\lbl_time.png" />
+    <BundleResource Include="Content\images\hd\prgbar_score_empty.png" />
+    <BundleResource Include="Content\images\hd\prgbar_score_full.png" />
+    <BundleResource Include="Content\images\hd\prgbar_time_empty.png" />
+    <BundleResource Include="Content\images\hd\prgbar_time_full.png" />
+    <BundleResource Include="Content\images\ld\lbl_score.png" />
+    <BundleResource Include="Content\images\ld\lbl_time.png" />
+    <BundleResource Include="Content\images\ld\prgbar_score_empty.png" />
+    <BundleResource Include="Content\images\ld\prgbar_score_full.png" />
+    <BundleResource Include="Content\images\ld\prgbar_time_empty.png" />
+    <BundleResource Include="Content\images\ld\prgbar_time_full.png" />
+    <BundleResource Include="Content\images\hd\level_over.png" />
+    <BundleResource Include="Content\images\ld\level_over.png" />
+    <BundleResource Include="levelinfo.xml" />
+    <BundleResource Include="Resources\bb_icon_029.png" />
+    <BundleResource Include="Resources\bb_icon_057.png" />
+    <BundleResource Include="Resources\bb_icon_058.png" />
+    <BundleResource Include="Resources\bb_icon_080.png" />
+    <BundleResource Include="Resources\bb_icon_114.png" />
+    <BundleResource Include="Resources\bb_icon_120.png" />
+    <BundleResource Include="Content\images\hd\frame.png" />
+    <BundleResource Include="Content\images\hd\level_com.png" />
+    <BundleResource Include="Content\images\hd\level_inc.png" />
+    <BundleResource Include="Content\images\hd\level_next.png" />
+    <BundleResource Include="Content\images\hd\level_quit.png" />
+    <BundleResource Include="Content\images\hd\level_retry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\animations\" />
+    <Folder Include="Content\fonts\" />
+    <Folder Include="Content\sounds\" />
+    <Folder Include="Content\images\hd\" />
+    <Folder Include="Content\images\ld\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="GameAppDelegate.cs" />
+    <Compile Include="PointBubble.cs" />
+    <Compile Include="ShuffleBag.cs" />
+    <Compile Include="GameStartLayer.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Enums\Difficulty.cs" />
+    <Compile Include="Enums\Sequences.cs" />
+    <Compile Include="Enums\Bonuses.cs" />
+    <Compile Include="Enums\TapStrength.cs" />
+    <Compile Include="Enums\BonusInterrupt.cs" />
+    <Compile Include="MenuBubble.cs" />
+    <Compile Include="Enums\BubbleColors.cs" />
+    <Compile Include="Unused.cs" />
+    <Compile Include="LevelIntroLayer.cs" />
+    <Compile Include="LevelLayer.cs" />
+    <Compile Include="LevelFinishedLayer.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
+  </ItemGroup>
+</Project>

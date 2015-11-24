@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+ <data-set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+     <record>
+        <LevelNum>1</LevelNum>
+        <LevelName>1</LevelName>
+        <MaxBubbles>40</MaxBubbles>
+        <MaxVisibleBubbles>25</MaxVisibleBubbles>
+	<MaxInitialPointValue>6</MaxInitialPointValue>
+	<MaxLevelTime>60</MaxLevelTime>
+	<LevelPassScore>700</LevelPassScore>
+	<InitialVisibleBubbles>3</InitialVisibleBubbles>
+	<Linear>Y</Linear>
+	<Doubled>N</Doubled>
+	<Tripled>N</Tripled>
+	<Square>N</Square>
+	<Triangular>N</Triangular>
+	<Lazy>N</Lazy>
+	<Odd>N</Odd>
+	<Even>N</Even>
+	<Fibonacci>N</Fibonacci>
+	<Prime>N</Prime>
+	<Recman>N</Recman>
+	<Pi>N</Pi>
+     </record>
+ </data-set>
