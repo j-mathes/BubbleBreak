@@ -186,6 +186,11 @@
     <BundleResource Include="Resources\bb_icon_114.png" />
     <BundleResource Include="Resources\bb_icon_120.png" />
     <BundleResource Include="Content\images\hd\frame.png" />
+    <BundleResource Include="Content\images\ld\level_com.png" />
+    <BundleResource Include="Content\images\ld\level_inc.png" />
+    <BundleResource Include="Content\images\ld\level_next.png" />
+    <BundleResource Include="Content\images\ld\level_quit.png" />
+    <BundleResource Include="Content\images\ld\level_retry.png" />
     <BundleResource Include="Content\images\hd\level_com.png" />
     <BundleResource Include="Content\images\hd\level_inc.png" />
     <BundleResource Include="Content\images\hd\level_next.png" />

@@ -40,15 +40,14 @@ namespace BubbleBreak
 		CCSprite timeLabelSprite, scoreLabelSprite, timeSpriteProgressBarEmpty, scoreSpriteProgressBarEmpty;
 		CCProgressTimer timeBar, scoreBar;
 
-		CCLayerColor levelOverLayer;
-		CCSprite levelOverSprite;
-
 		Player activePlayer;
+		List<Level> levels;
+		Level activeLevel;
 
-		int levelNumber;						// level index number
-		string levelName; 						// level's name
-		string levelDescription;				// level's description
-		int sequenceLevel;						// integer representing which sequences are active on the level
+//		int levelNumber;						// level index number
+//		string levelName; 						// level's name
+//		string levelDescription;				// level's description
+//		int sequenceLevel;						// integer representing which sequences are active on the level
 		float levelTimeLimit;		 			// how many second we have to get the levelPassScore
 		float levelTimeLeft;					// decreasing time left to complete the level
 
@@ -68,22 +67,24 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		// GameLayer
 		//---------------------------------------------------------------------------------------------------------
-		public LevelLayer (Level currentLevel, Player currentPlayer)
+		public LevelLayer (List<Level> gameLevels, Player currentPlayer)
 		{
+			levels = gameLevels;
 			activePlayer = currentPlayer;
+			activeLevel = levels [currentPlayer.LastLevelCompleted + 1];
 
-			// assign values from currentLevel properties to the GameLayer properties
-			levelNumber = currentLevel.LevelNum;
-			levelName = currentLevel.LevelName;
-			maxBubbles = currentLevel.MaxBubbles;
-			maxVisibleBubbles = currentLevel.MaxVisibleBubbles;
-			maxLevelPoints = currentLevel.StartingPointValue;
-			levelTimeLimit = currentLevel.MaxLevelTime;
-			levelPassScore = currentLevel.LevelPassScore;
-			tapsRequired = currentLevel.TapsToPopStandard;
-			levelVisibleBubbles = currentLevel.InitialVisibleBubbles;
-			levelDescription = currentLevel.LevelDescription;
-			sequenceLevel = currentLevel.SequenceLevel;
+			// assign values from activeLevel properties to the GameLayer properties
+			//levelNumber = activeLevel.LevelNum;
+			//levelName = activeLevel.LevelName;
+			maxBubbles = activeLevel.MaxBubbles;
+			maxVisibleBubbles = activeLevel.MaxVisibleBubbles;
+			maxLevelPoints = activeLevel.StartingPointValue;
+			levelTimeLimit = activeLevel.MaxLevelTime;
+			levelPassScore = activeLevel.LevelPassScore;
+			tapsRequired = activeLevel.TapsToPopStandard;
+			levelVisibleBubbles = activeLevel.InitialVisibleBubbles;
+			//levelDescription = activeLevel.LevelDescription;
+			//sequenceLevel = activeLevel.SequenceLevel;
 
 			levelTimeLeft = levelTimeLimit;
 
@@ -405,10 +406,10 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		// Creates the GameLayer scene
 		//---------------------------------------------------------------------------------------------------------
-		public static CCScene CreateScene (CCWindow mainWindow, Level currentLevel, Player currentPlayer)
+		public static CCScene CreateScene (CCWindow mainWindow, List<Level> levels, Player currentPlayer)
 		{
 			var scene = new CCScene (mainWindow);
-			var layer = new LevelLayer (currentLevel, currentPlayer);
+			var layer = new LevelLayer (levels, currentPlayer);
 
 			scene.AddChild (layer);
 
@@ -424,7 +425,7 @@ namespace BubbleBreak
 		{
 			UnscheduleAll();
 
-			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, activePlayer, levelPassed);
+			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, levelPassed);
 			var transitionToLevelOver = new CCTransitionFade (3.0f, levelEndScene);
 
 			Director.ReplaceScene (transitionToLevelOver);

@@ -14,22 +14,24 @@ namespace BubbleBreak
 	public class LevelFinishedLayer : CCLayerColor
 	{
 		CCSprite frameSprite, frameTitle, menuNextLevel, menuQuitLevel, menuRetryLevel;
-		CCLabel scoreText, coinsText, scoreNeededText;
+//		CCLabel scoreText, coinsText, scoreNeededText;
+//
+//		string scoreMessage = string.Empty;
+//		string coinsMessage = string.Empty;
+//		string scoreNeededMessage = string.Empty;
 
-		string scoreMessage = string.Empty;
-		string coinsMessage = string.Empty;
-		string scoreNeededMessage = string.Empty;
-
-		int playerScore;
+		//int playerScore;
 		bool levelWasCompleted;
 
 		Player activePlayer;
+		List<Level> levels;
 
-		public LevelFinishedLayer (int score, bool levelPassed, Player currentPlayer)
+		public LevelFinishedLayer (int score, List<Level> gameLevels, Player currentPlayer, bool wasLevelPassed)
 		{
+			levels = gameLevels;
 			activePlayer = currentPlayer;
-			playerScore = score;
-			levelWasCompleted = levelPassed;
+			//playerScore = score;
+			levelWasCompleted = wasLevelPassed;
 			Color = new CCColor3B(0,0,0);
 			Opacity = 255;
 		}
@@ -52,7 +54,7 @@ namespace BubbleBreak
 			frameTitle.AnchorPoint = CCPoint.AnchorMiddle;
 			frameTitle.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MaxY - (frameTitle.BoundingBox.Size.Height * 1.5f));
 
-			scoreMessage = string.Format ("Game Over\nYour score is {0}", playerScore);
+			//scoreMessage = string.Format ("Game Over\nYour score is {0}", playerScore);
 
 			//var textColor = new CCColor3B(153,255,255);
 
@@ -78,10 +80,10 @@ namespace BubbleBreak
 		}
 			
 
-		public static CCScene CreateScene (CCWindow mainWindow, int score, Player currentPlayer, bool levelPassed)
+		public static CCScene CreateScene (CCWindow mainWindow, int score, List<Level> gameLevels, Player currentPlayer, bool levelPassed)
 		{
 			var scene = new CCScene (mainWindow);
-			var layer = new LevelFinishedLayer (score, levelPassed, currentPlayer);
+			var layer = new LevelFinishedLayer (score, gameLevels, currentPlayer, levelPassed);
 
 			scene.AddChild (layer);
 
@@ -90,15 +92,14 @@ namespace BubbleBreak
 
 		void NextLevel (object stuff = null)
 		{
-			//TODO: CreateScene wants a level object passed for the second parameter, not an int index
-			var nextLevel = LevelLayer.CreateScene (Window, activePlayer.LastLevelCompleted, activePlayer);
+			var nextLevel = LevelLayer.CreateScene (Window, levels, activePlayer);
 			var transitionToGame = new CCTransitionFade (3.0f, nextLevel);
 			Director.ReplaceScene (transitionToGame);
 		}
 
 		void RetryLevel (object stuff = null)
 		{
-			var level = LevelLayer.CreateScene (Window, activePlayer.LastLevelCompleted, activePlayer);
+			var level = LevelLayer.CreateScene (Window, levels, activePlayer);
 			var transitionToGame = new CCTransitionFade (3.0f, level);
 			Director.ReplaceScene (transitionToGame);
 		}

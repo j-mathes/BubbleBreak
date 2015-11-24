@@ -6,7 +6,7 @@
 		<MaxBubbles>40</MaxBubbles>
 		<MaxVisibleBubbles>15</MaxVisibleBubbles>
 		<StartingPointValue>3</StartingPointValue>
-		<MaxLevelTime>60</MaxLevelTime>
+		<MaxLevelTime>6</MaxLevelTime>
 		<LevelPassScore>700</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>2</InitialVisibleBubbles>

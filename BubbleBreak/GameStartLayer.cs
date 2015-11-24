@@ -118,7 +118,7 @@ namespace BubbleBreak
 		// Transitions to GameLayer
 		void StartGame (object stuff = null)
 		{
-			var mainGame = LevelLayer.CreateScene (Window,Levels[CurrentPlayer.LastLevelCompleted + 1], CurrentPlayer);
+			var mainGame = LevelLayer.CreateScene (Window, Levels, CurrentPlayer);
 			var transitionToGame = new CCTransitionFade(3.0f, mainGame);
 			Director.ReplaceScene (transitionToGame);
 		}
