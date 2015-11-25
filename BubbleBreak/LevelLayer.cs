@@ -30,7 +30,8 @@ namespace BubbleBreak
 		CCPoint tapLocation;
 		CCLabel scoreLabel;
 
-		CCSprite timeLabelSprite, scoreLabelSprite, timeSpriteProgressBarEmpty, scoreSpriteProgressBarEmpty;
+		CCSpriteSheet uiSpriteSheet;
+		CCSprite timeLabelSprite, scoreLabelSprite, timeSpriteProgressBarEmpty, scoreSpriteProgressBarEmpty, timeSpriteProgressBarFull, scoreSpriteProgressBarFull;
 		CCProgressTimer timeBar, scoreBar;
 
 		Player activePlayer;
@@ -58,7 +59,7 @@ namespace BubbleBreak
 		int maxVisibleBubbles;					// the limit for how many bubbles we actually want visible on the screen
 
 		//---------------------------------------------------------------------------------------------------------
-		// GameLayer
+		// LevelLayer
 		//---------------------------------------------------------------------------------------------------------
 		public LevelLayer (List<Level> gameLevels, Player currentPlayer)
 		{
@@ -83,6 +84,8 @@ namespace BubbleBreak
 
 			bubbleOccupiedArray = new bool[maxBubbles];
 
+			uiSpriteSheet = new CCSpriteSheet ("ui.plist");
+
 			scoreLabel = new CCLabel ("Score:", "arial", 30);
 			scoreLabel.Text = "Score: " + levelScore + "/" + levelPassScore;
 			scoreLabel.Scale = 1.0f;
@@ -91,31 +94,32 @@ namespace BubbleBreak
 			scoreLabel.AnchorPoint = CCPoint.AnchorUpperLeft;
 			AddChild (scoreLabel);
 
-			timeLabelSprite = new CCSprite ("lbl_time");
+			timeLabelSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("lbl_time.png")));
 			timeLabelSprite.AnchorPoint = CCPoint.AnchorUpperLeft;
 			timeLabelSprite.PositionX = 860;
 			timeLabelSprite.PositionY = 1870;
 			AddChild (timeLabelSprite);
 
-			scoreLabelSprite = new CCSprite ("lbl_score");
+			scoreLabelSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("lbl_score.png")));
 			scoreLabelSprite.AnchorPoint = CCPoint.AnchorUpperLeft;
 			scoreLabelSprite.PositionX = 860;
 			scoreLabelSprite.PositionY = 1810;
 			AddChild (scoreLabelSprite);
 
-			timeSpriteProgressBarEmpty = new CCSprite ("prgbar_time_empty");
+			timeSpriteProgressBarEmpty = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_time_empty.png")));
 			timeSpriteProgressBarEmpty.AnchorPoint = CCPoint.AnchorUpperLeft;
 			timeSpriteProgressBarEmpty.PositionX = 200;
 			timeSpriteProgressBarEmpty.PositionY = 1870;
 			AddChild (timeSpriteProgressBarEmpty);
 
-			scoreSpriteProgressBarEmpty = new CCSprite ("prgbar_score_empty");
+			scoreSpriteProgressBarEmpty = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_score_empty.png")));
 			scoreSpriteProgressBarEmpty.AnchorPoint = CCPoint.AnchorUpperLeft;
 			scoreSpriteProgressBarEmpty.PositionX = 200;
 			scoreSpriteProgressBarEmpty.PositionY = 1810;
 			AddChild (scoreSpriteProgressBarEmpty);
 
-			timeBar = new CCProgressTimer ("prgbar_time_full");
+			timeSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_time_full.png")));
+			timeBar = new CCProgressTimer (timeSpriteProgressBarFull);
 			timeBar.AnchorPoint = CCPoint.AnchorUpperLeft;
 			timeBar.PositionX = 200;
 			timeBar.PositionY = 1870;
@@ -125,7 +129,8 @@ namespace BubbleBreak
 			timeBar.Type = CCProgressTimerType.Bar;
 			AddChild (timeBar);
 
-			scoreBar = new CCProgressTimer ("prgbar_score_full");
+			scoreSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_score_full.png")));
+			scoreBar = new CCProgressTimer (scoreSpriteProgressBarFull);
 			scoreBar.AnchorPoint = CCPoint.AnchorUpperLeft;
 			scoreBar.PositionX = 200;
 			scoreBar.PositionY = 1810;
@@ -147,12 +152,14 @@ namespace BubbleBreak
 						levelPassed = true;
 						activePlayer.LastLevelCompleted++;
 						activePlayer.Coins += ConvertScoreToCoins(levelScore);
-						ContinueToNextLevel();
+						activePlayer.WriteData ();
+						EndLevel();
 					} 
 
 					else
 					{
-						ReplayLevel();
+						activePlayer.WriteData ();
+						EndLevel();
 					}
 						
 					return;
@@ -378,7 +385,7 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		async void DisplayBubble(PointBubble newBubble)
 		{
-			await newBubble.BubbleSprite.RunActionsAsync (new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
+			await newBubble.BubbleSprite.RunActionsAsync (new CCDelayTime(newBubble.TimeDelay), new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
 			bubbleOccupiedArray [newBubble.ListIndex] = false;
 			newBubble.RemoveFromParent ();
 		}
@@ -391,7 +398,7 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		async void DisplayLabel(PointBubble newBubble)
 		{
-			await newBubble.PointLabel.RunActionsAsync (new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
+			await newBubble.PointLabel.RunActionsAsync (new CCDelayTime(newBubble.TimeDelay), new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
 		}
 
 		//---------------------------------------------------------------------------------------------------------
@@ -410,21 +417,6 @@ namespace BubbleBreak
 		}
 
 		//---------------------------------------------------------------------------------------------------------
-		// EndLevelCallBack
-		//---------------------------------------------------------------------------------------------------------
-		// for testing the delay after showing the game over layer
-		//---------------------------------------------------------------------------------------------------------
-		void EndLevelCallBack()
-		{
-			UnscheduleAll();
-
-			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, levelPassed);
-			var transitionToLevelOver = new CCTransitionFade (3.0f, levelEndScene);
-
-			Director.ReplaceScene (transitionToLevelOver);
-		}
-
-		//---------------------------------------------------------------------------------------------------------
 		// EndLevel
 		//---------------------------------------------------------------------------------------------------------
 		// Unschedules everything that is scheduled.  Creates the GameOver layer and passes the score to that layer
@@ -434,10 +426,14 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		void EndLevel()
 		{
+			// somewhere at the end of the level we need to write the player data to file
 			UnscheduleAll();
 			bubbles.RemoveAllChildren ();
 
-			EndLevelCallBack ();
+			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, levelPassed);
+			var transitionToLevelOver = new CCTransitionFade (3.0f, levelEndScene);
+
+			Director.ReplaceScene (transitionToLevelOver);
 		}
 
 		//---------------------------------------------------------------------------------------------------------
@@ -462,26 +458,6 @@ namespace BubbleBreak
 			return bonusCoins;
 
 			//TODO: create a layer to display calculation of points to coins
-		}
-
-		//---------------------------------------------------------------------------------------------------------
-		// ContinueToNextLevel
-		//---------------------------------------------------------------------------------------------------------
-		// Asks player if they want to continue or go back to the main menu
-		//---------------------------------------------------------------------------------------------------------
-		public void ContinueToNextLevel()
-		{
-			EndLevel ();
-		}
-
-		//---------------------------------------------------------------------------------------------------------
-		// ReplayLevel
-		//---------------------------------------------------------------------------------------------------------
-		// Asks the player if they want to replay the level  or go back to the main menu
-		//---------------------------------------------------------------------------------------------------------
-		public void ReplayLevel()
-		{
-			EndLevel ();
 		}
 	}
 }
