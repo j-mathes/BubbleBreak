@@ -5,17 +5,17 @@ namespace BubbleBreak
 	public enum Sequences
 	{
 		Linear,
-		Doubled,
-		Tripled,
-		Square,
-		Triangular,
-		Lazy,
-		Odd,
 		Even,
+		Odd,
+		Triangular,
+		Square,
+		Lazy,
 		Fibonacci,
 		Prime,
-		Recaman,
+		Doubled,
+		Tripled,
 		Pi,
+		Recaman,
 	}
 }
 

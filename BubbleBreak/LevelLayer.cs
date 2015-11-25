@@ -18,13 +18,6 @@ namespace BubbleBreak
 		const float CELL_DIMS_HALF = 100f;			// half width of a bubble grid cell
 		const float CELL_CENTER_ZONE_HALF = 28f;	// half width of the area in the center of the cell that a bubble can randomly be placed
 
-		const float MIN_TIME_APPEAR = 0.1f;			// minimum amount of time to fade in a bubble
-		const float MAX_TIME_APPEAR = 2.0f;			// maximum amount of time to fade in a bubble
-		const float MIN_TIME_HOLD = 1.0f;			// minimum amount of time to hold a bubble visible
-		const float MAX_TIME_HOLD = 8.0f;			// maximum amount of time to hold a bubble visible
-		const float MIN_TIME_FADE = 0.5f;			// minimum amount of time to fade out a bubble
-		const float MAX_TIME_FADE = 5.0f;			// maximum amount of time to fade out a bubble
-
 		const float COIN_MULTIPLIER = 0.01f;		// multiplier to determin how many bonus coins the player gets - 100 extra points = 1 coin
 
 		CCNode bubbles;
