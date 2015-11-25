@@ -29,6 +29,7 @@ namespace BubbleBreak
 
 		CCSprite rtLogo, title, menuStart;
 		CCRepeatForever repeatedAction;
+		CCSpriteSheet uiSpriteSheet;
 
 		int timeIncrement = 0;
 		int visibleBubbles = 1;
@@ -47,6 +48,9 @@ namespace BubbleBreak
 		{
 			Color = new CCColor3B(0,0,0);
 			Opacity = 255;
+
+			// define spritesheets
+			uiSpriteSheet = new CCSpriteSheet("ui.plist");
 
 			// Define Actions
 			var moveUp = new CCMoveBy (1.0f, new CCPoint(0.0f, 50.0f));
@@ -84,7 +88,7 @@ namespace BubbleBreak
 			currentPlayer = new Player();
 
 			if (File.Exists (currentPlayer.PlayerDataFile)) {
-				currentPlayer.ReadData ();
+				currentPlayer = Player.ReadData (currentPlayer);
 			} else {
 				currentPlayer.WriteData ();
 			}
@@ -94,7 +98,7 @@ namespace BubbleBreak
 			//Menu Elements
 			//---------------------------------------------------------------------------------------------------------
 
-			menuStart = new CCSprite ("bb_startgame");
+			menuStart = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("bb_startgame.png")));
 			menuStart.AnchorPoint = CCPoint.AnchorMiddle;
 			
 			var menuItemStart = new CCMenuItemImage (menuStart, menuStart, StartGame);
@@ -107,13 +111,13 @@ namespace BubbleBreak
 			
 			AddChild (menu);
 
-			rtLogo = new CCSprite ("bb_retrotek");
+			rtLogo = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("bb_retrotek.png")));
 			rtLogo.AnchorPoint = CCPoint.AnchorMiddle;
 			rtLogo.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 14);
 			//rtLogo.RunAction (repeatedAction);
 			AddChild (rtLogo);
 
-			title = new CCSprite ("bb_title");
+			title = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("bb_title.png")));
 			title.AnchorPoint = CCPoint.AnchorMiddle;
 			title.Position = new CCPoint (bounds.Size.Width / 2, (bounds.Size.Height / 4)*3);
 			title.RunAction (repeatedAction);

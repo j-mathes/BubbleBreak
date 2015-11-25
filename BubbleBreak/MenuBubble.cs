@@ -19,6 +19,7 @@ namespace BubbleBreak
 		public float TimeHold { get; set; }  // how long it will remain on the screen
 		public float TimeFade { get; set; }  // how long until it disappears from view
 
+		CCSpriteSheet bubbleSpriteSheet;
 		public CCSprite BubbleSprite{ get; set; }
 
 		public int XIndex { get; set; }
@@ -35,7 +36,11 @@ namespace BubbleBreak
 			TimeHold = CCRandom.GetRandomFloat (MIN_TIME_HOLD, MAX_TIME_HOLD);
 			TimeFade = CCRandom.GetRandomFloat (MIN_TIME_FADE, MAX_TIME_FADE);
 
-			BubbleSprite = new CCSprite(GetRandomBubbleColor ());
+			bubbleSpriteSheet = new CCSpriteSheet ("bubbles.plist");
+
+			var spriteFileName = GetRandomBubbleColor ();
+
+			BubbleSprite = new CCSprite (bubbleSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals (spriteFileName)));
 			BubbleSprite.AnchorPoint = CCPoint.AnchorMiddle;
 			BubbleSprite.Opacity = 0;
 			this.AddChild(BubbleSprite);

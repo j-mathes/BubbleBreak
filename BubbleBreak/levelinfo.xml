@@ -4,12 +4,12 @@
 		<LevelNum>0</LevelNum>
 		<LevelName>Tutorial</LevelName>
 		<MaxBubbles>40</MaxBubbles>
-		<MaxVisibleBubbles>10</MaxVisibleBubbles>
-		<StartingPointValue>2</StartingPointValue>
+		<MaxVisibleBubbles>13</MaxVisibleBubbles>
+		<StartingPointValue>5</StartingPointValue>
 		<MaxLevelTime>60</MaxLevelTime>
 		<LevelPassScore>400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
-		<InitialVisibleBubbles>2</InitialVisibleBubbles>
+		<InitialVisibleBubbles>5</InitialVisibleBubbles>
 		<LevelDescription>Learn to play BubbleBreak</LevelDescription>
 		<SequenceLevel>1</SequenceLevel>
 	</record>

@@ -102,80 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-blue.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-green.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-iceblue.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-orange.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-pink.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-purple.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-red.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-white.png" />
-    <BundleResource Include="Content\images\ld\bubble-glow-yellow.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-blue.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-green.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-iceblue.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-orange.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-pink.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-purple.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-red.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-white.png" />
-    <BundleResource Include="Content\images\ld\bubble-pop-yellow.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-blue.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-green.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-iceblue.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-orange.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-pink.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-purple.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-red.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-white.png" />
-    <BundleResource Include="Content\images\ld\bubble-std-yellow.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-blue.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-green.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-iceblue.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-orange.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-pink.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-purple.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-red.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-white.png" />
-    <BundleResource Include="Content\images\hd\bubble-glow-yellow.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-blue.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-green.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-iceblue.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-orange.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-pink.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-purple.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-red.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-white.png" />
-    <BundleResource Include="Content\images\hd\bubble-pop-yellow.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-blue.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-green.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-iceblue.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-orange.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-pink.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-purple.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-red.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-white.png" />
-    <BundleResource Include="Content\images\hd\bubble-std-yellow.png" />
-    <BundleResource Include="Content\images\hd\bb_retrotek.png" />
-    <BundleResource Include="Content\images\hd\bb_startgame.png" />
-    <BundleResource Include="Content\images\hd\bb_title.png" />
-    <BundleResource Include="Content\images\ld\bb_retrotek.png" />
-    <BundleResource Include="Content\images\ld\bb_startgame.png" />
-    <BundleResource Include="Content\images\ld\bb_title.png" />
-    <BundleResource Include="Content\images\hd\lbl_score.png" />
-    <BundleResource Include="Content\images\hd\lbl_time.png" />
-    <BundleResource Include="Content\images\hd\prgbar_score_empty.png" />
-    <BundleResource Include="Content\images\hd\prgbar_score_full.png" />
-    <BundleResource Include="Content\images\hd\prgbar_time_empty.png" />
-    <BundleResource Include="Content\images\hd\prgbar_time_full.png" />
-    <BundleResource Include="Content\images\ld\lbl_score.png" />
-    <BundleResource Include="Content\images\ld\lbl_time.png" />
-    <BundleResource Include="Content\images\ld\prgbar_score_empty.png" />
-    <BundleResource Include="Content\images\ld\prgbar_score_full.png" />
-    <BundleResource Include="Content\images\ld\prgbar_time_empty.png" />
-    <BundleResource Include="Content\images\ld\prgbar_time_full.png" />
-    <BundleResource Include="Content\images\hd\level_over.png" />
-    <BundleResource Include="Content\images\ld\level_over.png" />
     <BundleResource Include="levelinfo.xml" />
     <BundleResource Include="Resources\bb_icon_029.png" />
     <BundleResource Include="Resources\bb_icon_057.png" />
@@ -183,21 +109,10 @@
     <BundleResource Include="Resources\bb_icon_080.png" />
     <BundleResource Include="Resources\bb_icon_114.png" />
     <BundleResource Include="Resources\bb_icon_120.png" />
-    <BundleResource Include="Content\images\hd\frame.png" />
-    <BundleResource Include="Content\images\ld\level_com.png" />
-    <BundleResource Include="Content\images\ld\level_inc.png" />
-    <BundleResource Include="Content\images\ld\level_next.png" />
-    <BundleResource Include="Content\images\ld\level_quit.png" />
-    <BundleResource Include="Content\images\ld\level_retry.png" />
-    <BundleResource Include="Content\images\hd\level_com.png" />
-    <BundleResource Include="Content\images\hd\level_inc.png" />
-    <BundleResource Include="Content\images\hd\level_next.png" />
-    <BundleResource Include="Content\images\hd\level_quit.png" />
-    <BundleResource Include="Content\images\hd\level_retry.png" />
-    <BundleResource Include="Content\images\hd\bubbles-hd.png" />
-    <BundleResource Include="Content\images\ld\bubbles-ld.png" />
     <BundleResource Include="Content\images\hd\ui.png" />
     <BundleResource Include="Content\images\ld\ui.png" />
+    <BundleResource Include="Content\images\hd\bubbles.png" />
+    <BundleResource Include="Content\images\ld\bubbles.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\animations\" />
@@ -211,8 +126,8 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
-    <None Include="Content\images\hd\bubbles-hd.plist" />
     <None Include="Content\images\hd\ui.plist" />
+    <None Include="Content\images\hd\bubbles.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />
@@ -239,7 +154,7 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\images\ld\bubbles-ld.plist" />
     <Content Include="Content\images\ld\ui.plist" />
+    <Content Include="Content\images\ld\bubbles.plist" />
   </ItemGroup>
 </Project>

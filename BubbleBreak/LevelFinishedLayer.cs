@@ -13,6 +13,7 @@ namespace BubbleBreak
 	//---------------------------------------------------------------------------------------------------------
 	public class LevelFinishedLayer : CCLayerColor
 	{
+		CCSpriteSheet uiSpriteSheet;
 		CCSprite frameSprite, frameTitle, menuNextLevel, menuQuitLevel, menuRetryLevel;
 //		CCLabel scoreText, coinsText, scoreNeededText;
 //
@@ -34,6 +35,8 @@ namespace BubbleBreak
 			levelWasCompleted = wasLevelPassed;
 			Color = new CCColor3B(0,0,0);
 			Opacity = 255;
+
+			uiSpriteSheet = new CCSpriteSheet ("ui.plist");
 		}
 
 		protected override void AddedToScene ()
@@ -44,29 +47,29 @@ namespace BubbleBreak
 			CCRect bounds = VisibleBoundsWorldspace;
 
 			// Add frame to layer
-			frameSprite = new CCSprite ("frame.png");
+			frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
 			frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
 			frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
 			AddChild (frameSprite);
 
 			// Add frame title;
-			frameTitle = new CCSprite ((levelWasCompleted) ? "level_com.png" : "level_inc.png");
+			frameTitle = new CCSprite ((levelWasCompleted) ? (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("level_com.png"))) : (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("level_inc.png"))));
 			frameTitle.AnchorPoint = CCPoint.AnchorMiddle;
 			frameTitle.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MaxY - (frameTitle.BoundingBox.Size.Height * 1.5f));
-
+			AddChild (frameTitle);
 			//scoreMessage = string.Format ("Game Over\nYour score is {0}", playerScore);
 
 			//var textColor = new CCColor3B(153,255,255);
 
-			menuNextLevel = new CCSprite ("level_next");
+			menuNextLevel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("level_next.png")));
 			menuNextLevel.AnchorPoint = CCPoint.AnchorMiddle;
 			var menuItemNextLevel = new CCMenuItemImage (menuNextLevel, menuNextLevel, NextLevel);
 
-			menuRetryLevel = new CCSprite ("level_retry");
+			menuRetryLevel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("level_retry.png")));
 			menuRetryLevel.AnchorPoint = CCPoint.AnchorMiddle;
 			var menuItemRetryLevel = new CCMenuItemImage (menuRetryLevel, menuRetryLevel, RetryLevel);
 
-			menuQuitLevel = new CCSprite ("level_quit");
+			menuQuitLevel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("level_quit.png")));
 			menuQuitLevel.AnchorPoint = CCPoint.AnchorMiddle;
 			var menuItemQuit = new CCMenuItemImage (menuQuitLevel, menuQuitLevel, QuitLevel);
 

@@ -33,25 +33,19 @@ namespace BubbleBreak
 			PlayerDataFile = docDir.AbsoluteUrl.RelativePath + "/playerdata.xml";
 		}
 
-		public Player ReadData()
+		public static Player ReadData(Player currentPlayer)
 		{
-			Player activePlayer;
-			XmlSerializer mySerializer = new XmlSerializer (typeof(Player)); //(activePlayer.GetType ());
-			FileStream fs = new FileStream (PlayerDataFile, FileMode.OpenOrCreate);
-			activePlayer = (Player)mySerializer.Deserialize (fs);
-
-			return activePlayer;
+			XmlSerializer mySerializer = new XmlSerializer (typeof(Player));
+			FileStream fs = new FileStream (currentPlayer.PlayerDataFile, FileMode.OpenOrCreate);
+			return (Player)mySerializer.Deserialize (fs);
 		}
 
-		public Player WriteData()
+		public void WriteData()
 		{
-			Player activePlayer = new Player();
-			XmlSerializer x = new XmlSerializer (activePlayer.GetType ());
+			XmlSerializer mySerializer = new XmlSerializer (typeof(Player));
 			using (StreamWriter myWriter = new StreamWriter (PlayerDataFile, false)) {
-				x.Serialize (myWriter, activePlayer);
+				mySerializer.Serialize (myWriter, this);
 			}
-
-			return activePlayer;
 		}
 	}
 }
