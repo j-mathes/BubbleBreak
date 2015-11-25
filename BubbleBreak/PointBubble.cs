@@ -8,19 +8,19 @@ namespace BubbleBreak
 {
 	public class PointBubble : CCNode
     {
-		const float MIN_TIME_APPEAR = 0.1f;
-		const float MAX_TIME_APPEAR = 1.5f;
-		const float MIN_TIME_HOLD = 4.0f;
-		const float MAX_TIME_HOLD = 9.0f;
-		const float MIN_TIME_FADE = 1.0f;
-		const float MAX_TIME_FADE = 4.0f;
+		const float MIN_TIME_APPEAR = 0.1f;		// minimum amount of time to fade in a bubble
+		const float MAX_TIME_APPEAR = 1.5f;		// maximum amount of time to fade in a bubble
+		const float MIN_TIME_HOLD = 4.0f;		// minimum amount of time to hold a bubble visible
+		const float MAX_TIME_HOLD = 9.0f;		// maximum amount of time to hold a bubble visible
+		const float MIN_TIME_FADE = 1.0f;		// minimum amount of time to fade out a bubble
+		const float MAX_TIME_FADE = 4.0f;		// maximum amount of time to fade out a bubble
 
-		public float TimeAppear { get; set; }// how long it takes to fully appear on the screen
-		public float TimeHold { get; set; }  // how long it will remain on the screen
-		public float TimeFade { get; set; }  // how long until it disappears from view
+		public float TimeAppear { get; set; }	// how long it takes to fully appear on the screen
+		public float TimeHold { get; set; }  	// how long it will remain on the screen
+		public float TimeFade { get; set; }  	// how long until it disappears from view
 
-		public int TapsToPop { get; set; } // how many taps the bubble takes to pop
-		public int TapCount {get; set;} // how many times the bubble has been tapped
+		public int TapsToPop { get; set; } 		// how many taps the bubble takes to pop
+		public int TapCount {get; set;} 		// how many times the bubble has been tapped
         public int PointValue { get; set; }
 
 		public CCLabel PointLabel;

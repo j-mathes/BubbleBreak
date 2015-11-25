@@ -23,11 +23,9 @@
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
     <MtouchProfiling>true</MtouchProfiling>
-    <CodesignKey>iPhone Developer: jaredmathes@shaw.ca (5GPK7FNACL)</CodesignKey>
+    <CodesignKey>iPhone Developer: Jared Mathes (LY6U6RZAFJ)</CodesignKey>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchI18n>
-    </MtouchI18n>
-    <CodesignProvision>9f1ee849-5528-4089-9073-aa9edb044c49</CodesignProvision>
+    <CodesignProvision>c0b5c2ce-57dc-4438-b038-d9433447ac32</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -196,6 +194,10 @@
     <BundleResource Include="Content\images\hd\level_next.png" />
     <BundleResource Include="Content\images\hd\level_quit.png" />
     <BundleResource Include="Content\images\hd\level_retry.png" />
+    <BundleResource Include="Content\images\hd\bubbles-hd.png" />
+    <BundleResource Include="Content\images\ld\bubbles-ld.png" />
+    <BundleResource Include="Content\images\hd\ui.png" />
+    <BundleResource Include="Content\images\ld\ui.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\animations\" />
@@ -209,6 +211,8 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <None Include="Content\images\hd\bubbles-hd.plist" />
+    <None Include="Content\images\hd\ui.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />
@@ -233,5 +237,9 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\images\ld\bubbles-ld.plist" />
+    <Content Include="Content\images\ld\ui.plist" />
   </ItemGroup>
 </Project>

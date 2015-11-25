@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using CocosSharp;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.Linq;
+using Foundation;
 
 namespace BubbleBreak
 {
@@ -32,10 +34,10 @@ namespace BubbleBreak
 		int visibleBubbles = 1;
 		int bubblesVisibleIncrementDelay = 10; // delay in 10ths of a second to increase the number of bubbles on the screen
 
-		List<Level> Levels;
+		List<Level> levels;
 		XDocument levelInfo = new XDocument ();
 
-		Player CurrentPlayer;
+		Player currentPlayer;
 
 		//---------------------------------------------------------------------------------------------------------
 		// GameStartLayer Constructor
@@ -77,8 +79,16 @@ namespace BubbleBreak
 				bubbleOccupiedArray [i] = false;
 			}
 
-			Levels = ReadLevels (levelInfo);
-			CurrentPlayer = new Player ();
+			levels = ReadLevels (levelInfo);
+
+			currentPlayer = new Player();
+
+			if (File.Exists (currentPlayer.PlayerDataFile)) {
+				currentPlayer.ReadData ();
+			} else {
+				currentPlayer.WriteData ();
+			}
+
 
 			//---------------------------------------------------------------------------------------------------------
 			//Menu Elements
@@ -118,7 +128,7 @@ namespace BubbleBreak
 		// Transitions to GameLayer
 		void StartGame (object stuff = null)
 		{
-			var mainGame = LevelLayer.CreateScene (Window, Levels, CurrentPlayer);
+			var mainGame = LevelLayer.CreateScene (Window, levels, currentPlayer);
 			var transitionToGame = new CCTransitionFade(3.0f, mainGame);
 			Director.ReplaceScene (transitionToGame);
 		}
@@ -206,7 +216,6 @@ namespace BubbleBreak
 		// Reads the contents of the levelInfo.xml file and builds a list of level objects with the data in the 
 		// xml file.  Allows for easy changing of level setup and addint new levels
 		//---------------------------------------------------------------------------------------------------------
-
 		public List<Level> ReadLevels(XDocument levelInfo)
 		{
 			levelInfo = XDocument.Load ("./levelinfo.xml");
