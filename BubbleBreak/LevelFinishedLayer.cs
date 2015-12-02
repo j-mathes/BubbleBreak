@@ -15,23 +15,26 @@ namespace BubbleBreak
 	{
 		CCSpriteSheet uiSpriteSheet;
 		CCSprite frameSprite, frameTitle, menuNextLevel, menuQuitLevel, menuRetryLevel;
-//		CCLabel scoreText, coinsText, scoreNeededText;
-//
-//		string scoreMessage = string.Empty;
-//		string coinsMessage = string.Empty;
-//		string scoreNeededMessage = string.Empty;
+		CCLabel scoreLabel, coinsLabel;
 
-		//int playerScore;
+		string scoreMessage = string.Empty;
+		string coinsMessage = string.Empty;
+
+		int playerScore;
 		bool levelWasCompleted;
+		int levelScore;
+		int totalCoinsEarned;
 
 		Player activePlayer;
 		List<Level> levels;
 
-		public LevelFinishedLayer (int score, List<Level> gameLevels, Player currentPlayer, bool wasLevelPassed)
+		public LevelFinishedLayer (int score, List<Level> gameLevels, Player currentPlayer, bool wasLevelPassed, int coinsEarned)
 		{
 			levels = gameLevels;
 			activePlayer = currentPlayer;
-			//playerScore = score;
+			playerScore = score;
+			totalCoinsEarned = coinsEarned;
+			levelScore = levels [activePlayer.LastLevelCompleted + 1].LevelPassScore;
 			levelWasCompleted = wasLevelPassed;
 			Color = new CCColor3B(0,0,0);
 			Opacity = 255;
@@ -57,9 +60,23 @@ namespace BubbleBreak
 			frameTitle.AnchorPoint = CCPoint.AnchorMiddle;
 			frameTitle.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MaxY - (frameTitle.BoundingBox.Size.Height * 1.5f));
 			AddChild (frameTitle);
-			//scoreMessage = string.Format ("Game Over\nYour score is {0}", playerScore);
 
-			//var textColor = new CCColor3B(153,255,255);
+			scoreMessage = (levelWasCompleted) ? string.Format ("Your score is {0}\n", playerScore) : string.Format("You needed {0} more points\nto pass the level", levelScore - playerScore);
+			coinsMessage = (totalCoinsEarned > 0) ? string.Format ("You earned {0} coins", totalCoinsEarned) : string.Empty;
+
+			scoreLabel = new CCLabel (scoreMessage, "arial", 30);
+			scoreLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			scoreLabel.Scale = 2f;
+			scoreLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (scoreLabel.BoundingBox.Size.Height * 9f));
+			scoreLabel.HorizontalAlignment = CCTextAlignment.Center;
+			AddChild (scoreLabel);
+
+			coinsLabel = new CCLabel (coinsMessage, "arial", 30);
+			coinsLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			coinsLabel.Scale = 2f;
+			coinsLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (scoreLabel.BoundingBox.Size.Height * 7.5f));
+			coinsLabel.HorizontalAlignment = CCTextAlignment.Center;
+			AddChild (coinsLabel);
 
 			menuNextLevel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("level_next.png")));
 			menuNextLevel.AnchorPoint = CCPoint.AnchorMiddle;
@@ -74,19 +91,19 @@ namespace BubbleBreak
 			var menuItemQuit = new CCMenuItemImage (menuQuitLevel, menuQuitLevel, QuitLevel);
 
 			var menu = new CCMenu ((levelWasCompleted) ? menuItemNextLevel : menuItemRetryLevel, menuItemQuit) {
-				Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (menuQuitLevel.BoundingBox.Size.Height * 4)),
+				Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (menuQuitLevel.BoundingBox.Size.Height * 2.5f)),
 				AnchorPoint = CCPoint.AnchorMiddle
 			};
-			menu.AlignItemsVertically (menuQuitLevel.BoundingBox.Size.Height);
+			menu.AlignItemsVertically (menuQuitLevel.BoundingBox.Size.Height * 0.75f);
 
 			AddChild (menu);
 		}
 			
 
-		public static CCScene CreateScene (CCWindow mainWindow, int score, List<Level> gameLevels, Player currentPlayer, bool levelPassed)
+		public static CCScene CreateScene (CCWindow mainWindow, int score, List<Level> gameLevels, Player currentPlayer, bool levelPassed, int coinsEarned)
 		{
 			var scene = new CCScene (mainWindow);
-			var layer = new LevelFinishedLayer (score, gameLevels, currentPlayer, levelPassed);
+			var layer = new LevelFinishedLayer (score, gameLevels, currentPlayer, levelPassed, coinsEarned);
 
 			scene.AddChild (layer);
 

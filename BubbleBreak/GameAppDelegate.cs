@@ -6,6 +6,13 @@ namespace BubbleBreak
 {
 	public class GameAppDelegate : CCApplicationDelegate
 	{
+		static CCWindow sharedWindow;
+
+		public static CCWindow SharedWindow
+		{
+			get { return sharedWindow; }
+		}
+
 		public override void ApplicationDidFinishLaunching (CCApplication application, CCWindow mainWindow)
 		{
 			application.PreferMultiSampling = false;
@@ -13,6 +20,8 @@ namespace BubbleBreak
 			application.ContentSearchPaths.Add ("animations");
 			application.ContentSearchPaths.Add ("fonts");
 			application.ContentSearchPaths.Add ("sounds");
+
+			sharedWindow = mainWindow;
 
 			CCSize windowSize = mainWindow.WindowSizeInPixels;
 
@@ -33,15 +42,6 @@ namespace BubbleBreak
 				application.ContentSearchPaths.Add ("images/ld");
 				CCSprite.DefaultTexelToContentSizeRatio = 1.0f;
 			}
-            
-//			CCScene scene = new CCScene (mainWindow);
-//			GameLayer gameLayer = new GameLayer ();
-//
-//			scene.AddChild (gameLayer);
-//
-//			GameStartLayer gameStartLayer = new GameStartLayer ();
-//
-//			scene.AddChild (gameStartLayer);
 
 			var scene = GameStartLayer.CreateScene (mainWindow);
 

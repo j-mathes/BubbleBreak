@@ -32,18 +32,21 @@ namespace BubbleBreak
 
 		CCSpriteSheet uiSpriteSheet;
 		CCSprite timeLabelSprite, scoreLabelSprite, timeSpriteProgressBarEmpty, scoreSpriteProgressBarEmpty, timeSpriteProgressBarFull, scoreSpriteProgressBarFull;
+
+		CCSprite okStd, okSel, frameSprite;
+
 		CCProgressTimer timeBar, scoreBar;
 
 		Player activePlayer;
 		List<Level> levels;
 		Level activeLevel;
 
-//		int levelNumber;						// level index number
-//		string levelName; 						// level's name
-//		string levelDescription;				// level's description
-//		int sequenceLevel;						// integer representing which sequences are active on the level
+		int levelNumber;						// level index number
+	  //int sequenceLevel;						// integer representing which sequences are active on the level
 		float levelTimeLimit;		 			// how many second we have to get the levelPassScore
 		float levelTimeLeft;					// decreasing time left to complete the level
+
+		string levelTitleText, levelDescriptionText, levelTimeLimitText, levelScoreToPassText;
 
 		int levelTimeIncrement = 0;				// measures the increasing progress of level time.  Used to increment the maximum point value of a new bubble
 		int pointIncrementDelay = 40; 			// delay in 10ths of a second to increase the highest random point value generated
@@ -58,6 +61,8 @@ namespace BubbleBreak
 		int maxBubbles; 						// the maximum amount of bubbles that will fit on the screen at one time.
 		int maxVisibleBubbles;					// the limit for how many bubbles we actually want visible on the screen
 
+		int coinsEarned = 0;
+
 		//---------------------------------------------------------------------------------------------------------
 		// LevelLayer
 		//---------------------------------------------------------------------------------------------------------
@@ -68,8 +73,7 @@ namespace BubbleBreak
 			activeLevel = levels [currentPlayer.LastLevelCompleted + 1];
 
 			// assign values from activeLevel properties to the GameLayer properties
-			//levelNumber = activeLevel.LevelNum;
-			//levelName = activeLevel.LevelName;
+			levelNumber = activeLevel.LevelNum;
 			maxBubbles = activeLevel.MaxBubbles;
 			maxVisibleBubbles = activeLevel.MaxVisibleBubbles;
 			maxLevelPoints = activeLevel.StartingPointValue;
@@ -77,52 +81,51 @@ namespace BubbleBreak
 			levelPassScore = activeLevel.LevelPassScore;
 			tapsRequired = activeLevel.TapsToPopStandard;
 			levelVisibleBubbles = activeLevel.InitialVisibleBubbles;
-			//levelDescription = activeLevel.LevelDescription;
 			//sequenceLevel = activeLevel.SequenceLevel;
 
-			levelTimeLeft = levelTimeLimit;
+			levelTimeLeft = levelTimeLimit + 3;
 
 			bubbleOccupiedArray = new bool[maxBubbles];
 
 			uiSpriteSheet = new CCSpriteSheet ("ui.plist");
 
 			scoreLabel = new CCLabel ("Score:", "arial", 30);
-			scoreLabel.Text = "Score: " + levelScore + "/" + levelPassScore;
+			scoreLabel.Text = levelScore + "/" + levelPassScore;
 			scoreLabel.Scale = 1.0f;
-			scoreLabel.PositionX = 0;
-			scoreLabel.PositionY = 1920;
-			scoreLabel.AnchorPoint = CCPoint.AnchorUpperLeft;
+			scoreLabel.PositionX = 180;
+			scoreLabel.PositionY = 1860;
+			scoreLabel.AnchorPoint = CCPoint.AnchorUpperRight;
 			AddChild (scoreLabel);
 
 			timeLabelSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("lbl_time.png")));
 			timeLabelSprite.AnchorPoint = CCPoint.AnchorUpperLeft;
-			timeLabelSprite.PositionX = 860;
-			timeLabelSprite.PositionY = 1870;
+			timeLabelSprite.PositionX = 820;
+			timeLabelSprite.PositionY = 1920;
 			AddChild (timeLabelSprite);
 
 			scoreLabelSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("lbl_score.png")));
 			scoreLabelSprite.AnchorPoint = CCPoint.AnchorUpperLeft;
-			scoreLabelSprite.PositionX = 860;
-			scoreLabelSprite.PositionY = 1810;
+			scoreLabelSprite.PositionX = 820;
+			scoreLabelSprite.PositionY = 1860;
 			AddChild (scoreLabelSprite);
 
 			timeSpriteProgressBarEmpty = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_time_empty.png")));
 			timeSpriteProgressBarEmpty.AnchorPoint = CCPoint.AnchorUpperLeft;
 			timeSpriteProgressBarEmpty.PositionX = 200;
-			timeSpriteProgressBarEmpty.PositionY = 1870;
+			timeSpriteProgressBarEmpty.PositionY = 1920;
 			AddChild (timeSpriteProgressBarEmpty);
 
 			scoreSpriteProgressBarEmpty = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_score_empty.png")));
 			scoreSpriteProgressBarEmpty.AnchorPoint = CCPoint.AnchorUpperLeft;
 			scoreSpriteProgressBarEmpty.PositionX = 200;
-			scoreSpriteProgressBarEmpty.PositionY = 1810;
+			scoreSpriteProgressBarEmpty.PositionY = 1860;
 			AddChild (scoreSpriteProgressBarEmpty);
 
 			timeSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_time_full.png")));
 			timeBar = new CCProgressTimer (timeSpriteProgressBarFull);
 			timeBar.AnchorPoint = CCPoint.AnchorUpperLeft;
 			timeBar.PositionX = 200;
-			timeBar.PositionY = 1870;
+			timeBar.PositionY = 1920;
 			timeBar.Percentage = 100;
 			timeBar.Midpoint = new CCPoint (0, 0);
 			timeBar.BarChangeRate = new CCPoint (1, 0);
@@ -133,7 +136,7 @@ namespace BubbleBreak
 			scoreBar = new CCProgressTimer (scoreSpriteProgressBarFull);
 			scoreBar.AnchorPoint = CCPoint.AnchorUpperLeft;
 			scoreBar.PositionX = 200;
-			scoreBar.PositionY = 1810;
+			scoreBar.PositionY = 1860;
 			scoreBar.Midpoint = new CCPoint (0, 0);
 			scoreBar.BarChangeRate = new CCPoint (1, 0);
 			scoreBar.Type = CCProgressTimerType.Bar;
@@ -146,13 +149,15 @@ namespace BubbleBreak
 		void StartScheduling()
 		{
 			Schedule (t => {
+
 				if (ShouldLevelEnd ()){
 					if (levelScore >= levelPassScore)
 					{
 						levelPassed = true;
 						activePlayer.LastLevelCompleted++;
-						activePlayer.Coins += ConvertScoreToCoins(levelScore);
-						activePlayer.WriteData ();
+						coinsEarned = ConvertScoreToCoins(levelScore - levelPassScore);
+						activePlayer.Coins += coinsEarned;
+						activePlayer.WriteData ();  // after successfully passing the level, save the player's progress
 						EndLevel();
 					} 
 
@@ -195,6 +200,59 @@ namespace BubbleBreak
 
 			// object instantiation code here
 
+			// in-game menu popup
+			var menuStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("menu_std.png")));
+			menuStd.AnchorPoint = CCPoint.AnchorMiddle;
+			var menuSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("menu_sel.png")));
+			menuSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+			var optionPopup = new CCMenuItemImage(menuStd, menuSel, (sender) =>
+				{
+
+					this.PauseListeners(true);
+					Application.Paused = true;
+
+					var menuLayer = new CCLayerColor(new CCColor4B(0, 0, 0, 200));
+					AddChild(menuLayer, 99999);
+
+					// Add frame to layer
+					frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
+					frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
+					frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
+					menuLayer.AddChild (frameSprite);
+
+					okStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_std.png")));
+					okStd.AnchorPoint = CCPoint.AnchorMiddle;
+					okSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_sel.png")));
+					okSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+					var closeItem = new CCMenuItemImage(okStd, okSel, (closeSender) =>
+						{
+							menuLayer.RemoveFromParent();
+							this.ResumeListeners(true);
+							Application.Paused = false;
+
+						});
+
+					closeItem.Position = bounds.Center;
+
+					var closeMenu = new CCMenu(closeItem);
+					closeMenu.AnchorPoint = CCPoint.AnchorMiddleBottom;
+					closeMenu.Position = CCPoint.Zero;
+
+					menuLayer.AddChild(closeMenu);
+				});
+
+			optionPopup.AnchorPoint = CCPoint.AnchorUpperRight;
+			//optionPopup.Position = new CCPoint(bounds.Size.Width / 10, bounds.Size.Height / 14);
+
+			var optionMenu = new CCMenu(optionPopup);
+			optionMenu.AnchorPoint = CCPoint.AnchorUpperRight;
+			optionMenu.Position = new CCPoint(1080, 1920);
+
+			AddChild(optionMenu);
+
+
 			// The initial bubble creation should be refactored into a separate method
 			bubbles = new CCNode ();
 
@@ -203,7 +261,7 @@ namespace BubbleBreak
 
 			//initialize every bool in BubbleArray to false.  True if there is a bubble there.
 			for (int i = 0; i < MAX_BUBBLES_X; i++) {
-					bubbleOccupiedArray [i] = false;
+				bubbleOccupiedArray [i] = false;
 			}
 
 			//---------------------------------------------------------------------------------------------------------
@@ -214,7 +272,7 @@ namespace BubbleBreak
 			// indicies to the bubbles.  These will be used to generate initial points on the screen for each bubble.
 
 			ShuffleBag<int> bubbleOrder = new ShuffleBag<int> ();
-	
+
 			for (int i = 0; i < maxBubbles; i++) {
 				bubbleOrder.Add (i);
 			}
@@ -222,7 +280,7 @@ namespace BubbleBreak
 			for (int i = 0; i < levelVisibleBubbles; i++) {
 				var bubbleIndex = bubbleOrder.Next ();
 				var standardBubble = new PointBubble (GetRandomScoreValue (scoreRandom, maxLevelPoints), tapsRequired, (bubbleIndex % MAX_BUBBLES_X), (bubbleIndex / MAX_BUBBLES_X), bubbleIndex);
-				CCPoint p = GetRandomPosition ( standardBubble.BubbleSprite.ContentSize * BUBBLE_SCALE, standardBubble.XIndex, standardBubble.YIndex);
+				CCPoint p = GetRandomPosition (standardBubble.BubbleSprite.ContentSize * BUBBLE_SCALE, standardBubble.XIndex, standardBubble.YIndex);
 				standardBubble.Position = new CCPoint (p.X, p.Y);
 				standardBubble.Scale = BUBBLE_SCALE;
 				DisplayBubble (standardBubble);
@@ -230,13 +288,13 @@ namespace BubbleBreak
 				bubbles.AddChild (standardBubble);
 				bubbleOccupiedArray [bubbleIndex] = true;
 			}
-				
+			
 			// Register for touch events
 			var touchListener = new CCEventListenerTouchAllAtOnce ();
 			touchListener.OnTouchesEnded = OnTouchesEnded;
 			AddEventListener (touchListener, this); 
 
-			Schedule (_ => CheckForFadedBubbles());
+			Schedule (_ => CheckForFadedBubbles ());
 			Schedule (_ => StartScheduling ());
 		}
 
@@ -255,13 +313,13 @@ namespace BubbleBreak
 				foreach (PointBubble standardBubble in bubbles.Children) { 
 					bool doesTouchOverlapBubble = standardBubble.BubbleSprite.BoundingBoxTransformedToWorld.ContainsPoint (tapLocation);
 					if (doesTouchOverlapBubble) {
-						standardBubble.TapCount += 1;
+						standardBubble.TapCount += activePlayer.TapStrength;
 						if (standardBubble.CheckPopped ()) {
 							bubbleOccupiedArray [standardBubble.ListIndex] = false;
 							levelScore += standardBubble.PointValue;
 							lastEarnedPoint = standardBubble.PointValue;
 							PopBubble (standardBubble);
-							scoreLabel.Text = "Score: " + levelScore + "/" + levelPassScore;
+							scoreLabel.Text = levelScore + "/" + levelPassScore;
 							bubblePopped = true;
 						}
 					}
@@ -426,11 +484,10 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		void EndLevel()
 		{
-			// somewhere at the end of the level we need to write the player data to file
 			UnscheduleAll();
 			bubbles.RemoveAllChildren ();
 
-			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, levelPassed);
+			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, levelPassed, coinsEarned);
 			var transitionToLevelOver = new CCTransitionFade (3.0f, levelEndScene);
 
 			Director.ReplaceScene (transitionToLevelOver);
@@ -458,6 +515,95 @@ namespace BubbleBreak
 			return bonusCoins;
 
 			//TODO: create a layer to display calculation of points to coins
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// OnEnterTransitionDidFinish
+		//---------------------------------------------------------------------------------------------------------
+		// Pops up at the beginning of the level and gives information about level goals.  Pauses the game until
+		// the user taps on OK.  Happens after the transition to the level is finished.
+		//---------------------------------------------------------------------------------------------------------
+		public override void OnEnterTransitionDidFinish()
+		{
+			base.OnEnterTransitionDidFinish();
+
+			uiSpriteSheet = new CCSpriteSheet ("ui.plist");
+
+			CCRect bounds = VisibleBoundsWorldspace;
+
+			// pause listeners
+			this.PauseListeners (true);
+
+			// create the level info layer over top of the game layer
+			var levelInfoLayer = new CCLayerColor (new CCColor4B (0, 0, 0, 200));
+			AddChild (levelInfoLayer, 99999);
+
+			// Add the information frame sprite to layer
+			frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
+			frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
+			frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
+			levelInfoLayer.AddChild (frameSprite);
+
+			// Add Level Information to the frame
+			levelTitleText = "Level " + levelNumber;
+			levelDescriptionText = "\"" + activeLevel.LevelDescription + "\"";
+			levelTimeLimitText = "Time limit: " + activeLevel.MaxLevelTime.ToString () + " seconds";
+			levelScoreToPassText = "Score to pass level: " + activeLevel.LevelPassScore.ToString ();
+
+			// Add title lable
+			var titleLabel = new CCLabel(levelTitleText, "arial", 30);
+			titleLabel.Scale = 3f;
+			titleLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			titleLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MaxY - (titleLabel.BoundingBox.Size.Height * 3f));
+			levelInfoLayer.AddChild (titleLabel);
+
+			// Add level information labels
+			var levelDescriptionLabel = new CCLabel (levelDescriptionText, "arial", 30);
+			levelDescriptionLabel.Scale = 1.5f;
+			levelDescriptionLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 20f));
+			levelDescriptionLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			levelDescriptionLabel.HorizontalAlignment = CCTextAlignment.Center;
+			levelInfoLayer.AddChild (levelDescriptionLabel);
+
+			var levelTimeLimitLabel = new CCLabel (levelTimeLimitText, "arial", 30);
+			levelTimeLimitLabel.Scale = 1.5f;
+			levelTimeLimitLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 17f));
+			levelTimeLimitLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			levelTimeLimitLabel.HorizontalAlignment = CCTextAlignment.Center;
+			levelInfoLayer.AddChild (levelTimeLimitLabel);
+
+			var levelScoreToPassLabel = new CCLabel (levelScoreToPassText, "arial", 30);
+			levelScoreToPassLabel.Scale = 1.5f;
+			levelScoreToPassLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 14f));
+			levelScoreToPassLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			levelScoreToPassLabel.HorizontalAlignment = CCTextAlignment.Center;
+			levelInfoLayer.AddChild (levelScoreToPassLabel);
+
+			// set up the sprites for the OK button 
+			okStd = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_std.png")));
+			okStd.AnchorPoint = CCPoint.AnchorMiddle;
+			okSel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_sel.png")));
+			okSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+			// create the ok button menu item
+			var okMenuItem = new CCMenuItemImage (okStd, okSel, (closeSender) => {
+				levelInfoLayer.RemoveFromParent ();
+				this.ResumeListeners (true);
+				Application.Paused = false;
+			});
+
+			// position the ok button relative to the information frame
+			okMenuItem.AnchorPoint = CCPoint.AnchorMiddle;
+			okMenuItem.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (okStd.BoundingBox.Size.Height * 1.5f));
+
+			// create the menu to close the pop up
+			var closeMenu = new CCMenu (okMenuItem);
+			closeMenu.AnchorPoint = CCPoint.AnchorMiddleBottom;
+			closeMenu.Position = CCPoint.Zero;
+
+			// add the menu to the levelInfoLayer
+			levelInfoLayer.AddChild(closeMenu);
+			Application.Paused = true;
 		}
 	}
 }

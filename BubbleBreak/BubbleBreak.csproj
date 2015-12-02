@@ -36,8 +36,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer: jaredmathes@shaw.ca (5GPK7FNACL)</CodesignKey>
-    <CodesignProvision>9f1ee849-5528-4089-9073-aa9edb044c49</CodesignProvision>
+    <CodesignKey>iPhone Developer: Jared Mathes (LY6U6RZAFJ)</CodesignKey>
     <MtouchExtraArgs>-v -v -v -v --time --time </MtouchExtraArgs>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchI18n>
@@ -68,14 +67,12 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchProfiling>true</MtouchProfiling>
-    <CodesignKey>iPhone Developer: jaredmathes@shaw.ca (5GPK7FNACL)</CodesignKey>
+    <CodesignKey>iPhone Developer: Jared Mathes (LY6U6RZAFJ)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <IpaPackageName>
     </IpaPackageName>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchI18n>
-    </MtouchI18n>
-    <CodesignProvision>9f1ee849-5528-4089-9073-aa9edb044c49</CodesignProvision>
+    <CodesignProvision>e1b66a7d-6d0f-4e04-8c09-ae8a2214c394</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -109,10 +106,10 @@
     <BundleResource Include="Resources\bb_icon_080.png" />
     <BundleResource Include="Resources\bb_icon_114.png" />
     <BundleResource Include="Resources\bb_icon_120.png" />
-    <BundleResource Include="Content\images\hd\ui.png" />
-    <BundleResource Include="Content\images\ld\ui.png" />
     <BundleResource Include="Content\images\hd\bubbles.png" />
     <BundleResource Include="Content\images\ld\bubbles.png" />
+    <BundleResource Include="Content\images\hd\ui.png" />
+    <BundleResource Include="Content\images\ld\ui.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\animations\" />
@@ -126,7 +123,6 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
-    <None Include="Content\images\hd\ui.plist" />
     <None Include="Content\images\hd\bubbles.plist" />
   </ItemGroup>
   <ItemGroup>
@@ -140,12 +136,10 @@
     <Compile Include="Enums\Difficulty.cs" />
     <Compile Include="Enums\Sequences.cs" />
     <Compile Include="Enums\Bonuses.cs" />
-    <Compile Include="Enums\TapStrength.cs" />
     <Compile Include="Enums\BonusInterrupt.cs" />
     <Compile Include="MenuBubble.cs" />
     <Compile Include="Enums\BubbleColors.cs" />
     <Compile Include="Unused.cs" />
-    <Compile Include="LevelIntroLayer.cs" />
     <Compile Include="LevelLayer.cs" />
     <Compile Include="LevelFinishedLayer.cs" />
   </ItemGroup>
@@ -154,7 +148,8 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\images\ld\ui.plist" />
     <Content Include="Content\images\ld\bubbles.plist" />
+    <Content Include="Content\images\hd\ui.plist" />
+    <Content Include="Content\images\ld\ui.plist" />
   </ItemGroup>
 </Project>
