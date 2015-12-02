@@ -6,6 +6,7 @@ namespace BubbleBreak
 {
 	public class LevelIntroLayer : CCLayerColor
 	{
+<<<<<<< HEAD
 		CCSpriteSheet uiSpriteSheet;
 		CCSprite frameSprite;
 
@@ -81,6 +82,10 @@ namespace BubbleBreak
 			var levelScene = LevelLayer.CreateScene (Window, levels, activePlayer);
 			var transitionToLevel = new CCTransitionFade (3.0f, levelScene);
 			Director.ReplaceScene (transitionToLevel);
+=======
+		public LevelIntroLayer ()
+		{
+>>>>>>> parent of 22d207a... Popup layers added for level intro, outro, main menu options, player stats, new game warning, and in-game pause.  Added and modified UI elements.
 		}
 	}
 }
