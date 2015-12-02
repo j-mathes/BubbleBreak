@@ -27,7 +27,14 @@ namespace BubbleBreak
 
 		bool[] bubbleOccupiedArray = new bool[MAX_VISIBLE_BUBBLES];
 
-		CCSprite rtLogo, title, menuStart;
+		CCSprite rtLogo, title;
+		CCSprite newGameStd, continueGameStd, playerStatsStd;
+		CCSprite newGameSel, continueGameSel, playerStatsSel;
+		CCSprite newGameDis, continueGameDis, playerStatsDis;
+		CCSprite optionsStd, optionsSel, okStd, okSel, cancelStd, cancelSel, frameSprite;
+
+		CCLabel newGameWarning;
+
 		CCRepeatForever repeatedAction;
 		CCSpriteSheet uiSpriteSheet;
 
@@ -53,13 +60,15 @@ namespace BubbleBreak
 			uiSpriteSheet = new CCSpriteSheet("ui.plist");
 
 			// Define Actions
-			var moveUp = new CCMoveBy (1.0f, new CCPoint(0.0f, 50.0f));
-			var moveDown = moveUp.Reverse ();
+
+			var inflate = new CCScaleBy (0.7f, 1.1f);
+			var deflate = new CCScaleBy (4.0f, 0.9f);
 
 			//Define Sequence of actions
-			var moveSeq = new CCSequence (new CCEaseBackInOut (moveUp), new CCEaseBackInOut (moveDown));
 
-			repeatedAction = new CCRepeatForever (moveSeq);
+			var actionSeq = new CCSequence (new CCEaseElasticIn (inflate), new CCEaseExponentialOut(deflate), new CCDelayTime (7.0f));
+
+			repeatedAction = new CCRepeatForever (actionSeq);
 
 			StartScheduling ();
 		}
@@ -93,21 +102,92 @@ namespace BubbleBreak
 				currentPlayer.WriteData ();
 			}
 
+			// options popup
+			optionsStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("gear_std.png")));
+			optionsStd.AnchorPoint = CCPoint.AnchorMiddle;
+			optionsSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("gear_sel.png")));
+			optionsSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+			var optionPopup = new CCMenuItemImage(optionsStd, optionsSel, (sender) =>
+				{
+
+					this.PauseListeners(true);
+					Application.Paused = true;
+
+					var optionsLayer = new CCLayerColor(new CCColor4B(0, 0, 0, 200));
+					AddChild(optionsLayer, 99999);
+
+					// Add frame to layer
+					frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
+					frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
+					frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
+					optionsLayer.AddChild (frameSprite);
+
+					okStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_std.png")));
+					okStd.AnchorPoint = CCPoint.AnchorMiddle;
+					okSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_sel.png")));
+					okSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+					var closeItem = new CCMenuItemImage(okStd, okSel, (closeSender) =>
+						{
+							optionsLayer.RemoveFromParent();
+							this.ResumeListeners(true);
+							Application.Paused = false;
+
+						});
+
+					closeItem.Position = bounds.Center;
+
+					var closeMenu = new CCMenu(closeItem);
+					closeMenu.AnchorPoint = CCPoint.AnchorMiddleBottom;
+					closeMenu.Position = CCPoint.Zero;
+
+					optionsLayer.AddChild(closeMenu);
+				});
+
+			optionPopup.AnchorPoint = CCPoint.AnchorMiddle;
+			optionPopup.Position = new CCPoint(bounds.Size.Width / 10, bounds.Size.Height / 14);
+
+			var optionMenu = new CCMenu(optionPopup);
+			optionMenu.AnchorPoint = CCPoint.AnchorLowerLeft;
+			optionMenu.Position = CCPoint.Zero;
+
+			AddChild(optionMenu);
 
 			//---------------------------------------------------------------------------------------------------------
 			//Menu Elements
 			//---------------------------------------------------------------------------------------------------------
 
-			menuStart = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("bb_startgame.png")));
-			menuStart.AnchorPoint = CCPoint.AnchorMiddle;
-			
-			var menuItemStart = new CCMenuItemImage (menuStart, menuStart, StartGame);
-			var menu = new CCMenu (menuItemStart) {
+			newGameStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("newgame_std.png")));
+			newGameStd.AnchorPoint = CCPoint.AnchorMiddle;
+			newGameSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("newgame_sel.png")));
+			newGameSel.AnchorPoint = CCPoint.AnchorMiddle;
+			newGameDis = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("newgame_dis.png")));
+			newGameDis.AnchorPoint = CCPoint.AnchorMiddle;
+			var menuItemNewGame = new CCMenuItemImage (newGameStd, newGameSel, newGameDis, NewGame);
+
+			continueGameStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("continue_std.png")));
+			continueGameStd.AnchorPoint = CCPoint.AnchorMiddle;
+			continueGameSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("continue_sel.png")));
+			continueGameSel.AnchorPoint = CCPoint.AnchorMiddle;
+			continueGameDis = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("continue_dis.png")));
+			continueGameDis.AnchorPoint = CCPoint.AnchorMiddle;
+			var menuItemContinueGame = new CCMenuItemImage (continueGameStd, continueGameSel, continueGameDis, ContinueGame);
+
+			playerStatsStd = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("playerstats_std.png")));
+			playerStatsStd.AnchorPoint = CCPoint.AnchorMiddle;
+			playerStatsSel = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("playerstats_sel.png")));
+			playerStatsSel.AnchorPoint = CCPoint.AnchorMiddle;
+			playerStatsDis = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("playerstats_dis.png")));
+			playerStatsDis.AnchorPoint = CCPoint.AnchorMiddle;
+			var menuItemPlayerStats = new CCMenuItemImage (playerStatsStd, playerStatsSel, playerStatsDis, PlayerStats);
+
+			var menu = new CCMenu (menuItemNewGame, menuItemContinueGame, menuItemPlayerStats) {
 				Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2),
 				AnchorPoint = CCPoint.AnchorMiddle
 			};
 			
-			menu.AlignItemsVertically (50);
+			menu.AlignItemsVertically (60);
 			
 			AddChild (menu);
 
@@ -119,18 +199,101 @@ namespace BubbleBreak
 
 			title = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("bb_title.png")));
 			title.AnchorPoint = CCPoint.AnchorMiddle;
-			title.Position = new CCPoint (bounds.Size.Width / 2, (bounds.Size.Height / 4)*3);
+			title.Position = new CCPoint (bounds.Size.Width / 2, (bounds.Size.Height / 7)*6);
 			title.RunAction (repeatedAction);
 			AddChild (title);
+
+			if (currentPlayer.LastLevelCompleted < 0) {
+				menuItemNewGame.Enabled = true;
+				menuItemContinueGame.Enabled = false;
+				menuItemPlayerStats.Enabled = false;
+			} else {
+				menuItemNewGame.Enabled = true;
+				menuItemContinueGame.Enabled = true;
+				menuItemPlayerStats.Enabled = true;
+			}
 
 			Schedule (_ => CheckForFadedBubbles());
 		}
 
 		//---------------------------------------------------------------------------------------------------------
-		// StartGame - Used in menu selection
+		// NewGame - Used in menu selection
+		//---------------------------------------------------------------------------------------------------------
+		// Transitions to LevelLayer
+		//---------------------------------------------------------------------------------------------------------
+		void NewGame (object stuff = null)
+		{
+			if (currentPlayer.LastLevelCompleted > -1) {
+				CCRect bounds = VisibleBoundsWorldspace;
+
+				this.PauseListeners (true);
+				Application.Paused = true;
+
+				var newGameLayer = new CCLayerColor (new CCColor4B (0, 0, 0, 230));
+				AddChild (newGameLayer, 99999);
+
+				// Add frame to layer
+				frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
+				frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
+				frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
+				newGameLayer.AddChild (frameSprite);
+
+				newGameWarning = new CCLabel ("This will erase your current progress!\n\nProceed?", "arial", 30);
+				newGameWarning.AnchorPoint = CCPoint.AnchorMiddle;
+				newGameWarning.Scale = 1.5f;
+				newGameWarning.Position = new CCPoint(frameSprite.BoundingBox.Center);
+				newGameWarning.HorizontalAlignment = CCTextAlignment.Center;
+				newGameLayer.AddChild (newGameWarning);
+
+				okStd = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_std.png")));
+				okStd.AnchorPoint = CCPoint.AnchorMiddle;
+				okSel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_sel.png")));
+				okSel.AnchorPoint = CCPoint.AnchorMiddle;
+				cancelStd = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("cancel_std.png")));
+				cancelStd.AnchorPoint = CCPoint.AnchorMiddle;
+				cancelSel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("cancel_sel.png")));
+				cancelSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+				var okItem = new CCMenuItemImage (okStd, okSel, (okSender) => {
+					newGameLayer.RemoveFromParent ();
+					this.ResumeListeners (true);
+					Application.Paused = false;
+
+					currentPlayer = new Player ();
+					currentPlayer.WriteData ();
+
+					var mainGame = LevelLayer.CreateScene (Window, levels, currentPlayer);
+					var transitionToGame = new CCTransitionFade (3.0f, mainGame);
+					Director.ReplaceScene (transitionToGame);
+				});
+				okItem.Position = bounds.Center;
+
+				var cancelItem = new CCMenuItemImage (cancelStd, cancelSel, (cancelSender) => {
+					newGameLayer.RemoveFromParent ();
+					this.ResumeListeners (true);
+					Application.Paused = false;
+				});
+				cancelItem.Position = bounds.Center;
+				
+				var closeMenu = new CCMenu (okItem, cancelItem);
+				closeMenu.AlignItemsHorizontally (50);
+				closeMenu.AnchorPoint = CCPoint.AnchorMiddleBottom;
+				closeMenu.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (okStd.BoundingBox.Size.Height * 1.5f));
+
+				newGameLayer.AddChild (closeMenu);
+			} else {
+				var mainGame = LevelLayer.CreateScene (Window, levels, currentPlayer);
+				var transitionToGame = new CCTransitionFade(3.0f, mainGame);
+				Director.ReplaceScene (transitionToGame);
+			}
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// ContinueGame - Used in menu selection
 		//---------------------------------------------------------------------------------------------------------
 		// Transitions to GameLayer
-		void StartGame (object stuff = null)
+		//---------------------------------------------------------------------------------------------------------
+		void ContinueGame (object stuff = null)
 		{
 			var mainGame = LevelLayer.CreateScene (Window, levels, currentPlayer);
 			var transitionToGame = new CCTransitionFade(3.0f, mainGame);
@@ -138,9 +301,73 @@ namespace BubbleBreak
 		}
 
 		//---------------------------------------------------------------------------------------------------------
+		// PlayerStats 
+		//---------------------------------------------------------------------------------------------------------
+		// Show player information summary in a popup
+		//---------------------------------------------------------------------------------------------------------
+		void PlayerStats (object stuff = null)
+		{
+			CCRect bounds = VisibleBoundsWorldspace;
+
+			this.PauseListeners (true);
+			Application.Paused = true;
+
+			var playerStatsLayer = new CCLayerColor (new CCColor4B (0, 0, 0, 230));
+			AddChild (playerStatsLayer, 99999);
+
+			// Add frame to layer
+			frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
+			frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
+			frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
+			playerStatsLayer.AddChild (frameSprite);
+
+			var titleLabel = new CCLabel ("Player Stats", "arial", 30) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 2.5f};
+			var titleMenuItem = new CCMenuItemLabel (titleLabel);
+			var playerNameLabel = new CCLabel ("Player Name: " + currentPlayer.Name, "arial", 30) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 2.0f};
+			var playerNameMenuItem = new CCMenuItemLabel (playerNameLabel);
+			var lastLevelLabel = new CCLabel ("Last Level Completed: " + currentPlayer.LastLevelCompleted, "arial", 30) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 2.0f};
+			var lastLevelMenuItem = new CCMenuItemLabel (lastLevelLabel);
+			var coinsLabel = new CCLabel ("Coins: " + currentPlayer.Coins, "arial", 30) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 2.0f};
+			var coinsMenuItem = new CCMenuItemLabel (coinsLabel);
+			var highScoreLabel = new CCLabel ("High Score: " + currentPlayer.HighScore, "arial", 30) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 2.0f};
+			var highScoreMenuItem = new CCMenuItemLabel (highScoreLabel);
+			var tapStrengthLabel = new CCLabel ("Tap Strength: " + currentPlayer.TapStrength, "arial", 30) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 2.0f};
+			var tapStrengthMenuItem = new CCMenuItemLabel (tapStrengthLabel);
+
+			okStd = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_std.png")));
+			okStd.AnchorPoint = CCPoint.AnchorMiddle;
+			okSel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_sel.png")));
+			okSel.AnchorPoint = CCPoint.AnchorMiddle;
+
+			var okItem = new CCMenuItemImage (okStd, okSel, (okSender) => {
+				playerStatsLayer.RemoveFromParent ();
+				this.ResumeListeners (true);
+				Application.Paused = false;
+			});
+
+			var playerStatsMenu = new CCMenu (titleMenuItem, playerNameMenuItem, lastLevelMenuItem, coinsMenuItem, highScoreMenuItem, tapStrengthMenuItem, okItem);
+			playerStatsMenu.AnchorPoint = CCPoint.AnchorMiddle;
+			playerStatsMenu.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
+			playerStatsMenu.AlignItemsVertically (40);
+
+			playerStatsLayer.AddChild (playerStatsMenu);
+		}
+
+		//---------------------------------------------------------------------------------------------------------
 		// CreateScene
 		//---------------------------------------------------------------------------------------------------------
-		// 
 		public static CCScene CreateScene (CCWindow mainWindow)
 		{
 			var scene = new CCScene (mainWindow);
@@ -155,7 +382,7 @@ namespace BubbleBreak
 		// GetRandomPosition
 		//---------------------------------------------------------------------------------------------------------
 		// Get a position based on the index and sprite size
-
+		//---------------------------------------------------------------------------------------------------------
 		CCPoint GetRandomPosition (CCSize spriteSize, int xIndex, int yIndex)
 		{
 			double rndX = CCRandom.GetRandomFloat ((xIndex * CELL_DIMS_HALF * 2) + (SCREEN_X_MARGIN + CELL_DIMS_HALF - CELL_CENTER_ZONE_HALF), (xIndex * CELL_DIMS_HALF * 2) + (SCREEN_X_MARGIN + CELL_DIMS_HALF + CELL_CENTER_ZONE_HALF));
@@ -167,7 +394,7 @@ namespace BubbleBreak
 		// DisplayBubble
 		//---------------------------------------------------------------------------------------------------------
 		// Displays a bubble
-
+		//---------------------------------------------------------------------------------------------------------
 		async void DisplayBubble(MenuBubble newBubble)
 		{
 			await newBubble.BubbleSprite.RunActionsAsync (new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
@@ -175,6 +402,11 @@ namespace BubbleBreak
 			newBubble.RemoveFromParent ();
 		}
 
+		//---------------------------------------------------------------------------------------------------------
+		// CheckForFadedBubbles
+		//---------------------------------------------------------------------------------------------------------
+		// Check to see if a bubble faded and died.  If so, replace it
+		//---------------------------------------------------------------------------------------------------------
 		void CheckForFadedBubbles()
 		{
 			//check if a bubble has popped on its own

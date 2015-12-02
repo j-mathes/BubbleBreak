@@ -13,6 +13,7 @@ namespace BubbleBreak
 		public int LastLevelCompleted { get; set; }
 		public int Coins { get; set; }
 		public int HighScore { get; set; }
+		public int TapStrength { get; set; }
 
 		NSUrl docDir;
 		public string PlayerDataFile { get; }
@@ -28,6 +29,7 @@ namespace BubbleBreak
 			LastLevelCompleted = -1;
 			Coins = 0;
 			HighScore = 0;
+			TapStrength = 1;
 
 			docDir = NSFileManager.DefaultManager.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User) [0];
 			PlayerDataFile = docDir.AbsoluteUrl.RelativePath + "/playerdata.xml";
@@ -36,8 +38,9 @@ namespace BubbleBreak
 		public static Player ReadData(Player currentPlayer)
 		{
 			XmlSerializer mySerializer = new XmlSerializer (typeof(Player));
-			FileStream fs = new FileStream (currentPlayer.PlayerDataFile, FileMode.OpenOrCreate);
-			return (Player)mySerializer.Deserialize (fs);
+			using (FileStream fs = new FileStream (currentPlayer.PlayerDataFile, FileMode.OpenOrCreate)) {
+				return (Player)mySerializer.Deserialize (fs);
+			}
 		}
 
 		public void WriteData()
