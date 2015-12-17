@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using Foundation;
 using System.Xml;
 using System.Xml.Serialization;
@@ -14,6 +15,7 @@ namespace BubbleBreak
 		public int Coins { get; set; }
 		public int HighScore { get; set; }
 		public int TapStrength { get; set; }
+		public List<Sequences> UnlockedSequences { get; set; }
 
 		NSUrl docDir;
 		public string PlayerDataFile { get; }
@@ -25,11 +27,13 @@ namespace BubbleBreak
 
 		public Player ()
 		{
-			Name = "TestPlayer";
+			Name = "New Player";
 			LastLevelCompleted = -1;
 			Coins = 0;
 			HighScore = 0;
 			TapStrength = 1;
+			UnlockedSequences = new List<Sequences>();
+			UnlockedSequences.Add (Sequences.Linear);
 
 			docDir = NSFileManager.DefaultManager.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User) [0];
 			PlayerDataFile = docDir.AbsoluteUrl.RelativePath + "/playerdata.xml";

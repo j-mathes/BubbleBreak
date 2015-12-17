@@ -5,13 +5,25 @@
 		<LevelName>Tutorial</LevelName>
 		<MaxBubbles>40</MaxBubbles>
 		<MaxVisibleBubbles>13</MaxVisibleBubbles>
-		<StartingPointValue>5</StartingPointValue>
-		<MaxLevelTime>60</MaxLevelTime>
+		<StartingPointValue>3</StartingPointValue>
+		<MaxLevelTime>80</MaxLevelTime>
 		<LevelPassScore>400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
-		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<InitialVisibleBubbles>3</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Learn to play BubbleBreak</LevelDescription>
-		<SequenceLevel>1</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>1</LevelNum>
@@ -23,8 +35,20 @@
 		<LevelPassScore>600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>3</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 1</LevelDescription>
-		<SequenceLevel>1</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>2</LevelNum>
@@ -36,8 +60,20 @@
 		<LevelPassScore>600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>3</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 2</LevelDescription>
-		<SequenceLevel>1</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>3</LevelNum>
@@ -49,8 +85,20 @@
 		<LevelPassScore>600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>3</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 3</LevelDescription>
-		<SequenceLevel>1</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>4</LevelNum>
@@ -62,8 +110,20 @@
 		<LevelPassScore>700</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 4</LevelDescription>
-		<SequenceLevel>2</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>5</LevelNum>
@@ -75,8 +135,20 @@
 		<LevelPassScore>700</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 5</LevelDescription>
-		<SequenceLevel>2</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>6</LevelNum>
@@ -88,8 +160,20 @@
 		<LevelPassScore>700</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 6</LevelDescription>
-		<SequenceLevel>2</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>7</LevelNum>
@@ -101,8 +185,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 7</LevelDescription>
-		<SequenceLevel>3</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>8</LevelNum>
@@ -114,8 +210,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 8</LevelDescription>
-		<SequenceLevel>3</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>9</LevelNum>
@@ -127,8 +235,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>4</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 9</LevelDescription>
-		<SequenceLevel>3</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>10</LevelNum>
@@ -140,8 +260,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 10</LevelDescription>
-		<SequenceLevel>4</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>11</LevelNum>
@@ -153,8 +285,20 @@
 		<LevelPassScore>850</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 11</LevelDescription>
-		<SequenceLevel>4</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>12</LevelNum>
@@ -166,8 +310,20 @@
 		<LevelPassScore>850</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 12</LevelDescription>
-		<SequenceLevel>4</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>13</LevelNum>
@@ -179,8 +335,20 @@
 		<LevelPassScore>850</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 13</LevelDescription>
-		<SequenceLevel>4</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>14</LevelNum>
@@ -192,8 +360,20 @@
 		<LevelPassScore>850</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 14</LevelDescription>
-		<SequenceLevel>4</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>15</LevelNum>
@@ -205,8 +385,20 @@
 		<LevelPassScore>900</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 15</LevelDescription>
-		<SequenceLevel>5</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>16</LevelNum>
@@ -218,8 +410,20 @@
 		<LevelPassScore>900</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 16</LevelDescription>
-		<SequenceLevel>5</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>17</LevelNum>
@@ -231,8 +435,20 @@
 		<LevelPassScore>950</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 17</LevelDescription>
-		<SequenceLevel>5</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>18</LevelNum>
@@ -244,8 +460,20 @@
 		<LevelPassScore>950</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>5</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 18</LevelDescription>
-		<SequenceLevel>5</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>19</LevelNum>
@@ -257,8 +485,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 19</LevelDescription>
-		<SequenceLevel>5</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>20</LevelNum>
@@ -270,8 +510,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 20</LevelDescription>
-		<SequenceLevel>6</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>21</LevelNum>
@@ -283,8 +535,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 21</LevelDescription>
-		<SequenceLevel>6</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>22</LevelNum>
@@ -296,8 +560,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 22</LevelDescription>
-		<SequenceLevel>6</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>23</LevelNum>
@@ -309,8 +585,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 23</LevelDescription>
-		<SequenceLevel>6</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>24</LevelNum>
@@ -322,8 +610,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 24</LevelDescription>
-		<SequenceLevel>6</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>25</LevelNum>
@@ -335,8 +635,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 25</LevelDescription>
-		<SequenceLevel>7</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>26</LevelNum>
@@ -348,8 +660,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 26</LevelDescription>
-		<SequenceLevel>7</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>27</LevelNum>
@@ -361,8 +685,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 27</LevelDescription>
-		<SequenceLevel>7</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>28</LevelNum>
@@ -374,8 +710,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 28</LevelDescription>
-		<SequenceLevel>7</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>29</LevelNum>
@@ -387,8 +735,20 @@
 		<LevelPassScore>1000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 29</LevelDescription>
-		<SequenceLevel>7</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>30</LevelNum>
@@ -400,8 +760,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 30</LevelDescription>
-		<SequenceLevel>8</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>31</LevelNum>
@@ -413,8 +785,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 31</LevelDescription>
-		<SequenceLevel>8</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>32</LevelNum>
@@ -426,8 +810,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 32</LevelDescription>
-		<SequenceLevel>8</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>33</LevelNum>
@@ -439,8 +835,20 @@
 		<LevelPassScore>800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 33</LevelDescription>
-		<SequenceLevel>8</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>34</LevelNum>
@@ -452,8 +860,20 @@
 		<LevelPassScore>750</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 34</LevelDescription>
-		<SequenceLevel>8</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>35</LevelNum>
@@ -465,8 +885,20 @@
 		<LevelPassScore>750</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 35</LevelDescription>
-		<SequenceLevel>9</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>36</LevelNum>
@@ -478,8 +910,20 @@
 		<LevelPassScore>750</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 36</LevelDescription>
-		<SequenceLevel>9</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>37</LevelNum>
@@ -491,8 +935,20 @@
 		<LevelPassScore>750</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>6</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 37</LevelDescription>
-		<SequenceLevel>9</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>38</LevelNum>
@@ -504,8 +960,20 @@
 		<LevelPassScore>1300</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 38</LevelDescription>
-		<SequenceLevel>9</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>39</LevelNum>
@@ -517,8 +985,20 @@
 		<LevelPassScore>1300</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 39</LevelDescription>
-		<SequenceLevel>9</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>40</LevelNum>
@@ -530,8 +1010,20 @@
 		<LevelPassScore>1300</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 40</LevelDescription>
-		<SequenceLevel>10</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>41</LevelNum>
@@ -543,8 +1035,20 @@
 		<LevelPassScore>1300</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 41</LevelDescription>
-		<SequenceLevel>10</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>42</LevelNum>
@@ -556,8 +1060,20 @@
 		<LevelPassScore>1500</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 42</LevelDescription>
-		<SequenceLevel>10</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>43</LevelNum>
@@ -569,8 +1085,20 @@
 		<LevelPassScore>1500</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 43</LevelDescription>
-		<SequenceLevel>10</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>44</LevelNum>
@@ -582,8 +1110,20 @@
 		<LevelPassScore>1500</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 44</LevelDescription>
-		<SequenceLevel>10</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>45</LevelNum>
@@ -595,8 +1135,20 @@
 		<LevelPassScore>1500</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 45</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>46</LevelNum>
@@ -608,8 +1160,20 @@
 		<LevelPassScore>1600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 46</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>47</LevelNum>
@@ -621,8 +1185,20 @@
 		<LevelPassScore>1600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 47</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>48</LevelNum>
@@ -634,8 +1210,20 @@
 		<LevelPassScore>1600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 48</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>49</LevelNum>
@@ -647,8 +1235,20 @@
 		<LevelPassScore>1600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 49</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>50</LevelNum>
@@ -660,8 +1260,20 @@
 		<LevelPassScore>1600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 50</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>51</LevelNum>
@@ -673,8 +1285,20 @@
 		<LevelPassScore>1800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 51</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>52</LevelNum>
@@ -686,8 +1310,20 @@
 		<LevelPassScore>1825</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 52</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>53</LevelNum>
@@ -699,8 +1335,20 @@
 		<LevelPassScore>1850</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 53</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>54</LevelNum>
@@ -712,8 +1360,20 @@
 		<LevelPassScore>1875</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 54</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>55</LevelNum>
@@ -725,8 +1385,20 @@
 		<LevelPassScore>1900</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 55</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>56</LevelNum>
@@ -738,8 +1410,20 @@
 		<LevelPassScore>1925</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 56</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>57</LevelNum>
@@ -751,8 +1435,20 @@
 		<LevelPassScore>1950</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 57</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>58</LevelNum>
@@ -764,8 +1460,20 @@
 		<LevelPassScore>1975</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 58</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>59</LevelNum>
@@ -777,8 +1485,20 @@
 		<LevelPassScore>2000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>7</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 59</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>60</LevelNum>
@@ -790,8 +1510,20 @@
 		<LevelPassScore>2200</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 60</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>61</LevelNum>
@@ -803,8 +1535,20 @@
 		<LevelPassScore>2200</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 61</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>62</LevelNum>
@@ -816,8 +1560,20 @@
 		<LevelPassScore>2200</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 62</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>63</LevelNum>
@@ -829,8 +1585,20 @@
 		<LevelPassScore>2200</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 63</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>64</LevelNum>
@@ -842,8 +1610,20 @@
 		<LevelPassScore>2200</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 64</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>65</LevelNum>
@@ -855,8 +1635,20 @@
 		<LevelPassScore>2400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 65</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>66</LevelNum>
@@ -868,8 +1660,20 @@
 		<LevelPassScore>2400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 66</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>67</LevelNum>
@@ -881,8 +1685,20 @@
 		<LevelPassScore>2400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 67</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>68</LevelNum>
@@ -894,8 +1710,20 @@
 		<LevelPassScore>2400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 68</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>69</LevelNum>
@@ -907,8 +1735,20 @@
 		<LevelPassScore>2400</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 69</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>70</LevelNum>
@@ -920,8 +1760,20 @@
 		<LevelPassScore>2600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 70</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>71</LevelNum>
@@ -933,8 +1785,20 @@
 		<LevelPassScore>2600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 71</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>72</LevelNum>
@@ -946,8 +1810,20 @@
 		<LevelPassScore>2600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 72</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>73</LevelNum>
@@ -959,8 +1835,20 @@
 		<LevelPassScore>2600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 73</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>74</LevelNum>
@@ -972,8 +1860,20 @@
 		<LevelPassScore>2600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 74</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>75</LevelNum>
@@ -985,8 +1885,20 @@
 		<LevelPassScore>2600</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>8</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 75</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>76</LevelNum>
@@ -998,8 +1910,20 @@
 		<LevelPassScore>2800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>9</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 76</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>77</LevelNum>
@@ -1011,8 +1935,20 @@
 		<LevelPassScore>2800</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>9</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 77</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>78</LevelNum>
@@ -1024,8 +1960,20 @@
 		<LevelPassScore>2900</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>9</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 78</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>79</LevelNum>
@@ -1037,8 +1985,20 @@
 		<LevelPassScore>2900</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>9</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 79</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 	<record>
 		<LevelNum>80</LevelNum>
@@ -1050,7 +2010,19 @@
 		<LevelPassScore>3000</LevelPassScore>
 		<TapsToPopStandard>1</TapsToPopStandard>
 		<InitialVisibleBubbles>9</InitialVisibleBubbles>
+		<ChanceToRollNextSeq>5</ChanceToRollNextSeq>
 		<LevelDescription>Level 80</LevelDescription>
-		<SequenceLevel>11</SequenceLevel>
+		<SeqLinear>true</SeqLinear>
+		<SeqEven>true</SeqEven>
+		<SeqOdd>true</SeqOdd>
+		<SeqTriangular>true</SeqTriangular>
+		<SeqSquare>true</SeqSquare>
+		<SeqLazy>true</SeqLazy>
+		<SeqFibonacci>true</SeqFibonacci>
+		<SeqPrime>true</SeqPrime>
+		<SeqDouble>true</SeqDouble>
+		<SeqTriple>true</SeqTriple>
+		<SeqPi>true</SeqPi>
+		<SeqRecaman>true</SeqRecaman>
 	</record>
 </data-set>

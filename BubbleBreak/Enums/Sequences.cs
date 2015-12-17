@@ -12,8 +12,8 @@ namespace BubbleBreak
 		Lazy,
 		Fibonacci,
 		Prime,
-		Doubled,
-		Tripled,
+		Double,
+		Triple,
 		Pi,
 		Recaman,
 	}

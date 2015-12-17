@@ -39,8 +39,6 @@
     <CodesignKey>iPhone Developer: Jared Mathes (LY6U6RZAFJ)</CodesignKey>
     <MtouchExtraArgs>-v -v -v -v --time --time </MtouchExtraArgs>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchI18n>
-    </MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>full</DebugType>
@@ -52,8 +50,8 @@
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchI18n>
-    </MtouchI18n>
+    <CodesignProvision>13946415-fd14-4058-a534-a6745c17374c</CodesignProvision>
+    <CodesignKey>iPhone Developer: Jared Mathes (LY6U6RZAFJ)</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -131,7 +129,6 @@
     <Compile Include="PointBubble.cs" />
     <Compile Include="ShuffleBag.cs" />
     <Compile Include="GameStartLayer.cs" />
-    <Compile Include="Level.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Enums\Difficulty.cs" />
     <Compile Include="Enums\Sequences.cs" />
@@ -142,6 +139,8 @@
     <Compile Include="Unused.cs" />
     <Compile Include="LevelLayer.cs" />
     <Compile Include="LevelFinishedLayer.cs" />
+    <Compile Include="XElementExtensions.cs" />
+    <Compile Include="Level.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>

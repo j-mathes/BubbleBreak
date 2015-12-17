@@ -96,6 +96,7 @@ namespace BubbleBreak
 
 			currentPlayer = new Player();
 
+
 			if (File.Exists (currentPlayer.PlayerDataFile)) {
 				currentPlayer = Player.ReadData (currentPlayer);
 			} else {
@@ -467,8 +468,20 @@ namespace BubbleBreak
 					LevelPassScore = int.Parse (level.Element ("LevelPassScore").Value),
 					TapsToPopStandard = int.Parse (level.Element ("TapsToPopStandard").Value),
 					InitialVisibleBubbles = int.Parse (level.Element ("InitialVisibleBubbles").Value),
+					ChanceToRollNextSeq = int.Parse (level.Element ("ChanceToRollNextSeq").Value),
 					LevelDescription = level.Element ("LevelDescription").Value,
-					SequenceLevel = int.Parse (level.Element ("SequenceLevel").Value)
+					SeqLinear = bool.Parse (level.Element ("SeqLinear").Value),
+					SeqEven = bool.Parse ( level.Element ("SeqEven").Value),
+					SeqOdd = bool.Parse (level.Element ("SeqOdd").Value),
+					SeqTriangular = bool.Parse (level.Element ("SeqTriangular").Value),
+					SeqSquare = bool.Parse (level.Element ("SeqSquare").Value),
+					SeqLazy = bool.Parse (level.Element ("SeqLazy").Value),
+					SeqFibonacci = bool.Parse (level.Element ("SeqFibonacci").Value),
+					SeqPrime = bool.Parse (level.Element ("SeqPrime").Value),
+					SeqDouble = bool.Parse (level.Element ("SeqDouble").Value),
+					SeqTriple = bool.Parse (level.Element ("SeqTriple").Value),
+					SeqPi = bool.Parse (level.Element ("SeqPi").Value),
+					SeqRecaman = bool.Parse (level.Element ("SeqRecaman").Value),
 				}).ToList ();
 			return lvl;
 		}
