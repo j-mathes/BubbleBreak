@@ -1,8 +1,12 @@
-﻿// Copyright SeaRisen LLC
-// You may use this code without restrictions, but keep the copyright notice with this code.
-// This file is found at: https://github.com/ChuckSavage/XmlLib
-// If you find this code helpful and would like to donate, please consider purchasing one of
-// the products at http://products.searisen.com, thank you.
+﻿//---------------------------------------------------------------------------------------------
+// <copyright file="XElementExtensions.cs" company="RetroTek Software Ltd">
+// 		Copyright SeaRisen LLC
+// 		You may use this code without restrictions, but keep the copyright notice with this code.
+// 		This file is found at: https://github.com/ChuckSavage/XmlLib
+// 		If you find this code helpful and would like to donate, please consider purchasing one of
+// 		the products at http://products.searisen.com, thank you.
+// </copyright>
+//---------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -28,9 +32,7 @@ namespace XmlLib
 		/// </summary>
 		public static XAttribute GetAttribute(this XElement source, string name)
 		{
-			if (source.HasAttributes)
-				return GetAttribute(source, source.ToXName(name));
-			return null;
+			return source.HasAttributes ? GetAttribute (source, source.ToXName (name)) : null;
 		}
 
 		/// <summary>
@@ -54,7 +56,8 @@ namespace XmlLib
 		/// <summary>
 		/// Get child element, create it if it doesn't exist in source.  
 		/// </summary>
-		/// <param name="name">The tag name of the XElement.</param>
+		/// <param name = "source">XElement Source</param>
+		/// <param name = "name">The tag name of the XElement.</param>
 		/// <returns>XElement found or created.</returns>
 		public static XElement GetElement(this XElement source, XName name)
 		{
@@ -74,6 +77,7 @@ namespace XmlLib
 		/// <summary>
 		/// Get child element, create it if it doesn't exist in source.  
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="name">The tag name of the XElement.</param>
 		/// <returns>XElement found or created.</returns>
 		public static XElement GetElement(this XElement source, string name)
@@ -86,6 +90,7 @@ namespace XmlLib
 		/// <summary>
 		/// Get child elements.
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="name">The tag name of the XElement.</param>
 		/// <returns>XElement found or created.</returns>
 		public static IEnumerable<XElement> GetElements(this XElement source, XName name)
@@ -95,7 +100,7 @@ namespace XmlLib
 				if (null == name)
 					return source.Elements();
 				IEnumerable<XElement> elements = source.Elements(name);
-				if (0 == elements.Count())
+				if (!elements.Any ())
 					elements = source.Elements()
 						.Where(x => x.Name.LocalName == name.LocalName);
 				return elements;
@@ -106,6 +111,7 @@ namespace XmlLib
 		/// <summary>
 		/// Get child elements.
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="name">The tag name of the XElement.</param>
 		/// <returns>XElement found or created.</returns>
 		public static IEnumerable<XElement> GetElements(this XElement source, string name)
@@ -123,6 +129,7 @@ namespace XmlLib
 		/// <summary>
 		/// Get descendant elements.
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="name">The tag name of the XElement.</param>
 		/// <returns>XElement found or created.</returns>
 		public static IEnumerable<XElement> GetDescendants(this XElement source, XName name)
@@ -130,15 +137,16 @@ namespace XmlLib
 			if (null == name)
 				return source.Descendants();
 			IEnumerable<XElement> elements = source.Descendants(name);
-			if (0 == elements.Count())
-				elements = source.Descendants()
-					.Where(x => x.Name.LocalName == name.LocalName);
+			if (!elements.Any ())
+				elements = source.Descendants ()
+					.Where (x => x.Name.LocalName == name.LocalName);
 			return elements;
 		}
 
 		/// <summary>
 		/// Get descendant elements.
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="name">The tag name of the XElement.</param>
 		/// <returns>XElement found or created.</returns>
 		public static IEnumerable<XElement> GetDescendants(this XElement source, string name)
@@ -268,7 +276,7 @@ namespace XmlLib
 		/// run 1000 times.
 		/// </remarks>
 		/// </summary>
-		private static class ConverterCache<T>
+		static class ConverterCache<T>
 		{
 			public static bool TryParse(string sValue, out T value)
 			{
@@ -300,10 +308,13 @@ namespace XmlLib
 		/// Returns XElement of source or the new XElement if is an ELEMENT
 		/// </para>
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="isAttribute">
 		/// Use ATTRIBUTE or ELEMENT for clarity
 		/// </param>
 		/// <returns>source or XElement value</returns>
+		/// <param name = "name"></param>
+		/// <param name = "value"></param>
 		public static XElement Set
 		(
 			this XElement source,
@@ -321,10 +332,14 @@ namespace XmlLib
 		/// Returns XElement of source or the new XElement if is an ELEMENT
 		/// </para>
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="isAttribute">
 		/// Use ATTRIBUTE or ELEMENT for clarity
 		/// </param>
 		/// <returns>source or XElement value</returns>
+		/// <param name = "name"></param>
+		/// <param name = "value"></param>
+		/// <param name = "preserveChildren"></param>
 		public static XElement Set
 		(
 			this XElement source,
@@ -345,10 +360,13 @@ namespace XmlLib
 		/// Returns XElement of source or the new XElement if is an ELEMENT
 		/// </para>
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="isAttribute">
 		/// Use ATTRIBUTE or ELEMENT for clarity
 		/// </param>
 		/// <returns>source or XElement value</returns>
+		/// <param name = "name"></param>
+		/// <param name = "value"></param>
 		public static XElement Set
 		(
 			this XElement source,
@@ -368,10 +386,14 @@ namespace XmlLib
 		/// Returns XElement of source or the new XElement if is an ELEMENT
 		/// </para>
 		/// </summary>
+		/// <param name = "source"></param>
 		/// <param name="isAttribute">
 		/// Use ATTRIBUTE or ELEMENT for clarity
 		/// </param>
 		/// <returns>source or XElement value</returns>
+		/// <param name = "name"></param>
+		/// <param name = "value"></param>
+		/// <parameValueerveChildren"></param>
 		public static XElement Set
 		(
 			this XElement source,
@@ -398,10 +420,7 @@ namespace XmlLib
 			else
 			{
 				eValue = source.Element(name);
-				if (name.Namespace == source.Name.Namespace)
-					aValue = source.Attribute(name.LocalName);
-				else
-					aValue = source.Attribute(name);
+				aValue = name.Namespace == source.Name.Namespace ? source.Attribute (name.LocalName) : source.Attribute (name);
 			}
 
 			// If changing from Attribute to Element or visa-versa, remove old
@@ -479,9 +498,7 @@ namespace XmlLib
 			Func<XElement, T> convert
 		)
 		{
-			if (null == name)
-				return GetEnumerable(source, convert);
-			return GetElements(source, name).Select(x => convert(x));
+			return null == name ? GetEnumerable (source, convert) : GetElements (source, name).Select (x => convert (x));
 		}
 
 		/// <summary>
@@ -670,9 +687,7 @@ namespace XmlLib
 		public static int GetInt(this XElement source, XName name, int defaultValue)
 		{
 			int result;
-			if (Int32.TryParse(GetString(source, name, null), out result))
-				return result;
-			return defaultValue;
+			return Int32.TryParse (GetString (source, name, null), out result) ? result : defaultValue;
 		}
 		#endregion
 
@@ -736,10 +751,7 @@ namespace XmlLib
 			{
 				nodeA = listA[a];
 				Copy_A_To_B();
-				if (null == lastB)
-					lastB = B.FirstNode;
-				else
-					lastB = lastB.NextNode;
+				lastB = null == lastB ? B.FirstNode : lastB.NextNode;
 			}
 		}
 	}
@@ -752,18 +764,18 @@ namespace XmlLib
 	/// otherwise it will fail gracefully.
 	/// </para>
 	/// </summary>
-	internal static class ParseCache<T>
+	static class ParseCache<T>
 	{
 		public static bool TryParse(string sValue, out T value)
 		{
 			return func(sValue, out value);
 		}
 		delegate bool TryPattern(string sValue, out T value);
-		private static readonly TryPattern func;
+		static readonly TryPattern func;
 		static ParseCache()
 		{
 			MethodInfo method = typeof(T).GetMethod(
-				"TryParse", new Type[] { typeof(string), typeof(T).MakeByRefType() });
+				"TryParse", new [] { typeof(string), typeof(T).MakeByRefType() });
 			if (method == null)
 			{
 				if (typeof(T) == typeof(string))
@@ -783,7 +795,7 @@ namespace XmlLib
 	/// <summary>
 	/// Try to get a constructor that takes a string value or the XElement source
 	/// </summary>
-	internal static class ConstructorCache<T>
+	static class ConstructorCache<T>
 	{
 		public static ConstructorInfo StringInfo { get; private set; }
 		public static ConstructorInfo XElementInfo { get; private set; }
@@ -813,8 +825,8 @@ namespace XmlLib
 		}
 		static ConstructorCache()
 		{
-			StringInfo = typeof(T).GetConstructor(new Type[] { typeof(string) });
-			XElementInfo = typeof(T).GetConstructor(new Type[] { typeof(XElement) });
+			StringInfo = typeof(T).GetConstructor(new [] { typeof(string) });
+			XElementInfo = typeof(T).GetConstructor(new [] { typeof(XElement) });
 		}
 	}
 }
