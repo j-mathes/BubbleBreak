@@ -1,17 +1,22 @@
-﻿using System;
+﻿//---------------------------------------------------------------------------------------------
+// <copyright file="ShuffleBag.cs" company="RetroTek Software Ltd">
+//     Copyright (C) 2016 RetroTek Software Ltd. All rights reserved.
+// </copyright>
+// <author>Jared Mathes</author>
+//---------------------------------------------------------------------------------------------
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using CocosSharp;
-
 
 namespace BubbleBreak
 {
 	public class ShuffleBag<T> : ICollection<T>, IList<T>
 	{
-		private List<T> data = new List<T> ();
-		private int cursor = 0;
+		readonly List<T> data = new List<T> ();
+		int cursor;
 		//private T last;
-		private Random newRandom = new Random();
+		Random newRandom = new Random();
 
 		/// <summary>
 		/// Get the next value from the ShuffleBag
@@ -20,13 +25,11 @@ namespace BubbleBreak
 		{
 			if (cursor < 1) {
 				cursor = data.Count - 1;
-				if (data.Count < 1)
-					return default(T);
-				return data[0];
+				return data.Count < 1 ? default(T) : data [0];
 			}
 			int grab = (int)Math.Floor (newRandom.NextDouble() * (cursor + 1));
 			T temp = data[grab];
-			data[grab] = this.data[this.cursor];
+			data[grab] = data [cursor];
 			data[cursor] = temp;
 			cursor--;
 			return temp;

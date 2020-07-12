@@ -1,14 +1,18 @@
-﻿using System;
+﻿//---------------------------------------------------------------------------------------------
+// <copyright file="LevelLayer.cs" company="RetroTek Software Ltd">
+//     Copyright (C) 2016 RetroTek Software Ltd. All rights reserved.
+// </copyright>
+// <author>Jared Mathes</author>
+//---------------------------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
-using CocosSharp;
-//using System.Xml;
-//using System.Xml.Serialization;
-//using System.Xml.Linq;
 using System.Linq;
+using CocosSharp;
 
 namespace BubbleBreak
 { 
-	public class LevelLayer : CCLayerColor
+	public class LevelLayer : CCLayerColor  // make a partial class if we want to break this up for readability
 	{
 		const float BUBBLE_SCALE = 1.15f;			// amount we want to scale the bubble by.  Should change the sprite graphic so this isn't needed.
 		const int MAX_BUBBLES_X = 5;				// bubble grid width
@@ -18,32 +22,55 @@ namespace BubbleBreak
 		const float CELL_DIMS_HALF = 100f;			// half width of a bubble grid cell
 		const float CELL_CENTER_ZONE_HALF = 28f;	// half width of the area in the center of the cell that a bubble can randomly be placed
 
-		const float COIN_MULTIPLIER = 0.1f;		// multiplier to determin how many bonus coins the player gets - 10 extra points = 1 coin
+		const float COIN_MULTIPLIER = 0.01f;		// multiplier to determin how many bonus coins the player gets - 100 points gets 1 coin
 
 		const String PI_DIGITS = "31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461";
 
+		const string GOTHIC_30_HD_FNT = "gothic-30-hd.fnt";
+		const string GOTHIC_44_HD_FNT = "gothic-44-hd.fnt";
+		const string GOTHIC_56_WHITE_HD_FNT = "gothic-56-white-hd.fnt";
+		const string GOTHIC_56_WHITE_FNT = "gothic-56-white.fnt";
+
+		const int POINT_INCREMEMNT_DELAY = 50; 			// delay in 10ths of a second to increase the highest random point value generated
+		const int BUBBLES_VISIBLE_INCREMENT_DELAY = 20; 	// delay in 10ths of a second to increase the number of bubbles on the screen
+
 		CCNode bubbles;
 
+		const int SCORE_MULTIPLIER_DURATION = 4;	// duration in seconds + 1 since the count starts at zero, not one
+		const int DEBUG_CONSUMABLES = 0;
+
 		bool[] bubbleOccupiedArray;
-		bool levelPassed = false;
+		bool didPassLevel;
 
 		Random scoreRandom = new Random();			// randomizer used for getting a new bubble score
 
 		CCPoint tapLocation;
-		CCLabel levelNameLabel, scoreLabel, tapStrengthLabel;
-		//CCLabel s01Label, s02Label,s03Label, s04Label, s05Label, s06Label, s07Label, s08Label, s09Label, s10Label, s11Label, s12Label;
-		CCLabel sequenceTallyLabel;
-		CCLabel nextInSequence;
+		CCLabel tapStrengthLabel; 
+
+		CCLabel sequenceTotalLabel;
+		CCLabel nextInSequenceLabel;
+		CCLabel timeIDLabel, scoreIDLabel, okLabel;
 
 		CCSpriteSheet uiSpriteSheet;
-		CCSprite timeLabelSprite, scoreLabelSprite, timeSpriteProgressBarEmpty, scoreSpriteProgressBarEmpty, timeSpriteProgressBarFull, scoreSpriteProgressBarFull, tapStrengthSprite;
+		CCSpriteSheet bonusSpriteSheet;
+		CCSprite timeSpriteProgressBarEmpty, scoreSpriteProgressBarEmpty, timeSpriteProgressBarFull, scoreSpriteProgressBarFull, tapStrengthSprite; 
 		CCSprite s01StdSprite, s01SelSprite, s02StdSprite, s02SelSprite, s03StdSprite, s03SelSprite, s04StdSprite, s04SelSprite, s05StdSprite, s05SelSprite, s06StdSprite, s06SelSprite,
 				s07StdSprite, s07SelSprite, s08StdSprite, s08SelSprite, s09StdSprite, s09SelSprite, s10StdSprite, s10SelSprite, s11StdSprite, s11SelSprite, s12StdSprite, s12SelSprite;
-		CCSprite sequenceIndicatorSprite;
 
-		CCSprite okStd, okSel, frameSprite;
+		CCSprite checkpointStdSprite, checkpointSelSprite, additionStdSprite, additionSelSprite, subtractionStdSprite, subtractionSelSprite, nextInSequenceStdSprite, nextInSequenceSelSprite; 
+		CCLabel checkpointsCountLabel, additionsCountLabel, subtractionsCountLabel, nextInSequencesCountLabel, additionsNumbersLabel, subtractionsNumbersLabel; 
+		CCMenu seqMenu01, seqMenu02, seqMenu03, seqMenu04, seqMenu05, seqMenu06, seqMenu07, seqMenu08, seqMenu09, seqMenu10, seqMenu11, seqMenu12;
+		CCMenu menuCheckpoint, menuAddition, menuSubtraction, menuNextInSeq;
+		CCMenuItemToggle highlightToggleMenuItem;
+		CCSprite checkmarkSprite;
 
-		CCProgressTimer timeBar, scoreBar;
+		CCSprite frameSprite;
+
+		CCProgressTimer timeBar, scoreBar, doubleScoreTimer, tripleScoreTimer;
+		CCSprite doubleScoreTimerSprite, tripleScoreTimerSprite, doubleScoreFadedTimerSprite, tripleScoreFadedTimerSprite;
+		bool isDoubleScoreActive, isTripleScoreActive;
+		float doubleScoreTimerDuration, tripleScoreTimerDuration;
+		int bonusDoubleMultiplier, bonusTripleMultiplier;
 
 		Player activePlayer;
 		List<Level> levels;
@@ -51,39 +78,63 @@ namespace BubbleBreak
 
 		CCLayerColor hideUILayer;
 
-		List<Sequences> availableSequences;		// list of sequences available to this level
-		//List<Sequences> activeSequences;		// list of sequences that are active to the player
+		List<Sequences> availableSequences;				// list of sequences available to this level
+		//List<Sequences> activeSequences;				// list of sequences that are active to the player
 		//List<Sequences> playerUnlockedSequences;		// list of the sequences the player has unlocked
 		Sequences currentSequence = Sequences.Linear;	// current sequence the player can build on
-		int nextNumberInSequence = 1;				// the next number in the current sequence
-		int seqTally = 0;						// bonus points added to score for popping a bubble with a value that was next in the sequence
-		int seqDepth = 0;						// how deep are we into generating a sequence
 		Sequences selectedSequence = Sequences.Linear;	// to track the selected sequence so it doesn't reset if you re-select the same sequence
+		int nextNumberInSequence = 1;					// the next number in the current sequence
+		int seqDepth;									// how deep are we into generating a sequence
+		int checkpointSequence;
+		int checkpointDepth;
+		bool isCheckpointActive;
 
-		int levelNumber;						// level index number
+		PointState pointState = PointState.None;
+		int bubble1Value = -1;
+		int bubble2Value = -1;
 
-		float levelTimeLimit;		 			// how many second we have to get the levelPassScore
-		float levelTimeLeft;					// decreasing time left to complete the level
+		int levelNumber;								// level index number
+
+		float levelTimeLimit;		 					// how many second we have to get the levelPassScore
+		float levelTimeLeft;							// decreasing time left to complete the level
 
 		string levelTitleText, levelDescriptionText, levelTimeLimitText, levelScoreToPassText;
 
-		int levelTimeIncrement = 0;				// measures the increasing progress of level time.  Used to increment the maximum point value of a new bubble
-		int pointIncrementDelay = 40; 			// delay in 10ths of a second to increase the highest random point value generated
-		int bubblesVisibleIncrementDelay = 10; 	// delay in 10ths of a second to increase the number of bubbles on the screen
+		int levelTimeIncrement;							// measures the increasing progress of level time.  Used to increment the maximum point value of a new bubble
 
-		int levelScore = 0;						// level score
-		bool scoreBonusFlag = false;			// to determine if the score progress bar should show bonus mode
-		int levelPassScore;						// how many point we need to pass the level
-		int tapsRequired;						// how many taps to pop a standard bubble on this level
-		int maxLevelPoints;						// maximum point value for new bubbles.  Initially assigned by the currentLevel property but increased as the level progresses
-		int levelVisibleBubbles;				// how many bubbles can currently be visible at a time.  This number increases as the level progresses
-		int lastEarnedPoint = 0;				// The value of the last point earned.  Used to determine if we need to increase the maximum point for a new bubble
-		int maxBubbles; 						// the maximum amount of bubbles that will fit on the screen at one time.
-		int maxVisibleBubbles;					// the limit for how many bubbles we actually want visible on the screen
+		int levelScore;									// seqTotal + regularTotal
+		int regularTotal;								// total points of popped bubble points (including any bonus bubble points)
+		int sequenceTotal;								// total points of bubbles popped in a sequence
+		bool isScoreBonusActive;							// to determine if the score progress bar should show bonus mode
+		int levelPassScore;								// how many point we need to pass the level
+		int tapsRequired;								// how many taps to pop a standard bubble on this level
+		int maxLevelPoints;								// maximum point value for new bubbles.  Initially assigned by the currentLevel property but increased as the level progresses
+		int levelVisibleBubbles;						// how many bubbles can currently be visible at a time.  This number increases as the level progresses
+		int lastEarnedPoint;							// The value of the last point earned.  Used to determine if we need to increase the maximum point for a new bubble
+		int maxBubbles; 								// the maximum amount of bubbles that will fit on the screen at one time.
+		int maxVisibleBubbles;							// the limit for how many bubbles we actually want visible on the screen
 
-		int percentToRollNextSeq;				// the percentage chance that the next number generated will be the next sequence value the player is looking for
+		int tapStrength;
+		int playerTapStrength;
+		int levelTapStrength;							 
 
-		int coinsEarned = 0;
+		int chanceToRollBonus;
+		int playerChanceToRollBonus;
+		int levelChanceToRollBonus;	
+
+		int chanceToRollNextSeq;
+		int playerChanceToRollNextSeq;
+		int levelChanceToRollNextSeq;	
+
+		bool playerHighlightNext;
+
+		int coinsEarned;
+
+		// level consumables
+		int availableCheckpoints;
+		int availableAdditions;
+		int availableSubtractions;
+		int availableNextInSeq;
 
 		List<int> listOfPrimes;
 		List<int> listOfRecamans;
@@ -95,9 +146,18 @@ namespace BubbleBreak
 		{
 			levels = gameLevels;
 			activePlayer = currentPlayer;
-			activeLevel = levels [currentPlayer.LastLevelCompleted + 1];
+			//activeLevel = levels [currentPlayer.LastLevelCompleted + 1];
+			activeLevel = levels [currentPlayer.BranchProgression[1].LastLevelCompleted + 1];
 			CreateListOfSequences (activeLevel);
-			percentToRollNextSeq = activeLevel.ChanceToRollNextSeq;
+			playerTapStrength = activePlayer.PersistentTapStrength;
+			playerChanceToRollBonus = activePlayer.ChanceToRollBonus;
+			playerChanceToRollNextSeq = activePlayer.ChanceToRollNextSeq;
+			availableCheckpoints = activePlayer.ConsumableCheckPoint + DEBUG_CONSUMABLES;
+			availableAdditions = activePlayer.ConsumableAdd + DEBUG_CONSUMABLES;
+			availableSubtractions = activePlayer.ConsumableSubtract + DEBUG_CONSUMABLES;
+			availableNextInSeq = activePlayer.ConsumableNextSeq + DEBUG_CONSUMABLES;
+			bonusDoubleMultiplier = bonusTripleMultiplier = 1;
+			playerHighlightNext = (activePlayer.HighlightNextPurchased && activePlayer.IsHighlightNextActive); // TODO: this should become active if activated by the in game options switch
 
 			//---------------------------------------------------------------------------------------------------------
 			// Function to generate list of primes
@@ -108,7 +168,10 @@ namespace BubbleBreak
 				select i; 
 			IEnumerable<int> result = primeNumbers(500); 
 			listOfPrimes = result.ToList ();
-			listOfRecamans = recamanSeq (200);
+			listOfRecamans = recamanSeq ();
+
+			bonusSpriteSheet = new CCSpriteSheet ("bonus.plist");
+
 			SetupUI ();
 		}
 			
@@ -122,17 +185,32 @@ namespace BubbleBreak
 				if (ShouldLevelEnd ()){
 					if (levelScore >= levelPassScore)
 					{
-						levelPassed = true;
-						activePlayer.LastLevelCompleted++;
-						coinsEarned = ConvertScoreToCoins(levelScore - levelPassScore);
+						didPassLevel = true;
+						//activePlayer.LastLevelCompleted++;
+						activePlayer.BranchProgression[1].LastLevelCompleted ++;
+						var coinsEarnedFromPoints = ConvertScoreToCoins (levelScore - levelPassScore);
+						var coinsEarnedFromSequence = sequenceTotal;
+						coinsEarned = (int)Math.Truncate (coinsEarnedFromPoints) + coinsEarnedFromSequence;
 						activePlayer.Coins += coinsEarned;
-						activePlayer.WriteData ();  // after successfully passing the level, save the player's progress
+						activePlayer.CoinCarryOver = coinsEarnedFromPoints - (float)Math.Truncate (coinsEarnedFromPoints);
+						activePlayer.ChanceToRollBonus = playerChanceToRollBonus;
+						activePlayer.ChanceToRollNextSeq = playerChanceToRollNextSeq;
+						activePlayer.ConsumableAdd = availableAdditions;
+						activePlayer.ConsumableSubtract = availableSubtractions;
+						activePlayer.ConsumableCheckPoint = availableCheckpoints;
+						activePlayer.ConsumableNextSeq = availableNextInSeq;
+						activePlayer.WriteData (activePlayer);  // after successfully passing the level, save the player's progress
 						EndLevel();
 					} 
-
 					else
 					{
-						activePlayer.WriteData ();
+						coinsEarned = (int)Math.Truncate ((double)sequenceTotal / 2);
+						activePlayer.Coins += coinsEarned;
+						activePlayer.ConsumableAdd = availableAdditions;
+						activePlayer.ConsumableSubtract = availableSubtractions;
+						activePlayer.ConsumableCheckPoint = availableCheckpoints;
+						activePlayer.ConsumableNextSeq = availableNextInSeq;
+						activePlayer.WriteData (activePlayer);
 						EndLevel();
 					}
 						
@@ -141,25 +219,56 @@ namespace BubbleBreak
 
 				levelTimeLeft -= t;
 				levelTimeIncrement++;
+				if (isDoubleScoreActive) {
+					doubleScoreTimerDuration -= t;
+				}
+				if (isTripleScoreActive) {
+					tripleScoreTimerDuration -= t;
+				}
 				if (levelTimeIncrement > 0) {
-					maxLevelPoints = ((levelTimeIncrement % pointIncrementDelay) == 0) ? maxLevelPoints + 1 : maxLevelPoints;
+					maxLevelPoints = ((levelTimeIncrement % POINT_INCREMEMNT_DELAY) == 0) ? maxLevelPoints + 1 : maxLevelPoints;
 				}
 
 				if (levelTimeIncrement > 0) {
 					if (levelVisibleBubbles < maxVisibleBubbles){
-					levelVisibleBubbles = ((levelTimeIncrement % bubblesVisibleIncrementDelay) == 0) ? levelVisibleBubbles + 1 : levelVisibleBubbles;
+					levelVisibleBubbles = ((levelTimeIncrement % BUBBLES_VISIBLE_INCREMENT_DELAY) == 0) ? levelVisibleBubbles + 1 : levelVisibleBubbles;
 					}
 				}
 
 			},0.1f);
 
+			chanceToRollBonus = levelChanceToRollBonus + playerChanceToRollBonus;
+			chanceToRollNextSeq = levelChanceToRollNextSeq + playerChanceToRollNextSeq;
+			tapStrength = levelTapStrength + playerTapStrength;
+			tapStrengthLabel.Text = tapStrength.ToString ();
+
 			timeBar.Percentage = (levelTimeLeft / levelTimeLimit) * 100;
 			scoreBar.Percentage = ((float)levelScore / (float)levelPassScore) * 100;
 			if (levelScore > levelPassScore) {
-				if (!scoreBonusFlag) {
-					scoreSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("prgbar_score_bonus.png")));
+				if (!isScoreBonusActive) {
+					scoreSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("prgbar_score_bonus.png")));
 					scoreBar.Sprite = scoreSpriteProgressBarFull;
-					scoreBonusFlag = true;
+					isScoreBonusActive = true;
+				}
+			}
+			// score bonus timers
+			if (isDoubleScoreActive) { 
+				doubleScoreTimer.Percentage = (doubleScoreTimerDuration / SCORE_MULTIPLIER_DURATION) * 100;
+				if (doubleScoreTimerDuration < 0) {
+					bonusDoubleMultiplier = 1;
+					doubleScoreTimerDuration = 0;
+					doubleScoreTimer.Percentage = 0;
+					isDoubleScoreActive = false;
+				}
+			}
+
+			if (isTripleScoreActive) { 
+				tripleScoreTimer.Percentage = (tripleScoreTimerDuration / SCORE_MULTIPLIER_DURATION) * 100;
+				if (tripleScoreTimerDuration < 0) {
+					bonusTripleMultiplier = 1;
+					tripleScoreTimerDuration = 0;
+					tripleScoreTimer.Percentage = 0;
+					isTripleScoreActive = false;
 				}
 			}
 		}
@@ -186,13 +295,14 @@ namespace BubbleBreak
 			AddEventListener (touchListener, this); 
 
 			Schedule (_ => CheckForFadedBubbles ());
+			Schedule (_ => CheckForBubbleHighlight ());
 			Schedule (_ => StartScheduling ());
 		}
 
 		//---------------------------------------------------------------------------------------------------------
 		// OnTouchesEnded
 		//---------------------------------------------------------------------------------------------------------
-		void OnTouchesEnded (List<CCTouch> touches, CCEvent touchEvent)
+		void OnTouchesEnded (IList<CCTouch> touches, CCEvent touchEvent)
 		{
 			bool bubblePopped = false;
 
@@ -201,20 +311,91 @@ namespace BubbleBreak
 				var locationOnScreen = touches [0].Location;
 				tapLocation = locationOnScreen;
 
-				foreach (PointBubble standardBubble in bubbles.Children) { 
-					bool doesTouchOverlapBubble = standardBubble.BubbleSprite.BoundingBoxTransformedToWorld.ContainsPoint (tapLocation);
+				foreach (var childBubble in bubbles.Children.OfType<PointBubble> ()) { 
+					var doesTouchOverlapBubble = childBubble.BubbleSprite.BoundingBoxTransformedToWorld.ContainsPoint (tapLocation);
 					if (doesTouchOverlapBubble) {
-						standardBubble.TapCount += activePlayer.TapStrength;
-						if (standardBubble.CheckPopped ()) {
-							bubbleOccupiedArray [standardBubble.ListIndex] = false;
-							var seqBonusAmount = CheckForSequenceBonus (standardBubble.PointValue, nextNumberInSequence, currentSequence);
-							seqTally = (seqBonusAmount != 0) ? seqTally + seqBonusAmount : seqBonusAmount;
-							levelScore += standardBubble.PointValue + seqTally;
-							lastEarnedPoint = standardBubble.PointValue;
-							PopBubble (standardBubble);
-							scoreLabel.Text = levelScore + "/" + levelPassScore;
-							sequenceTallyLabel.Text = seqTally.ToString ();
-							nextInSequence.Text = (nextNumberInSequence == 0) ? "" : nextNumberInSequence.ToString ();
+						childBubble.TapCount += tapStrength;
+						if (childBubble.CheckPopped ()) {
+							bubbleOccupiedArray [childBubble.ListIndex] = false;
+							switch (pointState) {
+							case PointState.None:
+								{
+									regularTotal += childBubble.PointValue * bonusDoubleMultiplier * bonusTripleMultiplier;
+									levelScore = regularTotal + sequenceTotal;
+									lastEarnedPoint = childBubble.PointValue;
+									MovePointLabel (childBubble, scoreBar);
+									var seqBonusAmount = CheckForSequenceBonus (childBubble.PointValue, nextNumberInSequence, currentSequence);
+									if (seqBonusAmount != 0)
+										sequenceTotal += seqBonusAmount;
+									break;
+								}
+							case PointState.Addition:
+								{
+									if (bubble1Value == -1) {
+										bubble1Value = childBubble.PointValue;
+										additionsNumbersLabel.Text = string.Format ("{0} + ?", bubble1Value);
+									} else if (bubble2Value == -1) {
+										bubble2Value = childBubble.PointValue;
+										var combined = CombineBubbleValues (pointState, bubble1Value, bubble2Value);
+										additionsNumbersLabel.Text = combined.ToString ();
+										regularTotal += combined * bonusDoubleMultiplier * bonusTripleMultiplier;
+										levelScore = regularTotal + sequenceTotal;
+										lastEarnedPoint = combined;
+										var seqBonusAmount = CheckForSequenceBonus (combined, nextNumberInSequence, currentSequence);
+										if (seqBonusAmount != 0)
+											sequenceTotal += seqBonusAmount;
+										MovePointLabel (additionsNumbersLabel,scoreBar);
+										bubble1Value = bubble2Value = -1;
+										availableAdditions--;
+										pointState = PointState.None;
+										additionsNumbersLabel.Text = string.Empty;
+										additionsCountLabel.Color = CCColor3B.White;
+										additionsCountLabel.Scale = 1.0f;
+									}
+									break;
+								}
+							case PointState.Subtraction:
+								{
+									if (bubble1Value == -1) {
+										bubble1Value = childBubble.PointValue;
+										subtractionsNumbersLabel.Text = string.Format ("{0} - ?", bubble1Value);
+									} else if (bubble2Value == -1) {
+										bubble2Value = childBubble.PointValue;
+										var combined = CombineBubbleValues (pointState, bubble1Value, bubble2Value);
+										subtractionsNumbersLabel.Text = combined.ToString ();
+										regularTotal += combined * bonusDoubleMultiplier * bonusTripleMultiplier;
+										levelScore = regularTotal + sequenceTotal;
+										lastEarnedPoint = combined;
+										var seqBonusAmount = CheckForSequenceBonus (combined, nextNumberInSequence, currentSequence);
+										if (seqBonusAmount != 0)
+											sequenceTotal += seqBonusAmount;
+										MovePointLabel (subtractionsNumbersLabel,scoreBar);
+										bubble1Value = bubble2Value = -1;
+										availableSubtractions--;
+										pointState = PointState.None;
+										subtractionsNumbersLabel.Text = string.Empty;
+										subtractionsCountLabel.Color = CCColor3B.White;
+										subtractionsCountLabel.Scale = 1.0f;
+									}
+									break;
+								}
+							}
+							PopBubble (childBubble);
+							UpdateLabels ();
+							UpdateConsumablesDisplay ();
+							bubblePopped = true;
+						}
+					}
+				}
+
+				foreach (var childBubble in bubbles.Children.OfType<BonusBubble> ()) {
+					bool doesTouchOverlapBubble = childBubble.BubbleSprite.BoundingBoxTransformedToWorld.ContainsPoint (tapLocation);
+					if (doesTouchOverlapBubble) {
+						childBubble.TapCount += tapStrength;
+						if (childBubble.CheckPopped ()) {
+							ProcessBonusBubble (childBubble);
+							bubbleOccupiedArray [childBubble.ListIndex] = false;
+							PopBubble (childBubble);
 							bubblePopped = true;
 						}
 					}
@@ -227,7 +408,7 @@ namespace BubbleBreak
 				// cycle through BubbleOccupiedArray and make a shuffle bag of empty indicies
 				// randomly select one of the unoccupied indicies
 				// add a new bubble to that location
-				ShuffleBag<int> newBubbleOrder = new ShuffleBag<int> ();
+				var newBubbleOrder = new ShuffleBag<int> ();
 
 				for (int i = 0; i < bubbleOccupiedArray.Length; i++) {
 					if (!bubbleOccupiedArray [i])
@@ -235,17 +416,84 @@ namespace BubbleBreak
 				}
 					
 				var newBubbleIndex = newBubbleOrder.Next ();
-				var newBubble = new PointBubble (GetRandomScoreValue (scoreRandom, maxLevelPoints, nextNumberInSequence, percentToRollNextSeq), tapsRequired, (newBubbleIndex % MAX_BUBBLES_X), (newBubbleIndex / MAX_BUBBLES_X), newBubbleIndex);
-				CCPoint p = GetRandomPosition ( newBubble.BubbleSprite.ContentSize * BUBBLE_SCALE, newBubble.XIndex, newBubble.YIndex);
-				newBubble.Position = new CCPoint (p.X, p.Y);
-				newBubble.Scale = BUBBLE_SCALE;
-				bubbles.AddChild (newBubble);
-				DisplayLabel (newBubble);
-				DisplayBubble (newBubble);
+				if (BubbleTypeToCreate (chanceToRollBonus) == BubbleType.Point) {
+					CreatePointBubble (newBubbleIndex);
+				} else {
+					CreateBonusBubble (newBubbleIndex);
+				}
 				bubbleOccupiedArray [newBubbleIndex] = true;
-				maxLevelPoints = (lastEarnedPoint >= maxLevelPoints) ? lastEarnedPoint + 1 : maxLevelPoints;
+				maxLevelPoints = (lastEarnedPoint >= maxLevelPoints) ? lastEarnedPoint + 1 : maxLevelPoints;  // TODO: this is what we need to change to gradually increase the max level's points.  Can possibly grow too quick
 			}
 		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// CombinedBubbleValues
+		//---------------------------------------------------------------------------------------------------------
+		// Depending on the PointState, either adds or subtracts the two values and returns the result.
+		//---------------------------------------------------------------------------------------------------------
+		static int CombineBubbleValues (PointState currentPointState, int value1, int value2)
+		{
+			int combinedValues;
+			switch (currentPointState) {
+			case PointState.Addition:
+				{
+					combinedValues = value1 + value2;
+					break;
+				}
+			case PointState.Subtraction:
+				{
+					combinedValues = (value1 > value2) ? value1 - value2 : value2 - value1;
+					if (combinedValues < 0)
+						combinedValues = 0;
+					break;
+				}
+			default:
+				{
+					combinedValues = 0;
+					break;
+				}
+			}
+
+			return combinedValues;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// CreatePointBubble
+		//---------------------------------------------------------------------------------------------------------
+		// Creates a single point bubble and adds it to the node parent
+		//---------------------------------------------------------------------------------------------------------
+
+		void CreatePointBubble (int bubbleIndex, bool initialCreation = false)
+		{
+			PointBubble pointBubble;
+			pointBubble = initialCreation ? new PointBubble ((bubbleIndex % MAX_BUBBLES_X), (bubbleIndex / MAX_BUBBLES_X), bubbleIndex, GetRandomScoreValue (scoreRandom, maxLevelPoints), tapsRequired) 
+				: new PointBubble ((bubbleIndex % MAX_BUBBLES_X), (bubbleIndex / MAX_BUBBLES_X), bubbleIndex, GetRandomScoreValue (scoreRandom, maxLevelPoints, nextNumberInSequence, chanceToRollNextSeq), tapsRequired);
+			CCPoint p = GetRandomPosition (pointBubble.XIndex, pointBubble.YIndex);
+			pointBubble.Position = new CCPoint (p.X, p.Y);
+			pointBubble.Scale = BUBBLE_SCALE;
+			DisplayBubble (pointBubble);
+			DisplayLabel (pointBubble);
+			DisplayHighlight (pointBubble);
+			bubbles.AddChild (pointBubble);
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// CreateBonusBubble
+		//---------------------------------------------------------------------------------------------------------
+		// Creates a single bonus bubble and adds it to the node parent
+		//---------------------------------------------------------------------------------------------------------
+
+		void CreateBonusBubble (int bubbleIndex)
+		{
+			var bonusBubble = new BonusBubble ((bubbleIndex % MAX_BUBBLES_X), (bubbleIndex / MAX_BUBBLES_X), bubbleIndex, tapsRequired, activeLevel);
+			CCPoint p = GetRandomPosition (bonusBubble.XIndex, bonusBubble.YIndex);
+			bonusBubble.Position = new CCPoint (p.X, p.Y);
+			bonusBubble.Scale = BUBBLE_SCALE;
+			DisplayBubble (bonusBubble);
+			DisplayBonus (bonusBubble); 
+			bubbles.AddChild (bonusBubble);
+		}
+
 		//---------------------------------------------------------------------------------------------------------
 		// CreateBubbleArray
 		//---------------------------------------------------------------------------------------------------------
@@ -265,19 +513,17 @@ namespace BubbleBreak
 			// Create a shuffle bag.  Add random integer to bag, one for every possible location on the screen.  Use
 			// the integer for the item in the bag to generate x,y indicies in the bubble occupied array.  Assign the 
 			// indicies to the bubbles.  These will be used to generate initial points on the screen for each bubble.
-			ShuffleBag<int> bubbleOrder = new ShuffleBag<int> ();
+			var bubbleOrder = new ShuffleBag<int> ();
 			for (int i = 0; i < maxBubbles; i++) {
 				bubbleOrder.Add (i);
 			}
 			for (int i = 0; i < levelVisibleBubbles; i++) {
 				var bubbleIndex = bubbleOrder.Next ();
-				var standardBubble = new PointBubble (GetRandomScoreValue (scoreRandom, maxLevelPoints), tapsRequired, (bubbleIndex % MAX_BUBBLES_X), (bubbleIndex / MAX_BUBBLES_X), bubbleIndex);
-				CCPoint p = GetRandomPosition (standardBubble.BubbleSprite.ContentSize * BUBBLE_SCALE, standardBubble.XIndex, standardBubble.YIndex);
-				standardBubble.Position = new CCPoint (p.X, p.Y);
-				standardBubble.Scale = BUBBLE_SCALE;
-				DisplayBubble (standardBubble);
-				DisplayLabel (standardBubble);
-				bubbles.AddChild (standardBubble);
+				if (BubbleTypeToCreate (chanceToRollBonus) == BubbleType.Point) {
+					CreatePointBubble (bubbleIndex, true);
+				} else {
+					CreateBonusBubble (bubbleIndex);
+				}
 				bubbleOccupiedArray [bubbleIndex] = true;
 			}
 		}
@@ -293,7 +539,7 @@ namespace BubbleBreak
 		{
 			//check if a bubble has popped on its own
 			if (bubbles.ChildrenCount < levelVisibleBubbles) {
-				ShuffleBag<int> newBubbleOrder = new ShuffleBag<int> ();
+				var newBubbleOrder = new ShuffleBag<int> ();
 
 				for (int i = 0; i < bubbleOccupiedArray.Length; i++) {
 					if (!bubbleOccupiedArray [i])
@@ -301,27 +547,57 @@ namespace BubbleBreak
 				}
 					
 				var newBubbleIndex = newBubbleOrder.Next ();
-				var newBubble = new PointBubble (GetRandomScoreValue (scoreRandom, maxLevelPoints, nextNumberInSequence, percentToRollNextSeq), tapsRequired, (newBubbleIndex % MAX_BUBBLES_X), (newBubbleIndex / MAX_BUBBLES_X), newBubbleIndex);
-				CCPoint p = GetRandomPosition ( newBubble.BubbleSprite.ContentSize * BUBBLE_SCALE, newBubble.XIndex, newBubble.YIndex);
-				newBubble.Position = new CCPoint (p.X, p.Y);
-				newBubble.Scale = BUBBLE_SCALE;
-				DisplayLabel (newBubble);
-				DisplayBubble (newBubble);
-				bubbles.AddChild (newBubble);
+				if (BubbleTypeToCreate (chanceToRollBonus) == BubbleType.Point) {
+					CreatePointBubble (newBubbleIndex);
+				} else {
+					CreateBonusBubble (newBubbleIndex);
+				}
 				bubbleOccupiedArray [newBubbleIndex] = true;
+			}
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// CheckForBubbleHighlight
+		//---------------------------------------------------------------------------------------------------------
+		// We check to see if any of the point bubbles are the next needed number in a sequence.  If so we want to 
+		// highlight that bubble with a particle effect.  We only do this if they have purchased that option in the
+		// shop.  Every bubble with a point value that matches should be highlighted
+		//---------------------------------------------------------------------------------------------------------
+		void CheckForBubbleHighlight()
+		{
+			if (playerHighlightNext) {
+				foreach (var childBubble in bubbles.Children.OfType<PointBubble> ()) {
+					bool isNextInSequence = (childBubble.PointValue == nextNumberInSequence);
+					if (isNextInSequence) {
+						if ((seqDepth > 0) && !childBubble.IsHighlighted) {
+							childBubble.IsHighlighted = true;
+							childBubble.Emitter.TotalParticles = 30;
+							childBubble.AddChild (childBubble.Emitter);
+						} 
+					} else {
+						childBubble.IsHighlighted = false;
+						childBubble.Emitter.RemoveFromParent ();
+					}
+				}
+			} else {
+				foreach (var childBubble in bubbles.Children.OfType<PointBubble> ()) {
+					if (childBubble.IsHighlighted) {
+						childBubble.IsHighlighted = false;
+						childBubble.Emitter.RemoveFromParent ();
+					}
+				}
 			}
 		}
 
 		//---------------------------------------------------------------------------------------------------------
 		// GetRandomPosition
 		//---------------------------------------------------------------------------------------------------------
-		// Parameters: 	CCSize - size of the sprite to position
-		//				xIndex - indicies of the grid where the position will be in
+		// Parameters: 	xIndex - indicies of the grid where the position will be in
 		//				yIndex 
 		//
 		// Returns: CCPoint - random point within the center area of the x,y grid
 		//---------------------------------------------------------------------------------------------------------
-		CCPoint GetRandomPosition (CCSize spriteSize, int xIndex, int yIndex)
+		static CCPoint GetRandomPosition (int xIndex, int yIndex)
 		{
 			double rndX = CCRandom.GetRandomFloat ((xIndex * CELL_DIMS_HALF * 2) + (SCREEN_X_MARGIN + CELL_DIMS_HALF - CELL_CENTER_ZONE_HALF), (xIndex * CELL_DIMS_HALF * 2) + (SCREEN_X_MARGIN + CELL_DIMS_HALF + CELL_CENTER_ZONE_HALF));
 			double rndY = CCRandom.GetRandomFloat ((yIndex * CELL_DIMS_HALF * 2) + (SCREEN_Y_MARGIN + CELL_DIMS_HALF - CELL_CENTER_ZONE_HALF), (yIndex * CELL_DIMS_HALF * 2) + (SCREEN_Y_MARGIN + CELL_DIMS_HALF + CELL_CENTER_ZONE_HALF));
@@ -339,9 +615,9 @@ namespace BubbleBreak
 		// This method returns a random number between 1 and maxPointValue.  The randomization is such that numbers
 		// closer to 1 will be more common and numbers closer to maxPointValue will be more rare.
 		//---------------------------------------------------------------------------------------------------------
-		int GetRandomScoreValue (Random scoreRandom, int maxPointValue)
+		static int GetRandomScoreValue (Random scoreRandomizer, int maxPointValue)
 		{
-			int scoreValue = (int)Math.Floor ((scoreRandom.NextDouble () * scoreRandom.NextDouble ()) * maxPointValue) + 1;
+			int scoreValue = (int)Math.Floor ((scoreRandomizer.NextDouble () * scoreRandomizer.NextDouble ()) * maxPointValue) + 1;
 
 			return scoreValue;
 		}
@@ -359,15 +635,15 @@ namespace BubbleBreak
 		// closer to 1 will be more common and numbers closer to maxPointValue will be more rare.  There is also a
 		// % chance to return the next sequence number
 		//---------------------------------------------------------------------------------------------------------
-		int GetRandomScoreValue (Random scoreRandom, int maxPointValue, int nextSequenceValue, int percentChanceNext)
+		static int GetRandomScoreValue (Random scoreRandomizer, int maxPointValue, int nextSequenceValue, int percentChanceNext)
 		{
-			var r = CCRandom.GetRandomInt (1, 100);
+			var r = CCRandom.GetRandomInt (1, 3000);  // make this higher to decrease the chance that it will outright give the next sequence number
 			int scoreValue;
 
 			if (r <= percentChanceNext) {
 				scoreValue = nextSequenceValue;
 			} else {
-				scoreValue = (int)Math.Floor ((scoreRandom.NextDouble () * scoreRandom.NextDouble ()) * maxPointValue) + 1;
+				scoreValue = (int)Math.Floor ((scoreRandomizer.NextDouble () * scoreRandomizer.NextDouble ()) * maxPointValue) + 1;
 			}
 			return scoreValue;
 		}
@@ -381,7 +657,7 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		// Asynchronus method called to pop bubbles
 		//---------------------------------------------------------------------------------------------------------
-		async void PopBubble(PointBubble poppedBubble)
+		static async void PopBubble(PointBubble poppedBubble)
 		{
 			poppedBubble.BubbleSprite.RemoveFromParent ();
 			poppedBubble.PointLabel.RemoveFromParent ();
@@ -391,13 +667,116 @@ namespace BubbleBreak
 			poppedBubble.RemoveFromParent ();
 		}
 
+		static async void PopBubble(BonusBubble poppedBubble)
+		{
+			poppedBubble.BubbleSprite.RemoveFromParent ();
+			poppedBubble.Pop ();
+			poppedBubble.PopSprite.RunAction (new CCScaleTo(0.07f,1));
+			poppedBubble.PopSprite.RunAction (new CCDelayTime (.3f));
+			await poppedBubble.PopSprite.RunActionAsync (new CCFadeOut (0.3f));
+			poppedBubble.RemoveFromParent ();
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// MovePointLabel
+		//---------------------------------------------------------------------------------------------------------
+		// Moves the point label to the score bar.  Overload moves from subtraction or addition button.
+		//---------------------------------------------------------------------------------------------------------
+		async void MovePointLabel(PointBubble poppedBubble, CCNode target)
+		{
+			var bubblePointAmount = poppedBubble.PointValue * bonusDoubleMultiplier * bonusTripleMultiplier;
+			var targetCenter = new CCPoint ();
+			targetCenter.X = target.Position.X + target.ContentSize.Center.X;
+			targetCenter.Y = target.Position.Y;
+
+			var actionTo = new CCMoveTo (.6f, targetCenter);
+
+			var newLabel = new CCLabel (bubblePointAmount.ToString (), GOTHIC_44_HD_FNT);
+			newLabel.AnchorPoint = poppedBubble.PointLabel.AnchorPoint;
+			newLabel.Opacity = poppedBubble.PointLabel.Opacity;
+			newLabel.Position = poppedBubble.PointLabel.PositionWorldspace;
+
+			AddChild (newLabel, 500);
+
+			newLabel.RunAction (actionTo); 
+			await newLabel.RunActionAsync (new CCFadeOut (1.3f));
+			newLabel.RemoveFromParent ();
+		}
+			
+		async void MovePointLabel(CCLabel pointvalue, CCNode target)
+		{
+			var targetCenter = new CCPoint ();
+			targetCenter.X = target.Position.X + target.ContentSize.Center.X;
+			targetCenter.Y = target.Position.Y;
+
+			var actionTo = new CCMoveTo (.6f, targetCenter);
+
+			var newLabel = new CCLabel (pointvalue.Text, GOTHIC_30_HD_FNT);
+			newLabel.AnchorPoint = pointvalue.AnchorPoint;
+			newLabel.Opacity = pointvalue.Opacity;
+			newLabel.Position = pointvalue.PositionWorldspace;
+
+			AddChild (newLabel, 500);
+
+			newLabel.RunAction (actionTo); 
+			await newLabel.RunActionAsync (new CCFadeOut (1.3f));
+			newLabel.RemoveFromParent ();
+		}
+
+		async void MovePointLabel(CCNode origin, CCNode target, int pointAmount)
+		{
+			var targetCenter = new CCPoint ();
+			targetCenter.X = target.Position.X + target.ContentSize.Center.X;
+			targetCenter.Y = target.Position.Y;
+
+			var actionTo = new CCMoveTo (.6f, targetCenter);
+
+			var newLabel = new CCLabel (pointAmount.ToString (), GOTHIC_44_HD_FNT);
+			newLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			newLabel.Opacity = 0;
+			newLabel.Position = origin.PositionWorldspace;
+
+			AddChild (newLabel, 500);
+
+			newLabel.RunAction (actionTo); 
+			await newLabel.RunActionAsync (new CCFadeOut (1.3f));
+			newLabel.RemoveFromParent ();
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// MoveBonusSprite
+		//---------------------------------------------------------------------------------------------------------
+		// Moves the bonus sprite to the appropriate UI element
+		//---------------------------------------------------------------------------------------------------------
+		async void MoveBonusSprite(BonusBubble poppedBubble, CCNode target)
+		{
+			var targetCenter = new CCPoint ();
+			targetCenter.X = target.PositionWorldspace.X; 
+			targetCenter.Y = target.PositionWorldspace.Y; 
+
+			var actionTo = new CCMoveTo (.6f, targetCenter);
+
+			var spriteName = string.Format ("bonus_{0}.png", poppedBubble.BonusType);
+			var newBonusSprite = new CCSprite (bonusSpriteSheet.Frames.Find (x => x.TextureFilename.Equals (spriteName)));
+			newBonusSprite.AnchorPoint = poppedBubble.BonusSprite.AnchorPoint;
+			newBonusSprite.Opacity = poppedBubble.BonusSprite.Opacity;
+			newBonusSprite.Position = poppedBubble.BonusSprite.PositionWorldspace;
+
+			AddChild (newBonusSprite,500); 
+
+			newBonusSprite.RunAction (actionTo);
+			newBonusSprite.RunAction (new CCScaleTo(0.6f, 0.3f));
+			await newBonusSprite.RunActionAsync (new CCFadeOut (1.4f));
+			newBonusSprite.RemoveFromParent ();
+		}
+
 		//---------------------------------------------------------------------------------------------------------
 		// DisplayBubble
 		//---------------------------------------------------------------------------------------------------------
 		// Async method to display a bubble with the randomized fade in, delay, and fade out paramaters.  Will 
 		// mark the grid index as empty after the bubble has faded and remove the node from the parent.
 		//---------------------------------------------------------------------------------------------------------
-		async void DisplayBubble(PointBubble newBubble)
+		async void DisplayBubble(Bubble newBubble)
 		{
 			await newBubble.BubbleSprite.RunActionsAsync (new CCDelayTime(newBubble.TimeDelay), new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
 			bubbleOccupiedArray [newBubble.ListIndex] = false;
@@ -410,9 +789,159 @@ namespace BubbleBreak
 		// Similar to the DisplayBubble method.  Matched fade and hold values of the associated bubble.  Don't need
 		// to remove from parent because DisplayBubble will take care of that.
 		//---------------------------------------------------------------------------------------------------------
-		async void DisplayLabel(PointBubble newBubble)
+		static async void DisplayLabel(PointBubble newBubble)
 		{
 			await newBubble.PointLabel.RunActionsAsync (new CCDelayTime(newBubble.TimeDelay), new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// DisplayHighlight
+		//---------------------------------------------------------------------------------------------------------
+		// Displays the particle effect for highlighted bubbles
+		//---------------------------------------------------------------------------------------------------------
+		static async void DisplayHighlight(PointBubble newBubble)
+		{
+			await newBubble.Emitter.RunActionsAsync (new CCDelayTime (newBubble.TimeDelay), new CCDelayTime (newBubble.TimeAppear), new CCFadeIn (0.01f), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// DisplayBonus
+		//---------------------------------------------------------------------------------------------------------
+		// Similar to the DisplayBubble method.  Matched fade and hold values of the associated bubble.  Don't need
+		// to remove from parent because DisplayBubble will take care of that.
+		//---------------------------------------------------------------------------------------------------------
+		static async void DisplayBonus(BonusBubble newBubble)
+		{
+			await newBubble.BonusSprite.RunActionsAsync (new CCDelayTime(newBubble.TimeDelay), new CCFadeIn (newBubble.TimeAppear), new CCDelayTime (newBubble.TimeHold), new CCFadeOut (newBubble.TimeFade));
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// ProcessBonusBubble
+		//---------------------------------------------------------------------------------------------------------
+		// Logic for processing a bonus bubble when popped
+		//---------------------------------------------------------------------------------------------------------
+		void ProcessBonusBubble (BonusBubble bubbleToProcess)
+		{
+			string labelText;
+			switch (bubbleToProcess.BonusType) {
+			case Bonuses.pos_time:
+				{
+					var randomInt = CCRandom.GetRandomInt (3, 6);
+					levelTimeLeft += (float)randomInt;
+					labelText = string.Format ("{0} sec", randomInt);
+					ExpandLabel (labelText, bubbleToProcess.PositionWorldspace );
+					break;
+				}
+			case Bonuses.double_score:
+				{
+					doubleScoreTimerDuration += SCORE_MULTIPLIER_DURATION + activePlayer.Persistent2xTimeBonus;
+					doubleScoreTimer.Percentage = 100;
+					isDoubleScoreActive = true;
+					bonusDoubleMultiplier = 2;
+					break;
+				}
+			case Bonuses.pos_points:
+				{
+					var randomPoints = CCRandom.GetRandomInt (1, 5) * 50;
+					regularTotal += randomPoints * bonusDoubleMultiplier * bonusTripleMultiplier;
+					levelScore = regularTotal + sequenceTotal;
+					labelText = string.Format ("+{0}", randomPoints);
+					ExpandLabel (labelText, bubbleToProcess.PositionWorldspace );
+					break;
+				}
+			case Bonuses.addition:
+				{
+					availableAdditions++;
+					MoveBonusSprite (bubbleToProcess, menuAddition);
+					break;
+				}
+			case Bonuses.subtraction:
+				{
+					availableSubtractions++;
+					MoveBonusSprite (bubbleToProcess, menuSubtraction);
+					break;
+				}
+			case Bonuses.checkpoint:
+				{
+					availableCheckpoints++;
+					MoveBonusSprite (bubbleToProcess, menuCheckpoint);
+					break;
+				}
+			case Bonuses.triple_score:
+				{
+					tripleScoreTimerDuration += SCORE_MULTIPLIER_DURATION + activePlayer.Persistent3xTimeBonus;
+					tripleScoreTimer.Percentage = 100;
+					isTripleScoreActive = true;
+					bonusTripleMultiplier = 3;
+					break;
+				}
+			case Bonuses.next_in_seq:
+				{
+					availableNextInSeq++;
+					MoveBonusSprite (bubbleToProcess, menuNextInSeq);
+					break;
+				}
+			case Bonuses.next_mf:
+				{
+					// chance to get next in sequence
+					ExpandLabel ("+Seq\nLuck!", bubbleToProcess.PositionWorldspace);
+					playerChanceToRollNextSeq += 1;
+					break;
+				}
+			case Bonuses.bonus_mf:
+				{
+					// chance to get bonus bubble	
+					// activePlayer.BonusBubbleMagicFind += 1; TODO: need to track level chance to roll bonuses separate from player's magic find
+					playerChanceToRollBonus += 1;
+					ExpandLabel ("+Bonus\nLuck!", bubbleToProcess.PositionWorldspace);
+					break;
+				}
+			case Bonuses.tap_str:
+				{
+					levelTapStrength += 1;
+					MoveBonusSprite (bubbleToProcess, tapStrengthSprite);
+					break;
+				}
+			case Bonuses.neg_time:
+				{
+					
+					break;
+				}
+			case Bonuses.neg_points:
+				{
+					
+					break;
+				}
+			case Bonuses.mystery:
+				{
+					
+					break;
+				}
+			}
+			UpdateConsumablesDisplay ();
+			UpdateLabels ();
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// ExpandLabel
+		//---------------------------------------------------------------------------------------------------------
+		// Used to make an expanding label for extra points or time
+		//---------------------------------------------------------------------------------------------------------
+		async void ExpandLabel (string labelText, CCPoint newPosition )
+		{
+			var bonusPointsLabel = new CCLabel (labelText, GOTHIC_44_HD_FNT);
+			bonusPointsLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			bonusPointsLabel.Opacity = 0;
+			bonusPointsLabel.Position = newPosition;
+			AddChild (bonusPointsLabel);
+
+			var randomAngle = CCRandom.GetRandomFloat (-50f, 50f);
+
+			bonusPointsLabel.RunAction (new CCScaleTo(2.5f,3f));
+			bonusPointsLabel.RunAction (new CCRotateBy (2.5f, randomAngle));
+			bonusPointsLabel.RunAction (new CCDelayTime (.5f));
+			await bonusPointsLabel.RunActionAsync (new CCFadeOut (2.5f));
+			bonusPointsLabel.RemoveFromParent ();
 		}
 
 		//---------------------------------------------------------------------------------------------------------
@@ -443,8 +972,8 @@ namespace BubbleBreak
 			UnscheduleAll();
 			bubbles.RemoveAllChildren ();
 
-			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, levelPassed, coinsEarned);
-			var transitionToLevelOver = new CCTransitionFade (3.0f, levelEndScene);
+			var levelEndScene = LevelFinishedLayer.CreateScene (Window, levelScore, levels, activePlayer, didPassLevel, coinsEarned);
+			var transitionToLevelOver = new CCTransitionFade (2.0f, levelEndScene);
 
 			Director.ReplaceScene (transitionToLevelOver);
 		}
@@ -465,10 +994,9 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		// Takes the amout of overscore the player earned and converts to 1 coin for every x number of points
 		//---------------------------------------------------------------------------------------------------------
-		public int ConvertScoreToCoins(int overScore)
+		public float ConvertScoreToCoins(int overScore)
 		{
-			int bonusCoins = (int)(overScore * COIN_MULTIPLIER);
-			return bonusCoins;
+			return (overScore * COIN_MULTIPLIER) + activePlayer.CoinCarryOver;
 
 			//TODO: create a layer to display calculation of points to coins
 		}
@@ -485,17 +1013,18 @@ namespace BubbleBreak
 
 			uiSpriteSheet = new CCSpriteSheet ("ui.plist");
 
+
 			CCRect bounds = VisibleBoundsWorldspace;
 
 			// pause listeners
-			this.PauseListeners (true);
+			PauseListeners (true);
 
 			// create the level info layer over top of the game layer
 			var levelInfoLayer = new CCLayerColor (new CCColor4B (0, 0, 0, 200));
 			AddChild (levelInfoLayer, 99999);
 
 			// Add the information frame sprite to layer
-			frameSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("frame.png")));
+			frameSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("frame.png")));
 			frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
 			frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
 			levelInfoLayer.AddChild (frameSprite);
@@ -503,55 +1032,54 @@ namespace BubbleBreak
 			// Add Level Information to the frame
 			levelTitleText = "Level " + levelNumber;
 			levelDescriptionText = "\"" + activeLevel.LevelDescription + "\"";
-			levelTimeLimitText = "Time limit: " + activeLevel.MaxLevelTime.ToString () + " seconds";
-			levelScoreToPassText = "Score to pass level: " + activeLevel.LevelPassScore.ToString ();
+			levelTimeLimitText = string.Format ("Time limit: {0} seconds", activeLevel.MaxLevelTime);
+			levelScoreToPassText = string.Format ("Score to pass level: {0}", activeLevel.LevelPassScore);
 
 			// Add title lable
-			var titleLabel = new CCLabel(levelTitleText, "arial", 30);
-			titleLabel.Scale = 3f;
+			var titleLabel = new CCLabel(levelTitleText, GOTHIC_44_HD_FNT);
+			titleLabel.Scale = 1.5f;
 			titleLabel.AnchorPoint = CCPoint.AnchorMiddle;
 			titleLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MaxY - (titleLabel.BoundingBox.Size.Height * 3f));
 			levelInfoLayer.AddChild (titleLabel);
 
 			// Add level information labels
-			var levelDescriptionLabel = new CCLabel (levelDescriptionText, "arial", 30);
-			levelDescriptionLabel.Scale = 1.5f;
-			levelDescriptionLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 20f));
+			var levelDescriptionLabel = new CCLabel (levelDescriptionText, GOTHIC_44_HD_FNT);
+			levelDescriptionLabel.Scale = 1f;
+			levelDescriptionLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 14f));
 			levelDescriptionLabel.AnchorPoint = CCPoint.AnchorMiddle;
 			levelDescriptionLabel.HorizontalAlignment = CCTextAlignment.Center;
 			levelInfoLayer.AddChild (levelDescriptionLabel);
 
-			var levelTimeLimitLabel = new CCLabel (levelTimeLimitText, "arial", 30);
-			levelTimeLimitLabel.Scale = 1.5f;
-			levelTimeLimitLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 17f));
+			var levelTimeLimitLabel = new CCLabel (levelTimeLimitText, GOTHIC_44_HD_FNT);
+			levelTimeLimitLabel.Scale = 1f;
+			levelTimeLimitLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 11f));
 			levelTimeLimitLabel.AnchorPoint = CCPoint.AnchorMiddle;
 			levelTimeLimitLabel.HorizontalAlignment = CCTextAlignment.Center;
 			levelInfoLayer.AddChild (levelTimeLimitLabel);
 
-			var levelScoreToPassLabel = new CCLabel (levelScoreToPassText, "arial", 30);
-			levelScoreToPassLabel.Scale = 1.5f;
-			levelScoreToPassLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 14f));
+			var levelScoreToPassLabel = new CCLabel (levelScoreToPassText, GOTHIC_44_HD_FNT);
+			levelScoreToPassLabel.Scale = 1f;
+			levelScoreToPassLabel.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (levelDescriptionLabel.BoundingBox.Size.Height * 8f));
 			levelScoreToPassLabel.AnchorPoint = CCPoint.AnchorMiddle;
 			levelScoreToPassLabel.HorizontalAlignment = CCTextAlignment.Center;
 			levelInfoLayer.AddChild (levelScoreToPassLabel);
 
 			// set up the sprites for the OK button 
-			okStd = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_std.png")));
-			okStd.AnchorPoint = CCPoint.AnchorMiddle;
-			okSel = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("ok_sel.png")));
-			okSel.AnchorPoint = CCPoint.AnchorMiddle;
+			okLabel = new CCLabel ("OK", GOTHIC_44_HD_FNT);
+			okLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			okLabel.Scale = 2.0f;
 
 			// create the ok button menu item
-			var okMenuItem = new CCMenuItemImage (okStd, okSel, (closeSender) => {
+			var okMenuItem = new CCMenuItemLabel (okLabel, closeSender => {
 				levelInfoLayer.RemoveFromParent ();
-				hideUILayer.RemoveFromParent();
-				this.ResumeListeners (true);
+				hideUILayer.RemoveFromParent ();
+				ResumeListeners (true);
 				Application.Paused = false;
 			});
 
 			// position the ok button relative to the information frame
 			okMenuItem.AnchorPoint = CCPoint.AnchorMiddle;
-			okMenuItem.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (okStd.BoundingBox.Size.Height * 1.5f));
+			okMenuItem.Position = new CCPoint (bounds.Size.Width / 2, frameSprite.BoundingBox.MinY + (okLabel.BoundingBox.Size.Height * 1.5f));
 
 			// create the menu to close the pop up
 			var closeMenu = new CCMenu (okMenuItem);
@@ -570,15 +1098,18 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		void SetupUI ()
 		{
+			// Remember to change Build Action to BundleResource for newly added font files, etc...
 			// assign values from activeLevel properties to the GameLayer properties
 			levelNumber = activeLevel.LevelNum;
 			maxBubbles = activeLevel.MaxBubbles;
 			maxVisibleBubbles = activeLevel.MaxVisibleBubbles;
 			maxLevelPoints = activeLevel.StartingPointValue;
-			levelTimeLimit = activeLevel.MaxLevelTime;
+			levelTimeLimit = activeLevel.MaxLevelTime + activePlayer.PersistentTimeBonus;
 			levelPassScore = activeLevel.LevelPassScore;
 			tapsRequired = activeLevel.TapsToPopStandard;
 			levelVisibleBubbles = activeLevel.InitialVisibleBubbles;
+			levelChanceToRollNextSeq = activeLevel.ChanceToRollNextSeq;
+			levelChanceToRollBonus = activeLevel.ChanceToRollBonus;
 
 			//sequenceLevel = activeLevel.SequenceLevel;
 			levelTimeLeft = levelTimeLimit + 3;
@@ -590,21 +1121,9 @@ namespace BubbleBreak
 
 			uiSpriteSheet = new CCSpriteSheet ("ui.plist");
 
-			levelNameLabel = new CCLabel ("Level", "arial", 30);
-			levelNameLabel.Text = "Level " + levelNumber;
-			levelNameLabel.Scale = 1.0f;
-			levelNameLabel.PositionX = 160;
-			levelNameLabel.PositionY = 1900;
-			levelNameLabel.AnchorPoint = CCPoint.AnchorMiddleRight;
-			AddChild (levelNameLabel);
-
-			scoreLabel = new CCLabel ("Score:", "arial", 30);
-			scoreLabel.Text = levelScore + "/" + levelPassScore;
-			scoreLabel.Scale = 1.0f;
-			scoreLabel.PositionX = 160;
-			scoreLabel.PositionY = 1855;
-			scoreLabel.AnchorPoint = CCPoint.AnchorMiddleRight;
-			AddChild (scoreLabel);
+			checkmarkSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("checkmark-red.png")));
+			checkmarkSprite.AnchorPoint = CCPoint.AnchorMiddle;
+			checkmarkSprite.Scale = 1;
 
 			tapStrengthSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("tap_strength_std.png")));
 			tapStrengthSprite.PositionX = 760;
@@ -612,65 +1131,42 @@ namespace BubbleBreak
 			tapStrengthSprite.AnchorPoint = CCPoint.AnchorMiddle;
 			AddChild (tapStrengthSprite);
 
-			sequenceIndicatorSprite = new CCSprite (uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s01-linear.png")));
-			sequenceIndicatorSprite.PositionX = 880;
-			sequenceIndicatorSprite.PositionY = 1870;
-			sequenceIndicatorSprite.AnchorPoint = CCPoint.AnchorMiddle;
-			AddChild (sequenceIndicatorSprite);
-
-			sequenceTallyLabel = new CCLabel ("", "arial", 30);
-			sequenceTallyLabel.Text = seqTally.ToString ();
-			sequenceTallyLabel.Scale = 1.2f;
-			sequenceTallyLabel.PositionX = 925;
-			sequenceTallyLabel.PositionY = 1910;
-			sequenceTallyLabel.AnchorPoint = CCPoint.AnchorUpperLeft;
-			AddChild (sequenceTallyLabel);
-
-			nextInSequence = new CCLabel ("", "arial", 30);
-			nextInSequence.Text = (nextNumberInSequence == 0) ? "" : nextNumberInSequence.ToString ();
-			nextInSequence.Color = CCColor3B.Green;
-			nextInSequence.Scale = 1.2f;
-			nextInSequence.PositionX = 925;
-			nextInSequence.PositionY = 1870;
-			nextInSequence.AnchorPoint = CCPoint.AnchorUpperLeft;
-			AddChild (nextInSequence);
-
-			tapStrengthLabel = new CCLabel ("1", "arial", 30);
-			tapStrengthLabel.Text = activePlayer.TapStrength.ToString ();
+			tapStrengthLabel = new CCLabel ("1", GOTHIC_30_HD_FNT);
+			tapStrengthLabel.Text = tapStrength.ToString ();
 			tapStrengthLabel.Scale = 2.0f;
 			tapStrengthLabel.PositionX = 810;
 			tapStrengthLabel.PositionY = 1870;
 			tapStrengthLabel.AnchorPoint = CCPoint.AnchorMiddleLeft;
 			AddChild (tapStrengthLabel);
 
-			timeLabelSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("lbl_time.png")));
-			timeLabelSprite.AnchorPoint = CCPoint.AnchorMiddleLeft;
-			timeLabelSprite.PositionX = 590;
-			timeLabelSprite.PositionY = 1900;
-			AddChild (timeLabelSprite);
+			timeIDLabel = new CCLabel ("Time", GOTHIC_30_HD_FNT);
+			timeIDLabel.PositionX = 10;
+			timeIDLabel.PositionY = 1900;
+			timeIDLabel.AnchorPoint = CCPoint.AnchorMiddleLeft;
+			AddChild (timeIDLabel);
 
-			scoreLabelSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("lbl_score.png")));
-			scoreLabelSprite.AnchorPoint = CCPoint.AnchorMiddleLeft;
-			scoreLabelSprite.PositionX = 590;
-			scoreLabelSprite.PositionY = 1855;
-			AddChild (scoreLabelSprite);
+			scoreIDLabel = new CCLabel ("Score", GOTHIC_30_HD_FNT);
+			scoreIDLabel.AnchorPoint = CCPoint.AnchorMiddleLeft;
+			scoreIDLabel.PositionX = 10;
+			scoreIDLabel.PositionY = 1855;
+			AddChild (scoreIDLabel);
 
 			timeSpriteProgressBarEmpty = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("prgbar_time_empty.png")));
 			timeSpriteProgressBarEmpty.AnchorPoint = CCPoint.AnchorMiddleLeft;
-			timeSpriteProgressBarEmpty.PositionX = 170;
+			timeSpriteProgressBarEmpty.PositionX = 100;
 			timeSpriteProgressBarEmpty.PositionY = 1900;
 			AddChild (timeSpriteProgressBarEmpty);
 
 			scoreSpriteProgressBarEmpty = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("prgbar_score_empty.png")));
 			scoreSpriteProgressBarEmpty.AnchorPoint = CCPoint.AnchorMiddleLeft;
-			scoreSpriteProgressBarEmpty.PositionX = 170;
+			scoreSpriteProgressBarEmpty.PositionX = 100;
 			scoreSpriteProgressBarEmpty.PositionY = 1855;
 			AddChild (scoreSpriteProgressBarEmpty);
 
 			timeSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("prgbar_time_full.png")));
 			timeBar = new CCProgressTimer (timeSpriteProgressBarFull);
 			timeBar.AnchorPoint = CCPoint.AnchorMiddleLeft;
-			timeBar.PositionX = 170;
+			timeBar.PositionX = 100;
 			timeBar.PositionY = 1900;
 			timeBar.Percentage = 100;
 			timeBar.Midpoint = new CCPoint (0, 0);
@@ -681,48 +1177,78 @@ namespace BubbleBreak
 			scoreSpriteProgressBarFull = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("prgbar_score_full.png")));
 			scoreBar = new CCProgressTimer (scoreSpriteProgressBarFull);
 			scoreBar.AnchorPoint = CCPoint.AnchorMiddleLeft;
-			scoreBar.PositionX = 170;
+			scoreBar.PositionX = 100;
 			scoreBar.PositionY = 1855;
 			scoreBar.Midpoint = new CCPoint (0, 0);
 			scoreBar.BarChangeRate = new CCPoint (1, 0);
 			scoreBar.Type = CCProgressTimerType.Bar;
 			AddChild (scoreBar);
 
-			s01StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s01-linear.png")));
-			s01SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s01-linear-g.png")));
+			doubleScoreFadedTimerSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("timer-double-faded.png")));
+			doubleScoreFadedTimerSprite.AnchorPoint = CCPoint.AnchorMiddleLeft;
+			doubleScoreFadedTimerSprite.PositionX = 410;
+			doubleScoreFadedTimerSprite.PositionY = 1875;
+			AddChild (doubleScoreFadedTimerSprite);
 
-			s02StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s02-even.png")));
-			s02SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s02-even-g.png")));
+			tripleScoreFadedTimerSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("timer-triple-faded.png")));
+			tripleScoreFadedTimerSprite.AnchorPoint = CCPoint.AnchorMiddleLeft;
+			tripleScoreFadedTimerSprite.PositionX = 500;
+			tripleScoreFadedTimerSprite.PositionY = 1875;
+			AddChild (tripleScoreFadedTimerSprite);
 
-			s03StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s03-odd.png")));
-			s03SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s03-odd-g.png")));
+			doubleScoreTimerSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("timer-double-brite.png")));
+			doubleScoreTimer = new CCProgressTimer (doubleScoreTimerSprite);
+			doubleScoreTimer.AnchorPoint = CCPoint.AnchorMiddleLeft;
+			doubleScoreTimer.PositionX = 410;
+			doubleScoreTimer.PositionY = 1875;
+			doubleScoreTimer.Type = CCProgressTimerType.Radial;
+			doubleScoreTimer.Percentage = 0;
+			AddChild (doubleScoreTimer);
 
-			s04StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s04-triangular.png")));
-			s04SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s04-triangular-g.png")));
+			tripleScoreTimerSprite = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("timer-triple-brite.png")));
+			tripleScoreTimer = new CCProgressTimer (tripleScoreTimerSprite);
+			tripleScoreTimer.AnchorPoint = CCPoint.AnchorMiddleLeft;
+			tripleScoreTimer.PositionX = 500;
+			tripleScoreTimer.PositionY = 1875;
+			tripleScoreTimer.Type = CCProgressTimerType.Radial;
+			tripleScoreTimer.Percentage = 0;
+			AddChild (tripleScoreTimer);
 
-			s05StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s05-square.png")));
-			s05SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s05-square-g.png")));
+			s01StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s01-linear.png")));
+			s01SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s01-linear-g.png")));
 
-			s06StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s06-lazy.png")));
-			s06SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s06-lazy-g.png")));
+			s02StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s02-even.png")));
+			s02SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s02-even-g.png")));
 
-			s07StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s07-fibonacci.png")));
-			s07SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s07-fibonacci-g.png")));
+			s03StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s03-odd.png")));
+			s03SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s03-odd-g.png")));
 
-			s08StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s08-prime.png")));
-			s08SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s08-prime-g.png")));
+			s04StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s04-triangular.png")));
+			s04SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s04-triangular-g.png")));
 
-			s09StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s09-double.png")));
-			s09SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s09-double-g.png")));
+			s05StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s05-square.png")));
+			s05SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s05-square-g.png")));
 
-			s10StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s10-triple.png")));
-			s10SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s10-triple-g.png")));
+			s06StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s06-lazy.png")));
+			s06SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s06-lazy-g.png")));
 
-			s11StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s11-pi.png")));
-			s11SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s11-pi-g.png")));
+			s07StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s07-fibonacci.png")));
+			s07SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s07-fibonacci-g.png")));
 
-			s12StdSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s12-recaman.png")));
-			s12SelSprite = new CCSprite(uiSpriteSheet.Frames.Find ((x) => x.TextureFilename.Equals ("s12-recaman-g.png")));
+			s08StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s08-prime.png")));
+			s08SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s08-prime-g.png")));
+
+			s09StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s09-double.png")));
+			s09SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s09-double-g.png")));
+
+			s10StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s10-triple.png")));
+			s10SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s10-triple-g.png")));
+
+			s11StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s11-pi.png")));
+			s11SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s11-pi-g.png")));
+
+			s12StdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s12-recaman.png")));
+			s12SelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("s12-recaman-g.png")));
 
 			var s01StdMenuItem = new CCMenuItemImage (s01StdSprite, s01SelSprite, SeqMenuCallback) {
 				UserData = "Linear",
@@ -761,7 +1287,7 @@ namespace BubbleBreak
 				UserData = "Recaman",
 			};
 
-			List<CCMenuItemImage> seqMenuItems = new List<CCMenuItemImage> ();
+			var seqMenuItems = new List<CCMenuItemImage> ();
 			seqMenuItems.Add (s01StdMenuItem);
 			seqMenuItems.Add (s02StdMenuItem);
 			seqMenuItems.Add (s03StdMenuItem);
@@ -779,20 +1305,20 @@ namespace BubbleBreak
 				seqMenuItems [i].Visible = false;
 			}
 
-			var seqMenu01 = new CCMenu (s01StdMenuItem);
-			var seqMenu02 = new CCMenu (s02StdMenuItem);
-			var seqMenu03 = new CCMenu (s03StdMenuItem);
-			var seqMenu04 = new CCMenu (s04StdMenuItem);
-			var seqMenu05 = new CCMenu (s05StdMenuItem);
-			var seqMenu06 = new CCMenu (s06StdMenuItem);
-			var seqMenu07 = new CCMenu (s07StdMenuItem);
-			var seqMenu08 = new CCMenu (s08StdMenuItem);
-			var seqMenu09 = new CCMenu (s09StdMenuItem);
-			var seqMenu10 = new CCMenu (s10StdMenuItem);
-			var seqMenu11 = new CCMenu (s11StdMenuItem);
-			var seqMenu12 = new CCMenu (s12StdMenuItem);
+			seqMenu01 = new CCMenu (s01StdMenuItem);
+			seqMenu02 = new CCMenu (s02StdMenuItem);
+			seqMenu03 = new CCMenu (s03StdMenuItem);
+			seqMenu04 = new CCMenu (s04StdMenuItem);
+			seqMenu05 = new CCMenu (s05StdMenuItem);
+			seqMenu06 = new CCMenu (s06StdMenuItem);
+			seqMenu07 = new CCMenu (s07StdMenuItem);
+			seqMenu08 = new CCMenu (s08StdMenuItem);
+			seqMenu09 = new CCMenu (s09StdMenuItem);
+			seqMenu10 = new CCMenu (s10StdMenuItem);
+			seqMenu11 = new CCMenu (s11StdMenuItem);
+			seqMenu12 = new CCMenu (s12StdMenuItem);
 
-			List<CCMenu> seqMenus = new List<CCMenu>();
+			var seqMenus = new List<CCMenu>();
 			seqMenus.Add (seqMenu01); 
 			seqMenus.Add (seqMenu02); 
 			seqMenus.Add (seqMenu03); 
@@ -807,42 +1333,19 @@ namespace BubbleBreak
 			seqMenus.Add (seqMenu12); 
 
 			foreach (var seq in availableSequences) {
-				if (seq == Sequences.Linear) {
-					s01StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Even) {
-					s02StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Odd) {
-					s03StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Triangular) {
-					s04StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Square) {
-					s05StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Lazy) {
-					s06StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Fibonacci) {
-					s07StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Prime) {
-					s08StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Double) {
-					s09StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Triple) {
-					s10StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Pi) {
-					s11StdMenuItem.Visible = true;
-				} 
-				if (seq == Sequences.Recaman) {
-					s12StdMenuItem.Visible = true;
-				} 
+				s01StdMenuItem.Visible |= seq == Sequences.Linear; 
+				s02StdMenuItem.Visible |= seq == Sequences.Even; 
+				s03StdMenuItem.Visible |= seq == Sequences.Odd; 
+				s04StdMenuItem.Visible |= seq == Sequences.Triangular; 
+				s05StdMenuItem.Visible |= seq == Sequences.Square; 
+				s06StdMenuItem.Visible |= seq == Sequences.Lazy; 
+				s07StdMenuItem.Visible |= seq == Sequences.Fibonacci; 
+				s08StdMenuItem.Visible |= seq == Sequences.Prime; 
+				s09StdMenuItem.Visible |= seq == Sequences.Double; 
+				s10StdMenuItem.Visible |= seq == Sequences.Triple; 
+				s11StdMenuItem.Visible |= seq == Sequences.Pi; 
+				s12StdMenuItem.Visible |= seq == Sequences.Recaman;
+				s12StdMenuItem.Visible |= seq == Sequences.Recaman;
 			}
 
 			for (int i = 0; i < seqMenus.Count; i++) {
@@ -850,9 +1353,319 @@ namespace BubbleBreak
 				seqMenus [i].AnchorPoint = CCPoint.AnchorUpperLeft;
 				seqMenus [i].IgnoreAnchorPointForPosition = false;
 				seqMenus [i].PositionX = 40;
-				seqMenus [i].PositionY = 1870 - (i * 150);
+				seqMenus [i].PositionY = 1850 - (i * 150);
 				AddChild (seqMenus[i]);
 			}
+				
+			checkpointStdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_std_checkpoint.png")));
+			checkpointSelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_sel_checkpoint.png")));
+			additionStdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_std_addition.png")));
+			additionSelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_sel_addition.png")));
+			subtractionStdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_std_subtraction.png")));
+			subtractionSelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_sel_subtraction.png")));
+			nextInSequenceStdSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_std_nextinseq.png")));
+			nextInSequenceSelSprite = new CCSprite(uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("sprite_sel_nextinseq.png")));
+
+			checkpointsCountLabel = new CCLabel (availableCheckpoints.ToString (), GOTHIC_30_HD_FNT) {
+				AnchorPoint = CCPoint.AnchorLowerLeft,
+				Scale = 1f,
+			};
+			var checkpointsLabelMenuItem = new CCMenuItemLabel (checkpointsCountLabel);
+			checkpointsLabelMenuItem.AnchorPoint = CCPoint.AnchorUpperLeft;
+
+			additionsCountLabel = new CCLabel (availableAdditions.ToString (), GOTHIC_30_HD_FNT) {
+				AnchorPoint = CCPoint.AnchorLowerLeft,
+				Scale = 1f
+			};
+			var additionsLabelMenuItem = new CCMenuItemLabel (additionsCountLabel);
+			additionsLabelMenuItem.AnchorPoint = CCPoint.AnchorUpperLeft;
+
+			subtractionsCountLabel = new CCLabel (availableSubtractions.ToString (), GOTHIC_30_HD_FNT) {
+				AnchorPoint = CCPoint.AnchorLowerLeft,
+				Scale = 1f
+			};
+			var subtractionsLabelMenuItem = new CCMenuItemLabel (subtractionsCountLabel);
+			subtractionsLabelMenuItem.AnchorPoint = CCPoint.AnchorUpperLeft;
+
+			nextInSequencesCountLabel = new CCLabel (availableNextInSeq.ToString (), GOTHIC_30_HD_FNT) {
+				AnchorPoint = CCPoint.AnchorMiddle,
+				Scale = 1f
+			};
+			var nextInSequencesLabelMenuItem = new CCMenuItemLabel (nextInSequencesCountLabel);
+			nextInSequencesLabelMenuItem.AnchorPoint = CCPoint.AnchorUpperLeft;
+
+
+			var menuItemCheckpoint = new CCMenuItemImage (checkpointStdSprite, checkpointSelSprite, ConsumableMenuCallback) {
+				UserData = "checkpoint",
+			};
+			var menuItemAddition = new CCMenuItemImage (additionStdSprite, additionSelSprite, ConsumableMenuCallback) {
+				UserData = "addition",
+			};
+			var menuItemSubtraction = new CCMenuItemImage (subtractionStdSprite, subtractionSelSprite, ConsumableMenuCallback) {
+				UserData = "subtraction",
+			};
+			var menuItemNextInSeq = new CCMenuItemImage (nextInSequenceStdSprite, nextInSequenceSelSprite, ConsumableMenuCallback) {
+				UserData = "next_in_seq",
+			};
+
+			var consumableMenuItems = new List<CCMenuItemImage> ();
+			consumableMenuItems.Add (menuItemCheckpoint);
+			consumableMenuItems.Add (menuItemAddition);
+			consumableMenuItems.Add (menuItemSubtraction);
+			consumableMenuItems.Add (menuItemNextInSeq);
+
+			menuCheckpoint = new CCMenu (menuItemCheckpoint, checkpointsLabelMenuItem);
+			menuAddition = new CCMenu (menuItemAddition, additionsLabelMenuItem);
+			menuSubtraction = new CCMenu (menuItemSubtraction, subtractionsLabelMenuItem);
+			menuNextInSeq = new CCMenu (menuItemNextInSeq, nextInSequencesLabelMenuItem);
+
+			var consumableMenus = new List<CCMenu>();
+			consumableMenus.Add (menuCheckpoint);
+			consumableMenus.Add (menuAddition);
+			consumableMenus.Add (menuSubtraction);
+			consumableMenus.Add (menuNextInSeq);
+
+			for (int i = 0; i < consumableMenus.Count; i++) {
+				consumableMenus [i].AlignItemsHorizontally (-10);
+				consumableMenus [i].AnchorPoint = CCPoint.AnchorLowerLeft;
+				consumableMenus [i].IgnoreAnchorPointForPosition = false;
+				consumableMenus [i].PositionX = 160 + (i * 200);
+				consumableMenus [i].PositionY = 50;
+				AddChild (consumableMenus[i]);
+			}
+
+			additionsNumbersLabel = new CCLabel (string.Empty, GOTHIC_30_HD_FNT);
+			additionsNumbersLabel.AnchorPoint = CCPoint.AnchorMiddleBottom;
+			additionsNumbersLabel.Scale = 1.0f;
+			additionsNumbersLabel.PositionX = menuItemAddition.PositionWorldspace.X;
+			additionsNumbersLabel.PositionY = menuItemAddition.PositionWorldspace.Y + menuItemAddition.ContentSize.Center.Y;
+			AddChild (additionsNumbersLabel);
+
+			subtractionsNumbersLabel = new CCLabel (string.Empty, GOTHIC_30_HD_FNT);
+			subtractionsNumbersLabel.AnchorPoint = CCPoint.AnchorMiddleBottom;
+			subtractionsNumbersLabel.Scale = 1.0f;
+			subtractionsNumbersLabel.PositionX = menuItemSubtraction.PositionWorldspace.X;
+			subtractionsNumbersLabel.PositionY = menuItemSubtraction.PositionWorldspace.Y + menuItemSubtraction.ContentSize.Center.Y;
+			AddChild (subtractionsNumbersLabel);
+
+			sequenceTotalLabel = new CCLabel ("", "arial", 30);
+			sequenceTotalLabel.Color = CCColor3B.Yellow;
+			sequenceTotalLabel.Text = sequenceTotal.ToString ();
+			sequenceTotalLabel.Scale = 1f;
+			sequenceTotalLabel.Position = GetSequenceTotalPosition (currentSequence);
+			sequenceTotalLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			AddChild (sequenceTotalLabel);
+
+			nextInSequenceLabel = new CCLabel ("", "arial", 30); 
+			nextInSequenceLabel.Text = (nextNumberInSequence == 0) ? "" : nextNumberInSequence.ToString ();
+			nextInSequenceLabel.Color = CCColor3B.Green;
+			nextInSequenceLabel.Scale = 1f;
+			nextInSequenceLabel.Position = GetNextInSequencePosition (currentSequence);
+			nextInSequenceLabel.AnchorPoint = CCPoint.AnchorMiddle;
+			AddChild (nextInSequenceLabel);
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// GetSequenceMenu
+		//---------------------------------------------------------------------------------------------------------
+		// Takes a sequence enum and returns the sequence menu
+		//---------------------------------------------------------------------------------------------------------
+		CCMenu GetSequenceMenu (Sequences theCurrentSequence)
+		{
+			var menuToReturn = new CCMenu ();
+
+			switch (theCurrentSequence) {
+			case Sequences.Linear:
+				{
+					menuToReturn = seqMenu01;
+					break;
+				}
+			case Sequences.Even:
+				{
+					menuToReturn = seqMenu02;
+					break;
+				}
+			case Sequences.Odd:
+				{
+					menuToReturn = seqMenu03;
+					break;
+				}
+			case Sequences.Triangular:
+				{
+					menuToReturn = seqMenu04;
+					break;
+				}
+			case Sequences.Square:
+				{
+					menuToReturn = seqMenu05;
+					break;
+				}
+			case Sequences.Lazy:
+				{
+					menuToReturn = seqMenu06;
+					break;
+				}
+			case Sequences.Fibonacci:
+				{
+					menuToReturn = seqMenu07;
+					break;
+				}
+			case Sequences.Prime:
+				{
+					menuToReturn = seqMenu08;
+					break;
+				}
+			case Sequences.Double:
+				{
+					menuToReturn = seqMenu09;
+					break;
+				}
+			case Sequences.Triple:
+				{
+					menuToReturn = seqMenu10;
+					break;
+				}
+			case Sequences.Pi:
+				{
+					menuToReturn = seqMenu11;
+					break;
+				}
+			case Sequences.Recaman:
+				{
+					menuToReturn = seqMenu12;
+					break;
+				}
+			}
+			return menuToReturn;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// GetCheckmarkPosition
+		//---------------------------------------------------------------------------------------------------------
+		// Find the correct position for the green checkmark to indicate a sequence checkpoint
+		//---------------------------------------------------------------------------------------------------------
+		CCPoint GetCheckmarkPosition (Sequences theCurrentSequence)
+		{
+			var newPoint = new CCPoint ();
+			CCMenu seqMenu;
+
+			seqMenu = GetSequenceMenu (theCurrentSequence);
+			newPoint.X = seqMenu.PositionWorldspace.X + (seqMenu.ContentSize.Width / 3);
+			newPoint.Y = seqMenu.PositionWorldspace.Y - (seqMenu.ContentSize.Height / 0.8f); 
+
+			return newPoint;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// GetSequenceTotalPosition
+		//---------------------------------------------------------------------------------------------------------
+		// Find the correct position for SequenceTotal based on selected sequence (should be below)
+		//---------------------------------------------------------------------------------------------------------
+		CCPoint GetSequenceTotalPosition (Sequences theCurrentSequence)
+		{
+			var newPoint = new CCPoint ();
+			CCMenu seqMenu;
+
+			seqMenu = GetSequenceMenu (theCurrentSequence);
+			newPoint.X = seqMenu.PositionWorldspace.X;
+			newPoint.Y = seqMenu.PositionWorldspace.Y - ((seqMenu.ContentSize.Height * 1.5f)+5); 
+
+			return newPoint;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// GetNextInSequencePosition
+		//---------------------------------------------------------------------------------------------------------
+		// Find correct position for NextInSeqLabel.  Should be on top
+		//---------------------------------------------------------------------------------------------------------
+		CCPoint GetNextInSequencePosition (Sequences theCurrentSequence)
+		{
+			var newPoint = new CCPoint ();
+			CCMenu seqMenu;
+
+			seqMenu = GetSequenceMenu (theCurrentSequence);
+			newPoint.X = seqMenu.PositionWorldspace.X;
+			newPoint.Y = seqMenu.PositionWorldspace.Y - ((seqMenu.ContentSize.Height / 2)-5); 
+
+			return newPoint;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// ConsumableMenuCallback
+		//---------------------------------------------------------------------------------------------------------
+		// Callback when consumable UI icon is touched
+		//---------------------------------------------------------------------------------------------------------
+
+		void ConsumableMenuCallback (object pSender)
+		{
+			var sentMenuItem = (CCMenuItemImage)pSender;
+			var consumableTypeString = sentMenuItem.UserData.ToString ();
+
+			switch (consumableTypeString) {
+			case "checkpoint":
+				{
+					if (availableCheckpoints > 0) {
+						if (checkpointDepth != seqDepth) { 
+							availableCheckpoints--;
+							isCheckpointActive = true;
+							checkpointSequence = nextNumberInSequence;
+							checkpointDepth = seqDepth;
+							ExpandLabel ("Checkpoint!", menuCheckpoint.PositionWorldspace);
+							RemoveChild (checkmarkSprite);
+							checkmarkSprite.Position = GetCheckmarkPosition (currentSequence);
+							AddChild (checkmarkSprite);
+						}
+					}  
+					break;
+				}
+			case "addition":
+				{
+					if ((availableAdditions > 0) && (pointState != PointState.Addition)) {
+						additionsCountLabel.Color = CCColor3B.Orange;
+						subtractionsCountLabel.Color = CCColor3B.White;
+						additionsCountLabel.Scale = 1.2f;
+						subtractionsCountLabel.Scale = 1.0f;
+						pointState = PointState.Addition;
+					} else if ((availableAdditions > 0) && (pointState == PointState.Addition)) {
+						additionsCountLabel.Color = CCColor3B.White;
+						additionsCountLabel.Scale = 1.0f;
+						pointState = PointState.None;
+					}
+					break;
+				}
+			case "subtraction":
+				{
+					if ((availableSubtractions > 0) && (pointState != PointState.Subtraction)) {
+						subtractionsCountLabel.Color = CCColor3B.Orange;
+						additionsCountLabel.Color = CCColor3B.White;
+						subtractionsCountLabel.Scale = 1.2f;
+						additionsCountLabel.Scale = 1.0f;
+						pointState = PointState.Subtraction;
+					} else if ((availableSubtractions > 0) && (pointState == PointState.Subtraction)) {
+						subtractionsCountLabel.Color = CCColor3B.White;
+						subtractionsCountLabel.Scale = 1.0f;
+						pointState = PointState.None;
+					}
+					break;
+				}
+			case "next_in_seq":
+				{
+					if (availableNextInSeq > 0) {
+						regularTotal += nextNumberInSequence * bonusDoubleMultiplier * bonusTripleMultiplier;
+						levelScore = regularTotal + sequenceTotal;
+						lastEarnedPoint = nextNumberInSequence;
+						MovePointLabel (menuNextInSeq, scoreBar, lastEarnedPoint);
+						var seqBonusAmount = CheckForSequenceBonus (lastEarnedPoint, nextNumberInSequence, currentSequence);
+						if (seqBonusAmount != 0)
+							sequenceTotal += seqBonusAmount;
+						availableNextInSeq--;
+						UpdateLabels ();
+					}
+					break;
+				}
+			}
+
+			UpdateConsumablesDisplay ();
 		}
 
 		//---------------------------------------------------------------------------------------------------------
@@ -862,218 +1675,171 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		void SeqMenuCallback (object pSender)
 		{
-			CCMenuItemImage sentMenuItem = (CCMenuItemImage)pSender;
+			var sentMenuItem = (CCMenuItemImage)pSender;
 			var seqTypeString = sentMenuItem.UserData.ToString ();
-			var spritePos = sequenceIndicatorSprite.Position;
 			switch (seqTypeString) {
 			case "Linear":
 				{
 					if (selectedSequence != Sequences.Linear) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Linear;
-						sequenceIndicatorSprite = s01StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Linear;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Even":
 				{
 					if (selectedSequence != Sequences.Even) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Even;
-						sequenceIndicatorSprite = s02StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Even;
 						nextNumberInSequence = 2;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Odd":
 					{
 					if (selectedSequence != Sequences.Odd) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Odd;
-						sequenceIndicatorSprite = s03StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Odd;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Triangular":
 				{
 					if (selectedSequence != Sequences.Triangular) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Triangular;
-						sequenceIndicatorSprite = s04StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Triangular;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Square":
 				{
 					if (selectedSequence != Sequences.Square) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Square;
-						sequenceIndicatorSprite = s05StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Square;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Lazy":
 				{
 					if (selectedSequence != Sequences.Lazy) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Lazy;
-						sequenceIndicatorSprite = s06StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Lazy;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Fibonacci":
 				{
 					if (selectedSequence != Sequences.Fibonacci) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Fibonacci;
-						sequenceIndicatorSprite = s07StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Fibonacci;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Prime":
 				{
 					if (selectedSequence != Sequences.Prime) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Prime;
-						sequenceIndicatorSprite = s08StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Prime;
 						nextNumberInSequence = 2;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Double":
 				{
 					if (selectedSequence != Sequences.Double) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Double;
-						sequenceIndicatorSprite = s09StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Double;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Triple":
 				{
 					if (selectedSequence != Sequences.Triple) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Triple;
-						sequenceIndicatorSprite = s10StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Triple;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Pi":
 				{
 					if (selectedSequence != Sequences.Pi) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Pi;
-						sequenceIndicatorSprite = s11StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Pi;
 						nextNumberInSequence = 3;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
 			case "Recaman":
 				{
 					if (selectedSequence != Sequences.Recaman) {
-						sequenceIndicatorSprite.RemoveFromParent ();
 						currentSequence = Sequences.Recaman;
-						sequenceIndicatorSprite = s12StdSprite;
-						sequenceIndicatorSprite.Position = spritePos;
-						AddChild (sequenceIndicatorSprite);
 						selectedSequence = Sequences.Recaman;
 						nextNumberInSequence = 1;
-						nextInSequence.Text = nextNumberInSequence.ToString ();
-						seqTally = 0;
-						sequenceTallyLabel.Text = seqTally.ToString ();
-						this.seqDepth = 0;
+						nextInSequenceLabel.Text = nextNumberInSequence.ToString ();
+						seqDepth = 0;
+						isCheckpointActive = false;
+						checkpointDepth = 0;
 					}
 					break;
 				}
-				
-			default:
-				break;
 			}
+			sequenceTotalLabel.Position = GetSequenceTotalPosition (currentSequence); 
+			nextInSequenceLabel.Position = GetNextInSequencePosition (currentSequence);
+
+			if (!isCheckpointActive)
+				RemoveChild (checkmarkSprite);
 		}
 
 		//---------------------------------------------------------------------------------------------------------
@@ -1088,7 +1854,7 @@ namespace BubbleBreak
 			var menuSel = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("gear_sel.png")));
 			menuSel.AnchorPoint = CCPoint.AnchorMiddle;
 			var optionPopup = new CCMenuItemImage (menuStd, menuSel, sender =>  {
-				this.PauseListeners (true);
+				PauseListeners (true);
 				Application.Paused = true;
 				var menuLayer = new CCLayerColor (new CCColor4B (0, 0, 0, 200));
 				AddChild (menuLayer, 99999);
@@ -1097,27 +1863,65 @@ namespace BubbleBreak
 				frameSprite.AnchorPoint = CCPoint.AnchorMiddle;
 				frameSprite.Position = new CCPoint (bounds.Size.Width / 2, bounds.Size.Height / 2);
 				menuLayer.AddChild (frameSprite);
-				okStd = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("ok_std.png")));
-				okStd.AnchorPoint = CCPoint.AnchorMiddle;
-				okSel = new CCSprite (uiSpriteSheet.Frames.Find (x => x.TextureFilename.Equals ("ok_sel.png")));
-				okSel.AnchorPoint = CCPoint.AnchorMiddle;
-				var closeItem = new CCMenuItemImage (okStd, okSel, closeSender =>  {
+
+				var highlightOnLabel = new CCLabel ("Highlight Next: On", GOTHIC_56_WHITE_FNT) {
+					AnchorPoint = CCPoint.AnchorMiddle,
+					Scale = 2.0f
+				};
+				var highlightOffLabel = new CCLabel ("Highlight Next: Off", GOTHIC_56_WHITE_FNT) {
+					AnchorPoint = CCPoint.AnchorMiddle,
+					Scale = 2.0f
+				};
+
+				var highlightOnMenuItem = new CCMenuItemLabel (highlightOnLabel);  
+				var highlightOffMenuItem = new CCMenuItemLabel (highlightOffLabel);
+
+				highlightToggleMenuItem = new CCMenuItemToggle (ToggleHighlight, highlightOnMenuItem, highlightOffMenuItem);
+				highlightToggleMenuItem.Enabled = activePlayer.HighlightNextPurchased;
+				highlightToggleMenuItem.PositionX = frameSprite.BoundingBox.MidX;
+				highlightToggleMenuItem.PositionY = frameSprite.BoundingBox.MinY + (highlightToggleMenuItem.BoundingBox.Size.Height * 10f);
+				highlightToggleMenuItem.SelectedIndex = (playerHighlightNext) ? 0 : 1;
+
+				var optionMenu = new CCMenu (highlightToggleMenuItem);
+				optionMenu.AnchorPoint = CCPoint.AnchorMiddleBottom;
+				optionMenu.Position = CCPoint.Zero;
+				menuLayer.AddChild (optionMenu);
+
+				okLabel = new CCLabel ("OK", GOTHIC_44_HD_FNT);
+				okLabel.AnchorPoint = CCPoint.AnchorMiddle;
+				okLabel.Scale = 2.0f;
+
+				var closeItem = new CCMenuItemLabel (okLabel, closeSender => {
 					menuLayer.RemoveFromParent ();
-					this.ResumeListeners (true);
+					ResumeListeners (true);
 					Application.Paused = false;
 				});
-				closeItem.Position = bounds.Center;
+
+				closeItem.PositionX = frameSprite.BoundingBox.MidX;
+				closeItem.PositionY = frameSprite.BoundingBox.MinY + (closeItem.BoundingBox.Size.Height * 1.5f);
+
 				var closeMenu = new CCMenu (closeItem);
 				closeMenu.AnchorPoint = CCPoint.AnchorMiddleBottom;
 				closeMenu.Position = CCPoint.Zero;
+
 				menuLayer.AddChild (closeMenu);
 			});
 			optionPopup.AnchorPoint = CCPoint.AnchorUpperRight;
 			//optionPopup.Position = new CCPoint(bounds.Size.Width / 10, bounds.Size.Height / 14);
-			var optionMenu = new CCMenu (optionPopup);
-			optionMenu.AnchorPoint = CCPoint.AnchorUpperRight;
-			optionMenu.Position = new CCPoint (1080, 1920);
-			AddChild (optionMenu);
+			var optionsMenu = new CCMenu (optionPopup);
+			optionsMenu.AnchorPoint = CCPoint.AnchorUpperRight;
+			optionsMenu.Position = new CCPoint (1080, 1920);
+			AddChild (optionsMenu);
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// ToggleHighlight
+		//---------------------------------------------------------------------------------------------------------
+		// Used to toggle the "Highlight Next Bubble In Sequence" option to "On" if they have purchased it
+		//---------------------------------------------------------------------------------------------------------
+		void ToggleHighlight (object obj)
+		{
+			playerHighlightNext = !playerHighlightNext;
 		}
 
 		//---------------------------------------------------------------------------------------------------------
@@ -1129,29 +1933,29 @@ namespace BubbleBreak
 		{
 			availableSequences = new List<Sequences>();
 
-			if (activeLevel.SeqLinear)
+			if (thisLevel.SeqLinear)
 				availableSequences.Add (Sequences.Linear);
-			if (activeLevel.SeqEven)
+			if (thisLevel.SeqEven)
 				availableSequences.Add (Sequences.Even);
-			if (activeLevel.SeqOdd)
+			if (thisLevel.SeqOdd)
 				availableSequences.Add (Sequences.Odd);
-			if (activeLevel.SeqTriangular)
+			if (thisLevel.SeqTriangular)
 				availableSequences.Add (Sequences.Triangular);
-			if (activeLevel.SeqSquare)
+			if (thisLevel.SeqSquare)
 				availableSequences.Add (Sequences.Square);
-			if (activeLevel.SeqLazy)
+			if (thisLevel.SeqLazy)
 				availableSequences.Add (Sequences.Lazy);
-			if (activeLevel.SeqFibonacci)
+			if (thisLevel.SeqFibonacci)
 				availableSequences.Add (Sequences.Fibonacci);
-			if (activeLevel.SeqPrime)
+			if (thisLevel.SeqPrime)
 				availableSequences.Add (Sequences.Prime);
-			if (activeLevel.SeqDouble)
+			if (thisLevel.SeqDouble)
 				availableSequences.Add (Sequences.Double);
-			if (activeLevel.SeqTriple)
+			if (thisLevel.SeqTriple)
 				availableSequences.Add (Sequences.Triple);
-			if (activeLevel.SeqPi)
+			if (thisLevel.SeqPi)
 				availableSequences.Add (Sequences.Pi);
-			if (activeLevel.SeqRecaman)
+			if (thisLevel.SeqRecaman)
 				availableSequences.Add (Sequences.Recaman);
 		}
 	
@@ -1171,16 +1975,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 2 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 2 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
@@ -1189,16 +1993,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 2) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 2) ? 4 : 2; 
-						this.seqDepth = (pointValue == 2) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 2) ? 4 : 2); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 2) ? 1 : 0);
 					}
 					break;
 				}
@@ -1207,16 +2011,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 3 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 3 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
@@ -1225,16 +2029,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-							this.nextNumberInSequence = (pointValue == 1) ? 3 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 3 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
@@ -1243,16 +2047,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 4 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 4 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
@@ -1261,39 +2065,38 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 2 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 2 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
 			case Sequences.Fibonacci:
 				{
 					if (pointValue == nextNumberInSequence) {
-						if (pointValue == 1 && this.seqDepth == 0) {
+						if (pointValue == 1 && seqDepth == 0) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
+						} else if (pointValue == 1 && seqDepth == 1) {
+							pointsAwarded = 1;
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth += 1;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						if (pointValue == 1 && this.seqDepth == 2) {
-							this.nextNumberInSequence = 1; 
-							this.seqDepth = 1;
-						} else {
-							this.nextNumberInSequence = 1;
-							this.seqDepth = 0;
-						}
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence : 1;
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
@@ -1302,16 +2105,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 2) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 2) ? 3 : 2; 
-						this.seqDepth = (pointValue == 2) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 2) ? 3 : 2); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 2) ? 1 : 0);
 					}
 					break;
 				}
@@ -1320,16 +2123,16 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 2 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 2 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
@@ -1338,57 +2141,55 @@ namespace BubbleBreak
 					if (pointValue == nextNumberInSequence) {
 						if (pointValue == 1) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 3 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 3 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
 			case Sequences.Pi:
 				{
 					if (pointValue == nextNumberInSequence) {
-						if (pointValue == 3 && this.seqDepth == 0) {
+						if (pointValue == 3 && seqDepth == 0) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 3) ? 1 : 3; 
-						this.seqDepth = (pointValue == 3) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 3) ? 1 : 3); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 3) ? 1 : 0);
 					}
 					break;
 				}
 			case Sequences.Recaman:
 				{
 					if (pointValue == nextNumberInSequence) {
-						if (pointValue == 1 && this.seqDepth == 0) {
+						if (pointValue == 1 && seqDepth == 0) {
 							pointsAwarded = 0;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						} else {
 							pointsAwarded = nextNumberInSequence;
-							this.seqDepth++;
-							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, this.seqDepth);
+							seqDepth++;
+							this.nextNumberInSequence = GetNextSequenceNumber (currentSequence, nextNumberInSequence, seqDepth);
 						}
 					} else {
-						this.nextNumberInSequence = (pointValue == 1) ? 3 : 1; 
-						this.seqDepth = (pointValue == 1) ? 1 : 0;
+						this.nextNumberInSequence = (isCheckpointActive) ? checkpointSequence :((pointValue == 1) ? 3 : 1); 
+						seqDepth = (isCheckpointActive) ? checkpointDepth :((pointValue == 1) ? 1 : 0);
 					}
 					break;
 				}
-			default:
-				break;
 			}
 
 			return pointsAwarded;
@@ -1468,12 +2269,9 @@ namespace BubbleBreak
 				}
 			case Sequences.Recaman:
 				{
-					//TODO debug when we tap 1 after sequence has started
 					nextNumber = listOfRecamans [sequenceDepth];
 					break;
 				}
-			default:
-				break;
 			}
 
 			return nextNumber;
@@ -1484,9 +2282,9 @@ namespace BubbleBreak
 		//---------------------------------------------------------------------------------------------------------
 		// Generate the Recaman's sequence up to x iterations
 		//---------------------------------------------------------------------------------------------------------
-		public List<int> recamanSeq(int maxValues)
+		public List<int> recamanSeq()
 		{
-			List<int> sequenceList = new List<int> (new int[] {
+			var sequenceList = new List<int> (new [] {
 				1, 3, 6, 2, 7, 13, 20, 12, 21, 11, 22, 10, 23,
 				9, 24, 8, 25, 43, 62, 42, 63, 41, 18, 42, 17, 
 				43, 16, 44, 15, 45, 14, 46, 79, 113, 78, 114, 
@@ -1496,6 +2294,51 @@ namespace BubbleBreak
 			});
 
 			return sequenceList;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// BubbleTypeToCreate
+		//---------------------------------------------------------------------------------------------------------
+		// Determines if we create a point bubble or a bonus bubble
+		//
+		// Default chance of getting a bonus bubble is 1%
+		//---------------------------------------------------------------------------------------------------------
+		public BubbleType BubbleTypeToCreate (int bonusModifyer)
+		{
+			BubbleType createThisTypeOfBubble = BubbleType.Point;
+			var randomPick = CCRandom.GetRandomInt (1, 5000); // make this higher to decrease frequency of bonus bubbles
+
+			if (randomPick <= bonusModifyer) {
+				createThisTypeOfBubble = BubbleType.Bonus;
+			}
+
+			return createThisTypeOfBubble;
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// UpdateLabels
+		//---------------------------------------------------------------------------------------------------------
+		// Update various UI Labels
+		//---------------------------------------------------------------------------------------------------------
+		void UpdateLabels ()
+		{
+			sequenceTotalLabel.Text = sequenceTotal.ToString ();
+			nextInSequenceLabel.Text = (nextNumberInSequence == 0) ? "" : nextNumberInSequence.ToString ();
+			tapStrength = levelTapStrength + playerTapStrength;
+			tapStrengthLabel.Text = tapStrength.ToString ();
+		}
+
+		//---------------------------------------------------------------------------------------------------------
+		// UpdateConsumablesDisplay
+		//---------------------------------------------------------------------------------------------------------
+		// Updates the labels depicting the consumables count
+		//---------------------------------------------------------------------------------------------------------
+		void UpdateConsumablesDisplay()
+		{
+			checkpointsCountLabel.Text = availableCheckpoints.ToString ();
+			additionsCountLabel.Text = availableAdditions.ToString ();
+			subtractionsCountLabel.Text = availableSubtractions.ToString ();
+			nextInSequencesCountLabel.Text = availableNextInSeq.ToString ();
 		}
 	}
 }

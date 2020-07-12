@@ -1,7 +1,15 @@
-﻿using System;
+﻿//---------------------------------------------------------------------------------------------
+// <copyright file="AppDelegate.cs" company="RetroTek Software Ltd">
+//     Copyright (C) 2016 RetroTek Software Ltd. All rights reserved.
+// </copyright>
+// <author>Jared Mathes</author>
+//---------------------------------------------------------------------------------------------
+
+using System;
 using Foundation;
 using UIKit;
 using CocosSharp;
+using AudioToolbox;
 
 namespace BubbleBreak
 {
@@ -18,6 +26,7 @@ namespace BubbleBreak
 		//
 		// You have 17 seconds to return from this method, or iOS will terminate your application.
 		//
+
 		public override void FinishedLaunching (UIApplication app)
 		{
 			CCApplication application = new CCApplication ();
@@ -28,6 +37,11 @@ namespace BubbleBreak
 
 		static void Main (string[] args)
 		{
+			// the AudioSession code must be placed here to work properly
+			AudioSession.Initialize ();
+			AudioSession.Category = AudioSessionCategory.AmbientSound;
+			AudioSession.SetActive(true);
+		
 			UIApplication.Main (args, null, "AppDelegate");
 		}
 	}

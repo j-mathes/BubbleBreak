@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace BubbleBreak
 {
 	public enum Sequences

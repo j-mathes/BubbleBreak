@@ -1,4 +1,11 @@
-﻿using System;
+﻿//---------------------------------------------------------------------------------------------
+// <copyright file="Unused.cs" company="RetroTek Software Ltd">
+//     Copyright (C) 2016 RetroTek Software Ltd. All rights reserved.
+// </copyright>
+// <author>Jared Mathes</author>
+//---------------------------------------------------------------------------------------------
+
+using System;
 using CocosSharp;
 
 namespace BubbleBreak
@@ -46,7 +53,7 @@ namespace BubbleBreak
 		// Used to compare overlaping rectangles of two objects to determine if they collide or not.  If they do
 		// return a vector to move the object so it won't overlap
 		//---------------------------------------------------------------------------------------------------------
-		CCVector2 GetSeparatingVector(CCRect first, CCRect second)
+		static CCVector2 GetSeparatingVector(CCRect first, CCRect second)
 		{
 			CCVector2 separation = CCVector2.Zero;
 

@@ -70,13 +70,14 @@
     <IpaPackageName>
     </IpaPackageName>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <CodesignProvision>e1b66a7d-6d0f-4e04-8c09-ae8a2214c394</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
     <Reference Include="box2d">
       <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\box2d.dll</HintPath>
     </Reference>
@@ -92,12 +93,9 @@
     <Reference Include="MonoGame.Framework.Net">
       <HintPath>..\packages\CocosSharp.PCL.Shared.1.6.2.0\lib\Xamarin.iOS10\MonoGame.Framework.Net.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
-    <BundleResource Include="levelinfo.xml" />
     <BundleResource Include="Resources\bb_icon_029.png" />
     <BundleResource Include="Resources\bb_icon_057.png" />
     <BundleResource Include="Resources\bb_icon_058.png" />
@@ -108,6 +106,27 @@
     <BundleResource Include="Content\images\ld\bubbles.png" />
     <BundleResource Include="Content\images\hd\ui.png" />
     <BundleResource Include="Content\images\ld\ui.png" />
+    <BundleResource Include="Content\images\ld\bonus.png" />
+    <BundleResource Include="Content\images\hd\bonus.png" />
+    <BundleResource Include="Content\fonts\gothic-30.png" />
+    <BundleResource Include="Content\fonts\gothic-30.fnt" />
+    <BundleResource Include="Content\fonts\gothic-30-hd.png" />
+    <BundleResource Include="Content\fonts\gothic-30-hd.fnt" />
+    <BundleResource Include="Content\fonts\gothic-44-hd.png" />
+    <BundleResource Include="Content\fonts\gothic-44.png" />
+    <BundleResource Include="Content\fonts\gothic-44.fnt" />
+    <BundleResource Include="Content\fonts\gothic-44-hd.fnt" />
+    <BundleResource Include="Content\fonts\gothic-56-white.png" />
+    <BundleResource Include="Content\fonts\gothic-56-white-hd.png" />
+    <BundleResource Include="Content\fonts\gothic-36-white.png" />
+    <BundleResource Include="Content\fonts\gothic-36-white-hd.png" />
+    <BundleResource Include="Content\fonts\gothic-36-white.fnt" />
+    <BundleResource Include="Content\fonts\gothic-36-white-hd.fnt" />
+    <BundleResource Include="Content\fonts\gothic-56-white.fnt" />
+    <BundleResource Include="Content\fonts\gothic-56-white-hd.fnt" />
+    <BundleResource Include="LevelData\branches.xml" />
+    <BundleResource Include="LevelData\levelinfo.xml" />
+    <BundleResource Include="LevelData\levels.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\animations\" />
@@ -116,17 +135,19 @@
     <Folder Include="Content\images\hd\" />
     <Folder Include="Content\images\ld\" />
     <Folder Include="Enums\" />
+    <Folder Include="Bubbles\" />
+    <Folder Include="LevelData\" />
+    <Folder Include="Layers\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
-    <None Include="Content\images\hd\bubbles.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />
     <Compile Include="GameAppDelegate.cs" />
-    <Compile Include="PointBubble.cs" />
     <Compile Include="ShuffleBag.cs" />
     <Compile Include="GameStartLayer.cs" />
     <Compile Include="Player.cs" />
@@ -134,13 +155,37 @@
     <Compile Include="Enums\Sequences.cs" />
     <Compile Include="Enums\Bonuses.cs" />
     <Compile Include="Enums\BonusInterrupt.cs" />
-    <Compile Include="MenuBubble.cs" />
     <Compile Include="Enums\BubbleColors.cs" />
     <Compile Include="Unused.cs" />
     <Compile Include="LevelLayer.cs" />
     <Compile Include="LevelFinishedLayer.cs" />
-    <Compile Include="XElementExtensions.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Bubbles\BonusBubble.cs" />
+    <Compile Include="Bubbles\Bubble.cs" />
+    <Compile Include="Bubbles\GameBubble.cs" />
+    <Compile Include="Bubbles\MenuBubble.cs" />
+    <Compile Include="Bubbles\PointBubble.cs" />
+    <Compile Include="Enums\BubbleType.cs" />
+    <Compile Include="Enums\PointState.cs" />
+    <Compile Include="Enums\ShopUnlocks.cs" />
+    <Compile Include="NewPlayer.cs" />
+    <Compile Include="Enums\CompletionState.cs" />
+    <Compile Include="BranchProgress.cs" />
+    <Compile Include="Enums\BranchType.cs" />
+    <Compile Include="Branch.cs" />
+    <Compile Include="Layers\MenuLayer.cs" />
+    <Compile Include="Layers\StartLayer.cs" />
+    <Compile Include="Layers\CreditsLayer.cs" />
+    <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="Enums\PlayerSlot.cs" />
+    <Compile Include="Layers\GameSelectLayer.cs" />
+    <Compile Include="Layers\ShopLayer.cs" />
+    <Compile Include="Layers\TutorialLayer.cs" />
+    <Compile Include="Layers\FreePlayLayer.cs" />
+    <Compile Include="Layers\SelectChallengeLayer.cs" />
+    <Compile Include="Layers\ChallengeLevelLayer.cs" />
+    <Compile Include="Layers\TutorialLevelFinishedLayer.cs" />
+    <Compile Include="Layers\ChallengeLevelFinishedLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -150,5 +195,19 @@
     <Content Include="Content\images\ld\bubbles.plist" />
     <Content Include="Content\images\hd\ui.plist" />
     <Content Include="Content\images\ld\ui.plist" />
+    <Content Include="Content\images\hd\bubbles.plist" />
+    <Content Include="Content\images\hd\bonus.plist" />
+    <Content Include="Content\images\ld\bonus.plist" />
+    <Content Include="Content\images\hd\stars.xnb" />
+    <Content Include="Content\images\ld\stars.xnb" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <StandardHeader Text="-----------------------------------------------------------------------------------------------&#xA; &lt;copyright file=&quot;${FileName}&quot; company=&quot;RetroTek Software Ltd&quot;&gt;&#xA;     Copyright (C) 2016 RetroTek Software Ltd. All rights reserved.&#xA; &lt;/copyright&gt;&#xA; &lt;author&gt;Jared Mathes&lt;/author&gt;&#xA;-----------------------------------------------------------------------------------------------" IncludeInNewFiles="True" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
